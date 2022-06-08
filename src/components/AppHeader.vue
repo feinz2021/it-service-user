@@ -11,22 +11,10 @@
           <span style="font-size: x-large">🧭 Navigation</span>
         </a>
         <ul id="menu-dropdown" class="dropdown-content">
-          <div v-if="!isLoggedIn">
-            <li>
-              <a
-                style="font-size: x-large; color: black"
-                @click="$emit('open-login-modal')"
-                class="flexbox-center"
-                >🔑 {{ loginText }}</a
-              >
-              <div class="vl-button"></div>
-            </li>
-            <li class="divider" tabindex="-1"></li>
-          </div>
-          <div v-else>
+          <div>
             <li>
               <a class="flexbox-center" style="font-size: x-large; color: black"
-                >🧍 {{ loginText }}</a
+                >🧍 {{ email }}</a
               >
             </li>
             <li>
@@ -62,24 +50,32 @@
 </template>
 
 <script>
-import { signOut } from "firebase/auth";
+// import firebase from "./utilities/firebase";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 
 export default {
   data() {
     return {
       isLoading: false,
+      email: "",
+      routerList: [{ title: "🏠 1. Home", to: "/homepage" }],
     };
   },
-  mounted() {
+  async mounted() {
     window.M.AutoInit();
+    onAuthStateChanged(await this.auth, async (user) => {
+      if (user) {
+        this.email = user.email;
+      } 
+    });
   },
   computed: {
-    isLoggedIn() {
-      return this.$store.state.isLoggedIn;
-    },
-    user() {
-      return this.$store.state.user;
-    },
+    // isLoggedIn() {
+    //   return this.$store.state.isLoggedIn;
+    // },
+    // user() {
+    //   return this.$store.state.user;
+    // },
     auth() {
       return this.$store.state.auth;
     },

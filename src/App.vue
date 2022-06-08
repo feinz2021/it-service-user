@@ -1,9 +1,8 @@
 <template>
-  app.vue
   <AppHeader v-if="this.loggedIn" />
   <ContentLoader v-else-if="this.loading" />
   <LoginPage v-else />
-  <h1>{{}}</h1>
+  <router-view v-if="this.loggedIn" ></router-view>
 </template>
 
 <script>

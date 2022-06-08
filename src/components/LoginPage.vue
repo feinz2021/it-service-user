@@ -65,7 +65,7 @@ export default {
           console.log(res);
           this.isLoading = false;
           this.closeModal();
-          window.location.reload();
+        //   window.location.reload();
         })
         .catch((e) => {
           console.log("error: ");
