@@ -9,19 +9,45 @@
     <label for="cost">Cost</label>
   </div>
 
-  <button class="waves-effect waves-light btn blue">Save</button>
+  <button class="waves-effect waves-light btn blue" @click="saveTask()">
+    Save
+  </button>
 </template>
 
 <script>
+import { collection, addDoc } from "firebase/firestore";
+import firebase from "../../utilities/firebase";
+
 export default {
-  data(){
-    return{
+  data() {
+    return {
       taskName: "",
       cost: "",
-    }
+    };
   },
   mounted() {
     window.M.AutoInit();
+  },
+  methods: {
+    async saveTask() {
+      try {
+        const docRef = await addDoc(collection(firebase.db, "task"), {
+          taskName: this.taskName,
+          cost: this.cost,
+        });
+        console.log("task added with ID: ", docRef.id);
+        this.$toast.open({
+          message: "Task Added Successfully",
+          type: "success",
+          duration: 3000,
+          dismissible: true,
+          position: "bottom",
+        });
+        window.location.href="/tasklist";
+      } catch (e) {
+        console.error("Error adding task: ", e);
+      }
+    },
   },
 };
 </script>

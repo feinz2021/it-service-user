@@ -86,6 +86,7 @@ export default {
   },
   methods: {
     logout() {
+      sessionStorage.clear();
       signOut(this.auth)
         .then(() => {
           this.$toast.open({

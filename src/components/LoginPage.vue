@@ -4,11 +4,11 @@
     <div class="card login-form">
       <form style="width: 400px; margin-top: -15%" @submit.prevent="submit()">
         <div class="input-field">
-          <label for="email" ref="emailRef">Email</label>
+          <label class="active" for="email" ref="emailRef">Email</label>
           <input v-model="email" id="email" type="text" class="validate" />
         </div>
         <div class="input-field">
-          <label for="password">Password</label>
+          <label class="active" for="password">Password</label>
           <input
             v-model="password"
             id="password"
