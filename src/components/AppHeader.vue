@@ -97,7 +97,7 @@ export default {
           });
           console.log("Sign out successful.");
           // location.reload();
-          window.location.replace("/homepage");
+          window.location.replace("/");
           // Sign-out successful.
         })
         .catch((error) => {
