@@ -33,17 +33,6 @@
               <a
                 class="flexbox-center"
                 style="font-size: x-large; color: black"
-                @click="$emit('open-username-modal')"
-                ><small>Chat username:</small> <br />
-                🧍‍♂️{{ displayName }} <br /><small
-                  >Click to edit chat username ⬆️</small
-                ></a
-              >
-            </li>
-            <li>
-              <a
-                class="flexbox-center"
-                style="font-size: x-large; color: black"
                 @click="logout()"
                 >🔐 Logout</a
               >
@@ -73,9 +62,49 @@
 </template>
 
 <script>
+import { signOut } from "firebase/auth";
+
 export default {
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
   mounted() {
     window.M.AutoInit();
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.state.isLoggedIn;
+    },
+    user() {
+      return this.$store.state.user;
+    },
+    auth() {
+      return this.$store.state.auth;
+    },
+  },
+  methods: {
+    logout() {
+      signOut(this.auth)
+        .then(() => {
+          // this.loginText = "Login";
+          this.$toast.open({
+            message: "Logout Successful",
+            type: "success",
+            duration: 3000,
+            dismissible: true,
+            position: "bottom",
+          });
+          console.log("Sign out successful.");
+          location.reload();
+          // Sign-out successful.
+        })
+        .catch((error) => {
+          console.log("Error logging out: " + error);
+          // An error happened.
+        });
+    },
   },
 };
 </script>
