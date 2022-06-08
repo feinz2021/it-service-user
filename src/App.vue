@@ -3,6 +3,7 @@
   <ContentLoader v-else-if="this.loading" />
   <LoginPage v-else />
   <router-view v-if="this.loggedIn" ></router-view>
+  <LoginPage v-else />
 </template>
 
 <script>
