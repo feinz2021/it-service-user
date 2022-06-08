@@ -49,8 +49,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 export default {
   data() {
     return {
-      email: "",
-      password: "",
+      email: "a@a.com",
+      password: "123abc",
       isLoading: false,
     };
   },

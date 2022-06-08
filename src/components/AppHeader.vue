@@ -96,7 +96,8 @@ export default {
             position: "bottom",
           });
           console.log("Sign out successful.");
-          location.reload();
+          // location.reload();
+          window.location.replace("/homepage");
           // Sign-out successful.
         })
         .catch((error) => {
