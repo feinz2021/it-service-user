@@ -3,6 +3,7 @@ import HomePage from './pages/HomePage';
 // import ViewTask from './page/task/ViewTask';
 // import AddTask from './page/task/AddTask';
 import TaskList from './pages/task/TaskList';
+import ServiceOrderList from './pages/service-order/ServiceOrderList';
 
 const routes = [
     { path: '/', redirect: '/homepage' },
@@ -15,6 +16,11 @@ const routes = [
         path: '/tasklist',
         component: TaskList,
         name: "tasklist",
+    },
+    {
+        path: '/serviceorderlist',
+        component: ServiceOrderList,
+        name: "serviceorderlist",
     },
 ];
 const router = createRouter({

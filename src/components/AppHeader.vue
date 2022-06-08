@@ -58,7 +58,11 @@ export default {
     return {
       isLoading: false,
       email: "",
-      routerList: [{ title: "🏠 1. Home", to: "/homepage" }],
+      routerList: [
+        { title: "🏠 Home", to: "/homepage" },
+        { title: "📝 Service Order List", to: "/serviceorderlist" },
+        { title: "📃 Task List", to: "/tasklist" },
+      ],
     };
   },
   async mounted() {
@@ -66,7 +70,7 @@ export default {
     onAuthStateChanged(await this.auth, async (user) => {
       if (user) {
         this.email = user.email;
-      } 
+      }
     });
   },
   computed: {
