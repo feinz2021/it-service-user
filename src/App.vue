@@ -31,16 +31,14 @@ export default {
         await this.$store.commit("isLoggedIn", true);
         await this.$store.commit("user", user);
         // this.chatUsername = user.displayName;
-        console.log("this.user.displayName: ");
-        console.log(this.user.displayName);
+        console.log("this.user.email: ");
+        console.log(this.user.email);
         this.$nextTick(() => {
           // end loading animation
           this.loading = false;
         });
         // ...
       } else {
-        this.isLoggedIn = false;
-        this.user = {};
         // this.chatUsername = "";
         console.log("USER LOGGED OUT");
           this.$nextTick(() => {

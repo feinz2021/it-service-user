@@ -88,7 +88,6 @@ export default {
     logout() {
       signOut(this.auth)
         .then(() => {
-          // this.loginText = "Login";
           this.$toast.open({
             message: "Logout Successful",
             type: "success",
