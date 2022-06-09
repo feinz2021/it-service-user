@@ -4,6 +4,7 @@ import ViewTask from './pages/task/ViewTask';
 import AddTask from './pages/task/AddTask';
 import TaskList from './pages/task/TaskList';
 import ServiceOrderList from './pages/service-order/ServiceOrderList';
+import NewServiceOrder from './pages/service-order/NewServiceOrder';
 
 const routes = [
     { path: '/', redirect: '/homepage' },
@@ -31,6 +32,11 @@ const routes = [
         path: '/serviceorderlist',
         component: ServiceOrderList,
         name: "serviceorderlist",
+    },
+    {
+        path: '/newserviceorder',
+        component: NewServiceOrder,
+        name: "newserviceorder",
     },
 ];
 const router = createRouter({

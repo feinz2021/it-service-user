@@ -6,6 +6,7 @@ import store from "./store/index"
 import 'vue-toast-notification/dist/theme-sugar.css'
 import VueToast from 'vue-toast-notification'
 import router from "./router.js";
+import 'material-icons/iconfont/material-icons.css';
 
 // createApp(App).mount('#app')
 

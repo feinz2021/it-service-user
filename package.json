@@ -12,6 +12,7 @@
     "core-js": "^3.8.3",
     "error-stack-parser": "^2.1.4",
     "firebase": "^9.8.2",
+    "material-icons": "^1.11.1",
     "vue": "^3.2.13",
     "vue-content-loader": "^2.0.1",
     "vue-router": "^4.0.15",

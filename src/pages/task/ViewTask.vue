@@ -18,7 +18,7 @@
   </button>
 
   <button class="waves-effect waves-light btn grey" @click="cancel()">
-    Cancel
+    Back
   </button>
 </template>
 
@@ -66,7 +66,7 @@ export default {
           dismissible: true,
           position: "bottom",
         });
-        window.location.href = "/tasklist";
+        window.location.replace("/tasklist");
       } catch (e) {
         console.error("Error adding task: ", e);
       }
@@ -80,10 +80,10 @@ export default {
         dismissible: true,
         position: "bottom",
       });
-      window.location.href = "/tasklist";
+      window.location.replace("/tasklist");
     },
     cancel(){
-      window.location.href = "/tasklist";
+      window.location.replace("/tasklist");
     }
   },
 };
