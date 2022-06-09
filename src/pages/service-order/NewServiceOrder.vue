@@ -5,17 +5,22 @@
     <div class="row">
       <div class="col m8 l8 push-m2 push-l2">
         <h5>Service Order</h5>
+        <button @click="testButton()">test</button>
+
+        <!-- displaying the selected task -->
         <ul>
-          <li v-for="(order, index) in serviceOrderList" :key="order.id">
+          <li v-for="(order, index) in serviceOrderList" :key="order.taskName">
             <div class="row">
               <div class="col s9 m9 l9">
+                {{ index + 1 + "." }}
                 {{ order.taskName }}
+                {{ order.cost }}
               </div>
               <div class="col s3 m3 l3">
                 <button
                   style="width: 100%"
                   class="btn waves-effect waves-light red"
-                  @click="deleteTask(index)"
+                  @click="deleteTask(index, order.cost)"
                 >
                   Del<i class="material-icons right">delete</i>
                 </button>
@@ -24,30 +29,15 @@
           </li>
         </ul>
 
-        <form @submit.prevent="addTask()">
-          <div class="row">
-            <div class="input-field col s9 m9 l9">
-              <input
-                id="autocomplete-input"
-                class="autocomplete action"
-                style="font-size: 24px"
-                @keypress.enter="submit"
-                type="text"
-                ref="searchTask"
-                v-model="newTaskName"
-              />
-            </div>
-            <div class="col s3 m3 l3">
-              <button
-                style="width: 100%"
-                class="btn waves-effect waves-light"
-                @click="submit"
-              >
-                Add<i class="material-icons right">save</i>
-              </button>
-            </div>
-          </div>
-        </form>
+        <vue3-simple-typeahead
+          id="typeahead_id"
+          placeholder="Start writing..."
+          :items="this.taskListName"
+          :minInputLength="1"
+          @selectItem="selectItemEventHandler"
+        >
+        </vue3-simple-typeahead>
+        <label for="typeahead_id">type here⬆️</label>
 
         <div style="margin-bottom: 50px"></div>
       </div>
@@ -62,32 +52,41 @@ import firebase from "../../utilities/firebase";
 export default {
   data() {
     return {
-      newTaskName: "",
+      test: "",
       taskList: [],
+      taskListName: [],
       serviceOrderList: [],
+      totalCost: 0,
     };
   },
   methods: {
     // search for task and add
-    addTask() {
-      if (this.newAlphabeth === "") {
-        this.$toast.open({
-          message: "Enter a task first",
-          type: "error",
-          duration: 3000,
-          dismissible: true,
-          position: "bottom",
-        });
-      } else {
-        const addingToArray = this.serviceOrderList.push({
-          taskName: this.newTaskName,
-        });
-        const clearingNewTaskVariable = (this.newTaskName = "");
-        return addingToArray, clearingNewTaskVariable;
-      }
+    selectItemEventHandler(a) {
+      const result = this.taskList.find(({ taskName }) => taskName === a);
+      console.log(result.taskName);
+      this.$toast.open({
+        message: "Task Selected: " + a,
+        type: "success",
+        duration: 3000,
+        dismissible: true,
+        position: "bottom",
+      });
+      const addingToArray = this.serviceOrderList.push({
+        taskName: result.taskName,
+        cost: result.cost,
+      });
+      this.totalCost = this.totalCost + result.cost;
+      return addingToArray;
     },
-    deleteTask(index) {
+    deleteTask(index, cost) {
+      this.totalCost = this.totalCost - cost;
       return this.serviceOrderList.splice(index, 1);
+    },
+    testButton() {
+      console.log(this.taskList);
+      for (let index in this.taskList) {
+        console.log(index, this.taskList.values("taskName"));
+      }
     },
   },
   async mounted() {
@@ -97,21 +96,10 @@ export default {
     const querySnapshot = await getDocs(collection(firebase.db, "task"));
     querySnapshot.forEach((doc) => {
       this.taskList.push(doc.data());
+      this.taskListName.push(doc.data().taskName);
     });
-
-    // materializecss autocomplete
-    var elems = document.querySelectorAll(".autocomplete");
-    var data = {};
-    for (const task of this.taskList) {
-      data[task.taskName] = null;
-    }
-    var options = {
-      data: data,
-    };
-    window.M.Autocomplete.init(elems, options);
   },
 };
 </script>
-
 <style>
 </style>
