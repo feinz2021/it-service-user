@@ -26,8 +26,10 @@
 
         <form @submit.prevent="addTask()">
           <div class="row">
-            <div class="col s9 m9 l9">
+            <div class="input-field col s9 m9 l9">
               <input
+                id="autocomplete-input"
+                class="autocomplete"
                 style="font-size: 24px"
                 @keypress.enter="submit"
                 type="text"
@@ -63,14 +65,27 @@ export default {
       serviceOrderList: [],
     };
   },
-  methods:{
+  methods: {
     // search for task and add
-    addTask(){
-
-    }
+    addTask() {},
   },
   async mounted() {
     window.M.AutoInit();
+
+    // materializecss autocomplete
+    var elems = document.querySelectorAll(".autocomplete");
+    var countries = ["rome", "london", "new york"];
+    var data = {};
+    for (const key of countries) {
+      data[key] = null;
+    }
+    var options = {
+      data: data,
+    };
+    window.M.Autocomplete.init(elems, options);
+
+
+    // firebase query
     const querySnapshot = await getDocs(collection(firebase.db, "task"));
     querySnapshot.forEach((doc) => {
       this.taskList.push(doc);
