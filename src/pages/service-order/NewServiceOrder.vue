@@ -9,7 +9,7 @@
           <li v-for="(order, index) in serviceOrderList" :key="order.id">
             <div class="row">
               <div class="col s9 m9 l9">
-                {{ order.data().taskName }}
+                {{ order.taskName }}
               </div>
               <div class="col s3 m3 l3">
                 <button
@@ -29,11 +29,12 @@
             <div class="input-field col s9 m9 l9">
               <input
                 id="autocomplete-input"
-                class="autocomplete"
+                class="autocomplete action"
                 style="font-size: 24px"
                 @keypress.enter="submit"
                 type="text"
                 ref="searchTask"
+                v-model="newTaskName"
               />
             </div>
             <div class="col s3 m3 l3">
@@ -61,35 +62,53 @@ import firebase from "../../utilities/firebase";
 export default {
   data() {
     return {
+      newTaskName: "",
       taskList: [],
       serviceOrderList: [],
     };
   },
   methods: {
     // search for task and add
-    addTask() {},
+    addTask() {
+      if (this.newAlphabeth === "") {
+        this.$toast.open({
+          message: "Enter a task first",
+          type: "error",
+          duration: 3000,
+          dismissible: true,
+          position: "bottom",
+        });
+      } else {
+        const addingToArray = this.serviceOrderList.push({
+          taskName: this.newTaskName,
+        });
+        const clearingNewTaskVariable = (this.newTaskName = "");
+        return addingToArray, clearingNewTaskVariable;
+      }
+    },
+    deleteTask(index) {
+      return this.serviceOrderList.splice(index, 1);
+    },
   },
   async mounted() {
     window.M.AutoInit();
 
+    // firebase query
+    const querySnapshot = await getDocs(collection(firebase.db, "task"));
+    querySnapshot.forEach((doc) => {
+      this.taskList.push(doc.data());
+    });
+
     // materializecss autocomplete
     var elems = document.querySelectorAll(".autocomplete");
-    var countries = ["rome", "london", "new york"];
     var data = {};
-    for (const key of countries) {
-      data[key] = null;
+    for (const task of this.taskList) {
+      data[task.taskName] = null;
     }
     var options = {
       data: data,
     };
     window.M.Autocomplete.init(elems, options);
-
-
-    // firebase query
-    const querySnapshot = await getDocs(collection(firebase.db, "task"));
-    querySnapshot.forEach((doc) => {
-      this.taskList.push(doc);
-    });
   },
 };
 </script>

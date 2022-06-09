@@ -11,7 +11,6 @@ import 'material-icons/iconfont/material-icons.css';
 // createApp(App).mount('#app')
 
 const app = createApp(App);
-// app.use(router);
 app.use(store);
 app.use(VueToast);
 app.use(router);
