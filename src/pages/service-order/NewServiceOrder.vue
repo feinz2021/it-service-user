@@ -63,6 +63,8 @@ export default {
       serviceOrder: [],
       totalCost: 0,
       date: {},
+      isOrderOngoing: true,
+      isOrderCompleted: false,
     };
   },
   methods: {
@@ -106,7 +108,9 @@ export default {
             {
               serviceOrder: this.serviceOrder,
               totalCost: this.totalCost,
-              date: this.date
+              date: this.date,
+              isOrderOngoing: this.isOrderOngoing,
+              isOrderCompleted: this.isOrderCompleted
             }
           );
           console.log("service order added with ID: ", docRef.id);
@@ -119,7 +123,7 @@ export default {
           });
           window.location.replace("/serviceorderlist");
         } catch (e) {
-          console.error("Error adding task: ", e);
+          console.error("Error adding new service order: ", e);
         }
       }
     },

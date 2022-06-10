@@ -3,6 +3,9 @@
     <div class="row">
       <div class="col m8 l8 push-m2 push-l2">
         <!-- displaying the selected task -->
+                  <div
+            class="card-panel white"
+          >
         <ul>
           <li v-for="(order, index) in serviceOrder" :key="order.taskName">
             <div class="row">
@@ -13,6 +16,7 @@
               </div>
               <div class="col s3 m3 l3">
                 <button
+                  v-if="isOrderOngoing && !isOrderCompleted"
                   style="width: 100%"
                   class="btn waves-effect waves-light red"
                   @click="deleteTask(index, order.cost)"
@@ -23,8 +27,10 @@
             </div>
           </li>
         </ul>
+                  </div>
 
         <vue3-simple-typeahead
+          v-if="isOrderOngoing && !isOrderCompleted"
           id="typeahead_id"
           placeholder="Start writing..."
           :items="this.taskListName"
@@ -32,18 +38,36 @@
           @selectItem="selectItemEventHandler"
         >
         </vue3-simple-typeahead>
-        <label for="typeahead_id">type here⬆️</label>
+        <label v-if="isOrderOngoing && !isOrderCompleted" for="typeahead_id"
+          >type here⬆️</label
+        >
 
         <div></div>
-        <button class="btn" @click="saveServiceOrder()">
+        <div class="center-align">
+        <button
+          v-if="isOrderOngoing && !isOrderCompleted"
+          class="btn green waves-effect waves-light"
+          @click="saveServiceOrder()"
+        >
           Save<i class="material-icons right">save</i>
         </button>
-        <button class="btn red" @click="deleteServiceOrder()">
-          Delete<i class="material-icons right">delete</i>
+        <button
+          v-if="isOrderOngoing && !isOrderCompleted"
+          class="btn blue"
+          @click="completedOrder()"
+        >
+          Completed<i class="material-icons right">checkmark</i>
+        </button>
+        <button
+          v-if="isOrderOngoing && !isOrderCompleted"
+          class="btn red"
+          @click="discardServiceOrder()"
+        >
+          Discard<i class="material-icons right">drop</i>
         </button>
         <button class="btn grey" @click="cancel()">
-          Cancel<i class="material-icons right">cancel</i>
-        </button>
+          Back<i class="material-icons right">arrow_back</i>
+        </button></div>
 
         <div style="margin-bottom: 50px"></div>
       </div>
@@ -56,7 +80,6 @@ import {
   doc,
   getDoc,
   updateDoc,
-  deleteDoc,
   getDocs,
   collection,
 } from "firebase/firestore";
@@ -71,6 +94,8 @@ export default {
       serviceOrder: [],
       totalCost: 0,
       // date: {},
+      isOrderOngoing: false,
+      isOrderCompleted: false,
     };
   },
   computed: {
@@ -93,7 +118,8 @@ export default {
 
     if (docSnap.exists()) {
       this.serviceOrder = docSnap.data().serviceOrder;
-      this.totalCost = docSnap.data().cost;
+      this.totalCost = docSnap.data().totalCost;
+      this.isOrderOngoing = docSnap.data().isOrderOngoing;
       // this.date = docSnap.data().date;
     } else {
       console.log("No such document!");
@@ -133,7 +159,6 @@ export default {
           position: "bottom",
         });
       } else {
-        this.date = new Date();
         try {
           const docRef = doc(firebase.db, "service-order", this.serviceOrderId);
           await updateDoc(docRef, {
@@ -155,16 +180,44 @@ export default {
         }
       }
     },
-    async deleteServiceOrder() {
-      await deleteDoc(doc(firebase.db, "service-order", this.serviceOrderId));
-      this.$toast.open({
-        message: "Service Order Deleted Successfully",
-        type: "success",
-        duration: 3000,
-        dismissible: true,
-        position: "bottom",
-      });
-      window.location.replace("/serviceorderlist");
+    async discardServiceOrder() {
+      try {
+        const docRef = doc(firebase.db, "service-order", this.serviceOrderId);
+        await updateDoc(docRef, {
+          isOrderOngoing: false,
+        });
+        console.log("service order added with ID: ", docRef.id);
+        this.$toast.open({
+          message: "Service Order Cancelled Successfully",
+          type: "success",
+          duration: 3000,
+          dismissible: true,
+          position: "bottom",
+        });
+        window.location.replace("/serviceorderlist");
+      } catch (e) {
+        console.error("Error adding task: ", e);
+      }
+    },
+    async completedOrder() {
+      try {
+        const docRef = doc(firebase.db, "service-order", this.serviceOrderId);
+        await updateDoc(docRef, {
+          isOrderCompleted: true,
+          isOrderOngoing: false,
+        });
+        console.log("service order completed: ", docRef.id);
+        this.$toast.open({
+          message: "Service Order Completed",
+          type: "success",
+          duration: 3000,
+          dismissible: true,
+          position: "bottom",
+        });
+        window.location.replace("/serviceorderlist");
+      } catch (e) {
+        console.error("Error adding task: ", e);
+      }
     },
     cancel() {
       window.location.replace("/serviceorderlist");

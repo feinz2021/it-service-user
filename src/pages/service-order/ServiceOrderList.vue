@@ -25,6 +25,21 @@
               <div style="margin-left: 15px">
                 Service Order ID: {{ data1.id }} <br />
                 Service Order Date: {{ currentDateTime(data1.data().date) }}
+                <div
+                  v-if="
+                    !data1.data().isOrderOngoing &&
+                    !data1.data().isOrderCompleted
+                  "
+                  class="red-text flow-text"
+                >
+                  Order Cancelled
+                </div>
+                <div
+                  v-if="data1.data().isOrderCompleted"
+                  class="green-text flow-text"
+                >
+                  Order Completed
+                </div>
                 <!-- sOrder for data(taskName, cost) in nested[array] inside the collection of serviceOrder -->
                 <table>
                   <thead>
@@ -34,8 +49,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="data2 in data1.data().serviceOrder" :key="data2">
-                      <td>{{ data2.taskName }}</td>
+                    <tr
+                      v-for="(data2, index) in data1.data().serviceOrder"
+                      :key="data2"
+                    >
+                      <td>{{ index + 1 }}. {{ data2.taskName }}</td>
                       <td>RM {{ data2.cost }}</td>
                     </tr>
                   </tbody>
