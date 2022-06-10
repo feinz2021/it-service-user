@@ -40,7 +40,7 @@
         <label for="typeahead_id">type here⬆️</label>
 
         <div></div>
-        <button class="right btn" @click="saveServiceOrder()">
+        <button class="btn" @click="saveServiceOrder()">
           Save<i class="material-icons right">save</i>
         </button>
 

@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       taskName: "",
-      cost: "",
+      cost: 0,
     };
   },
   computed: {
