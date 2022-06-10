@@ -43,7 +43,7 @@ export default {
           dismissible: true,
           position: "bottom",
         });
-        window.location.href="/tasklist";
+        window.location.replace("/tasklist");
       } catch (e) {
         console.error("Error adding task: ", e);
       }
