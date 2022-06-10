@@ -8,6 +8,7 @@
     New Service Order
   </router-link>
 
+   <button @click="testButton()">test</button>
   service order list:
 
   <!-- data for data(date and totalcost) in collection -->
@@ -50,6 +51,9 @@ export default {
       console.log(data);
       sessionStorage.setItem("serviceOrderId", data);
       window.location.href = "/viewserviceorder";
+    },
+    testButton(a) {
+      console.log(a);
     },
   },
 };
