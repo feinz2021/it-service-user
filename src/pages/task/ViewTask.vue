@@ -39,6 +39,7 @@ export default {
     },
   },
   async mounted() {
+    window.M.AutoInit();
     //read database
     const docRef = doc(firebase.db, "task", this.taskId);
     const docSnap = await getDoc(docRef);

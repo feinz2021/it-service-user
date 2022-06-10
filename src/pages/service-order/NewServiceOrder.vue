@@ -57,7 +57,6 @@ import firebase from "../../utilities/firebase";
 export default {
   data() {
     return {
-      test: "",
       taskList: [],
       taskListName: [],
       // --to save in database
@@ -107,7 +106,7 @@ export default {
             {
               serviceOrder: this.serviceOrder,
               totalCost: this.totalCost,
-              date: this.date,
+              date: this.date
             }
           );
           console.log("service order added with ID: ", docRef.id);
@@ -133,7 +132,6 @@ export default {
   },
   async mounted() {
     window.M.AutoInit();
-
     // firebase query
     const querySnapshot = await getDocs(collection(firebase.db, "task"));
     querySnapshot.forEach((doc) => {
