@@ -3,31 +3,30 @@
     <div class="row">
       <div class="col m8 l8 push-m2 push-l2">
         <!-- displaying the selected task -->
-                  <div
-            class="card-panel white"
-          >
-        <ul>
-          <li v-for="(order, index) in serviceOrder" :key="order.taskName">
-            <div class="row">
-              <div class="col s9 m9 l9">
-                {{ index + 1 + "." }}
-                {{ order.taskName }}
-                {{ order.cost }}
+        <div class="card-panel white" id="printMe">
+          <ul>
+            <li v-for="(order, index) in serviceOrder" :key="order.taskName">
+              <div class="row">
+                <div class="col s9 m9 l9">
+                  {{ index + 1 + "." }}
+                  {{ order.taskName }}
+                  {{ order.cost }}
+                </div>
+                <div class="col s3 m3 l3">
+                  <button
+                    id="hide-from-print"
+                    v-if="isOrderOngoing && !isOrderCompleted"
+                    style="width: 100%"
+                    class="btn waves-effect waves-light red"
+                    @click="deleteTask(index, order.cost)"
+                  >
+                    Del<i class="material-icons right">delete</i>
+                  </button>
+                </div>
               </div>
-              <div class="col s3 m3 l3">
-                <button
-                  v-if="isOrderOngoing && !isOrderCompleted"
-                  style="width: 100%"
-                  class="btn waves-effect waves-light red"
-                  @click="deleteTask(index, order.cost)"
-                >
-                  Del<i class="material-icons right">delete</i>
-                </button>
-              </div>
-            </div>
-          </li>
-        </ul>
-                  </div>
+            </li>
+          </ul>
+        </div>
 
         <vue3-simple-typeahead
           v-if="isOrderOngoing && !isOrderCompleted"
@@ -44,30 +43,32 @@
 
         <div></div>
         <div class="center-align">
-        <button
-          v-if="isOrderOngoing && !isOrderCompleted"
-          class="btn green waves-effect waves-light"
-          @click="saveServiceOrder()"
-        >
-          Save<i class="material-icons right">save</i>
-        </button>
-        <button
-          v-if="isOrderOngoing && !isOrderCompleted"
-          class="btn blue"
-          @click="completedOrder()"
-        >
-          Completed<i class="material-icons right">checkmark</i>
-        </button>
-        <button
-          v-if="isOrderOngoing && !isOrderCompleted"
-          class="btn red"
-          @click="discardServiceOrder()"
-        >
-          Discard<i class="material-icons right">drop</i>
-        </button>
-        <button class="btn grey" @click="cancel()">
-          Back<i class="material-icons right">arrow_back</i>
-        </button></div>
+          <button
+            v-if="isOrderOngoing && !isOrderCompleted"
+            class="btn green waves-effect waves-light"
+            @click="saveServiceOrder()"
+          >
+            Save<i class="material-icons right">save</i>
+          </button>
+          <button
+            v-if="isOrderOngoing && !isOrderCompleted"
+            class="btn blue"
+            @click="completedOrder()"
+          >
+            Completed<i class="material-icons right">checkmark</i>
+          </button>
+          <button
+            v-if="isOrderOngoing && !isOrderCompleted"
+            class="btn red"
+            @click="discardServiceOrder()"
+          >
+            Discard<i class="material-icons right">drop</i>
+          </button>
+          <button class="btn grey" @click="cancel()">
+            Back<i class="material-icons right">arrow_back</i>
+          </button>
+          <button v-print="'#printMe'">Print local range</button>
+        </div>
 
         <div style="margin-bottom: 50px"></div>
       </div>
@@ -222,9 +223,15 @@ export default {
     cancel() {
       window.location.replace("/serviceorderlist");
     },
+    async print() {},
   },
 };
 </script>
 
 <style>
+@media print {
+  #hide-from-print {
+    display: none;
+  }
+}
 </style>

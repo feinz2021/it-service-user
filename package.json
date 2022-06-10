@@ -17,6 +17,7 @@
     "vue-content-loader": "^2.0.1",
     "vue-router": "^4.0.15",
     "vue-toast-notification": "3.0",
+    "vue3-print-nb": "^0.1.4",
     "vue3-simple-typeahead": "^1.0.5",
     "vuex": "^4.0.2"
   },
