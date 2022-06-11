@@ -3,8 +3,24 @@
     <div class="row">
       <div class="col m8 l8 push-m2 push-l2">
         <!-- displaying the selected task -->
-        <div class="card-panel white" id="printMe">
-          <ul>
+        <div class="card-panel white">
+          <ul id="printMe">
+            Service Order ID:
+            {{
+              serviceOrderId
+            }}
+            <br />
+            Service Order Date:
+            {{ date }}
+            <div
+              v-if="!this.isOrderOngoing && !this.isOrderCompleted"
+              class="red-text flow-text"
+            >
+              Order Cancelled
+            </div>
+            <div v-if="this.isOrderCompleted" class="green-text flow-text">
+              Order Completed
+            </div>
             <li v-for="(order, index) in serviceOrder" :key="order.taskName">
               <div class="row">
                 <div class="col s9 m9 l9">
@@ -67,7 +83,7 @@
           <button class="btn grey" @click="cancel()">
             Back<i class="material-icons right">arrow_back</i>
           </button>
-          <button v-print="'#printMe'">Print local range</button>
+          <button v-print="printObj">Print local range</button>
         </div>
 
         <div style="margin-bottom: 50px"></div>
@@ -94,19 +110,25 @@ export default {
       // --to save in database
       serviceOrder: [],
       totalCost: 0,
-      // date: {},
+      date: {},
       isOrderOngoing: false,
       isOrderCompleted: false,
+
+      // for printing
+      printObj: {
+        id: "printMe",
+        popTitle: "printing title object",
+      },
     };
   },
   computed: {
     serviceOrderId() {
       return sessionStorage.getItem("serviceOrderId");
-    },
+    }
   },
   async mounted() {
     window.M.AutoInit();
-    // firebase query
+    // firebase query for taskList
     const querySnapshot = await getDocs(collection(firebase.db, "task"));
     querySnapshot.forEach((doc) => {
       this.taskList.push(doc.data());
@@ -121,7 +143,9 @@ export default {
       this.serviceOrder = docSnap.data().serviceOrder;
       this.totalCost = docSnap.data().totalCost;
       this.isOrderOngoing = docSnap.data().isOrderOngoing;
-      // this.date = docSnap.data().date;
+      this.isOrderCompleted = docSnap.data().isOrderCompleted;
+      this.date = this.dateTime(docSnap.data().date);
+      console.log(this.date);
     } else {
       console.log("No such document!");
     }
@@ -223,7 +247,24 @@ export default {
     cancel() {
       window.location.replace("/serviceorderlist");
     },
-    async print() {},
+    // date time
+    dateTime(serviceOrderDate) {
+      const current = serviceOrderDate.toDate();
+      const date =
+        current.getDate() +
+        "/" +
+        (current.getMonth() + 1) +
+        "/" +
+        current.getFullYear();
+      const time =
+        current.getHours() +
+        ":" +
+        current.getMinutes() +
+        ":" +
+        current.getSeconds();
+      const dateTime = date + " " + time;
+      return dateTime;
+    },
   },
 };
 </script>
