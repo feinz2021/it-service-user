@@ -4,11 +4,9 @@
       <div class="col m8 l8 push-m2 push-l2">
         <!-- displaying the selected task -->
         <div class="card-panel white">
-          <ul id="printMe">
+          <div id="printMe">
             Service Order ID:
-            {{
-              serviceOrderId
-            }}
+            {{ serviceOrderId }}
             <br />
             Service Order Date:
             {{ date }}
@@ -21,27 +19,34 @@
             <div v-if="this.isOrderCompleted" class="green-text flow-text">
               Order Completed
             </div>
-            <li v-for="(order, index) in serviceOrder" :key="order.taskName">
-              <div class="row">
-                <div class="col s9 m9 l9">
-                  {{ index + 1 + "." }}
-                  {{ order.taskName }}
-                  {{ order.cost }}
-                </div>
-                <div class="col s3 m3 l3">
-                  <button
-                    id="hide-from-print"
-                    v-if="isOrderOngoing && !isOrderCompleted"
-                    style="width: 100%"
-                    class="btn waves-effect waves-light red"
-                    @click="deleteTask(index, order.cost)"
-                  >
-                    Del<i class="material-icons right">delete</i>
-                  </button>
-                </div>
-              </div>
-            </li>
-          </ul>
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Price</th>
+                  <th v-if="!isOrderCompleted && isOrderOngoing" id="hide-from-print">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="(order, index) in serviceOrder"
+                  :key="order.taskName"
+                >
+                  <td>{{ index + 1 }}. {{ order.taskName }}</td>
+                  <td>RM {{ order.cost }}</td>
+                  <td v-if="isOrderOngoing && !isOrderCompleted" id="hide-from-print">
+                    <button
+                      style="width: 100%"
+                      class="btn waves-effect waves-light red"
+                      @click="deleteTask(index, order.cost)"
+                    >
+                      Del<i class="material-icons right">delete</i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <vue3-simple-typeahead
@@ -124,7 +129,7 @@ export default {
   computed: {
     serviceOrderId() {
       return sessionStorage.getItem("serviceOrderId");
-    }
+    },
   },
   async mounted() {
     window.M.AutoInit();
