@@ -12,7 +12,7 @@
 
     <ul v-for="task in taskList" :key="task.id">
       <div class="row">
-        <div class="col s12 m5">
+        <div class="col s12 m12 l12">
           <div
             class="card-panel white fingerPointer"
             @click="gotoViewTask(task.id)"
@@ -42,12 +42,12 @@ export default {
   methods: {
     addNewTask() {
       console.log("add new task");
-      window.location.href = "/addtask";
+      this.$router.push("/addtask");
     },
     gotoViewTask(tId) {
       console.log(tId);
       sessionStorage.setItem("taskId", tId);
-      window.location.href = "/viewtask";
+      this.$router.push("/viewtask");
     },
   },
   async mounted() {

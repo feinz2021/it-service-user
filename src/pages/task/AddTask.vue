@@ -1,17 +1,29 @@
 <template>
-  <div class="input-field">
-    <input v-model="taskName" id="task_name" type="text" />
-    <label class="active" for="task_name">Task Name</label>
-  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col s12 m12 l12">
+        Enter New Task:
+        <div style="margin-bottom: 50px"></div>
+        <div class="input-field">
+          <input v-model="taskName" id="task_name" type="text" />
+          <label class="active" for="task_name">Task Name</label>
+        </div>
 
-  <div class="input-field">
-    <input v-model="cost" id="cost" type="number" />
-    <label class="active" for="cost">Cost</label>
+        <div class="input-field">
+          <input v-model="cost" id="cost" type="number" />
+          <label class="active" for="cost">Cost</label>
+        </div>
+        <div class="center-align">
+          <button class="waves-effect waves-light btn blue" @click="saveTask()">
+            Save<i class="material-icons right">save</i>
+          </button>
+          <router-link to="/tasklist" class="waves-effect waves-light btn grey">
+            Back<i class="material-icons right">arrow_back</i>
+          </router-link>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <button class="waves-effect waves-light btn blue" @click="saveTask()">
-    Save
-  </button>
 </template>
 
 <script>
@@ -43,7 +55,7 @@ export default {
           dismissible: true,
           position: "bottom",
         });
-        window.location.replace("/tasklist");
+        this.$router.push("/tasklist");
       } catch (e) {
         console.error("Error adding task: ", e);
       }
