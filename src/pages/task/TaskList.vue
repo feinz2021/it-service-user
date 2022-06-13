@@ -10,22 +10,26 @@
 
     task list:
 
-    <ul v-for="task in taskList" :key="task.id">
-      <div class="row">
-        <div class="col s12 m12 l12">
-          <div
-            class="card-panel white fingerPointer"
-            @click="gotoViewTask(task.id)"
-          >
-            <li>
-              <div style="margin-left: 15px">
-                {{ task.data().taskName }}: RM {{ task.data().cost }}
-              </div>
-            </li>
-          </div>
-        </div>
-      </div>
-    </ul>
+    <table class="highlight">
+      <thead>
+        <tr>
+          <th>Task Name</th>
+          <th>Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="task in taskList"
+          :key="task.id"
+          class="fingerPointer"
+          @click="gotoViewTask(task.id)"
+        >
+          <td>{{ task.data().taskName }}</td>
+          <td>RM {{ task.data().cost }}</td>
+        </tr>
+      </tbody>
+    </table>
+
   </div>
 </template>
 
