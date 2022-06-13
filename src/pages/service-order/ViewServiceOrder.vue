@@ -11,20 +11,30 @@
             Service Order Date:
             {{ date }}
             <div
-              v-if="!this.isOrderOngoing && !this.isOrderCompleted"
+              v-if="
+                this.isOrderOngoing == false && this.isOrderCompleted == false
+              "
               class="red-text flow-text"
             >
               Order Cancelled
             </div>
-            <div v-if="this.isOrderCompleted" class="green-text flow-text">
+            <div v-else-if="this.isOrderCompleted" class="green-text flow-text">
               Order Completed
+            </div>
+            <div v-else>
+              <!-- nothing displayed, for loading purpose as default is null -->
             </div>
             <table>
               <thead>
                 <tr>
                   <th>Item</th>
                   <th>Price</th>
-                  <th v-if="!isOrderCompleted && isOrderOngoing" id="hide-from-print">Action</th>
+                  <th
+                    v-if="!isOrderCompleted && isOrderOngoing"
+                    id="hide-from-print"
+                  >
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -34,7 +44,10 @@
                 >
                   <td>{{ index + 1 }}. {{ order.taskName }}</td>
                   <td>RM {{ order.cost }}</td>
-                  <td v-if="isOrderOngoing && !isOrderCompleted" id="hide-from-print">
+                  <td
+                    v-if="isOrderOngoing && !isOrderCompleted"
+                    id="hide-from-print"
+                  >
                     <button
                       style="width: 100%"
                       class="btn waves-effect waves-light red"
@@ -116,8 +129,8 @@ export default {
       serviceOrder: [],
       totalCost: 0,
       date: {},
-      isOrderOngoing: false,
-      isOrderCompleted: false,
+      isOrderOngoing: null,
+      isOrderCompleted: null,
 
       // for printing
       printObj: {
