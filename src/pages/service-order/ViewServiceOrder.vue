@@ -98,9 +98,15 @@
           >
             Discard<i class="material-icons right">drop</i>
           </button>
-          <button class="btn grey" @click="cancel()">
+          <!-- <button class="btn grey" @click="cancel()">
             Back<i class="material-icons right">arrow_back</i>
-          </button>
+          </button> -->
+          <router-link
+            to="/serviceorderlist"
+            class="waves-effect waves-light btn grey"
+          >
+            Back<i class="material-icons right">arrow_back</i>
+          </router-link>
           <button v-print="printObj">Print local range</button>
         </div>
 
