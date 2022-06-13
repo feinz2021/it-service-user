@@ -90,7 +90,7 @@ export default {
     gotoViewTask(data) {
       console.log(data);
       sessionStorage.setItem("serviceOrderId", data);
-      window.location.href = "/viewserviceorder";
+      this.$router.push("/viewserviceorder");
     },
     testButton(a) {
       console.log(a);
