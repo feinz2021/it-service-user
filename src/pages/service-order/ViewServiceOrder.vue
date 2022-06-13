@@ -98,9 +98,6 @@
           >
             Discard<i class="material-icons right">drop</i>
           </button>
-          <!-- <button class="btn grey" @click="cancel()">
-            Back<i class="material-icons right">arrow_back</i>
-          </button> -->
           <router-link
             to="/serviceorderlist"
             class="waves-effect waves-light btn grey"
@@ -223,7 +220,7 @@ export default {
             dismissible: true,
             position: "bottom",
           });
-          window.location.replace("/serviceorderlist");
+          this.$router.push("/serviceorderlist");
         } catch (e) {
           console.error("Error adding task: ", e);
         }
@@ -243,7 +240,7 @@ export default {
           dismissible: true,
           position: "bottom",
         });
-        window.location.replace("/serviceorderlist");
+        this.$router.push("/serviceorderlist");
       } catch (e) {
         console.error("Error adding task: ", e);
       }
@@ -263,7 +260,7 @@ export default {
           dismissible: true,
           position: "bottom",
         });
-        window.location.replace("/serviceorderlist");
+        this.$router.push("/serviceorderlist");
       } catch (e) {
         console.error("Error adding task: ", e);
       }

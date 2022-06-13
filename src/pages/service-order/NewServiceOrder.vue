@@ -5,7 +5,6 @@
     <div class="row">
       <div class="col m8 l8 push-m2 push-l2">
         <h5>Service Order</h5>
-        <button @click="testButton()">test</button>
 
         <!-- displaying the selected task -->
         <ul>
@@ -40,9 +39,17 @@
         <label for="typeahead_id">type here⬆️</label>
 
         <div></div>
-        <button class="btn" @click="saveServiceOrder()">
+        <div class="center-align">
+        <button class="btn green waves-effect waves-light" @click="saveServiceOrder()">
           Save<i class="material-icons right">save</i>
         </button>
+        <router-link
+          to="/serviceorderlist"
+          class="waves-effect waves-light btn grey"
+        >
+          Back<i class="material-icons right">arrow_back</i>
+        </router-link>
+        </div>
 
         <div style="margin-bottom: 50px"></div>
       </div>
@@ -110,7 +117,7 @@ export default {
               totalCost: this.totalCost,
               date: this.date,
               isOrderOngoing: this.isOrderOngoing,
-              isOrderCompleted: this.isOrderCompleted
+              isOrderCompleted: this.isOrderCompleted,
             }
           );
           console.log("service order added with ID: ", docRef.id);
@@ -121,7 +128,7 @@ export default {
             dismissible: true,
             position: "bottom",
           });
-          window.location.replace("/serviceorderlist");
+          this.$router.push("/serviceorderlist");
         } catch (e) {
           console.error("Error adding new service order: ", e);
         }
