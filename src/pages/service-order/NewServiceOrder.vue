@@ -1,14 +1,15 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col m8 l8 push-m2 push-l2">
+      <div class="col s12 l8 push-m2 push-l2">
+         <div style="margin-top: 30px"></div>
         <h5>Service Order</h5>
 
         <!-- displaying the selected task -->
         <ul>
           <li v-for="(order, index) in serviceOrder" :key="order.taskName">
             <div class="row">
-              <div class="col s9 m9 l9">
+              <div class="col s12 m9 l9">
                 {{ index + 1 + "." }}
                 {{ order.taskName }}
                 {{ order.cost }}
