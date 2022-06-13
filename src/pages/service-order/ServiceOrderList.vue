@@ -1,22 +1,21 @@
 <template>
   <div class="container">
     <div style="margin-top: 10px"></div>
-    <router-link
-      to="/newserviceorder"
-      style="color: white"
-      class="waves-effect waves-light btn blue"
-    >
-      New Service Order
-    </router-link>
-
-    <button @click="testButton()">test</button>
-    service order list:
 
     <!-- data for data(date and totalcost) in collection -->
 
-    <ul v-for="data1 in serviceOrderList" :key="data1.id">
-      <div class="row">
-        <div class="col s12 m12 l12">
+    <div class="row">
+      <div class="col s12 m12 l12">
+        <h5 class="center">Service Order List</h5>
+        <router-link
+          to="/newserviceorder"
+          style="color: white; width: 100%"
+          class="waves-effect waves-light btn blue"
+        >
+          New Service Order<i class="material-icons right">add</i>
+        </router-link>
+
+        <ul v-for="data1 in serviceOrderList" :key="data1.id">
           <div
             class="card-panel white fingerPointer"
             @click="gotoViewTask(data1.id)"
@@ -61,14 +60,14 @@
               </div>
             </li>
           </div>
-        </div>
+        </ul>
       </div>
-    </ul>
+    </div>
   </div>
 </template>
 
 <script>
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import firebase from "../../utilities/firebase";
 
 export default {
@@ -80,7 +79,7 @@ export default {
   async mounted() {
     window.M.AutoInit();
     const querySnapshot = await getDocs(
-      collection(firebase.db, "service-order")
+      query(collection(firebase.db, "service-order"), orderBy("date", "desc"))
     );
     querySnapshot.forEach((doc) => {
       this.serviceOrderList.push(doc);

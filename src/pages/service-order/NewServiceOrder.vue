@@ -2,30 +2,36 @@
   <div class="container">
     <div class="row">
       <div class="col s12 l8 push-m2 push-l2">
-         <div style="margin-top: 30px"></div>
+        <div style="margin-top: 30px"></div>
         <h5>Service Order</h5>
 
         <!-- displaying the selected task -->
-        <ul>
-          <li v-for="(order, index) in serviceOrder" :key="order.taskName">
-            <div class="row">
-              <div class="col s12 m9 l9">
-                {{ index + 1 + "." }}
-                {{ order.taskName }}
-                {{ order.cost }}
-              </div>
-              <div class="col s3 m3 l3">
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Cost</th>
+              <th>Option</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr v-for="(order, index) in serviceOrder" :key="order.taskName">
+              <td>{{ index + 1 + "." }} {{ order.taskName }}</td>
+              <td>RM {{ order.cost }}</td>
+              <td>
                 <button
                   style="width: 100%"
                   class="btn waves-effect waves-light red"
                   @click="deleteTask(index, order.cost)"
                 >
-                  Del<i class="material-icons right">delete</i>
+                  Delete<i class="material-icons right">delete</i>
                 </button>
-              </div>
-            </div>
-          </li>
-        </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
 
         <vue3-simple-typeahead
           id="typeahead_id"
@@ -38,17 +44,21 @@
         <label for="typeahead_id">type here⬆️</label>
 
         <div></div>
-        <div class="center-align">
-        <button class="btn green waves-effect waves-light" @click="saveServiceOrder()">
+        <button
+          style="width: 100%"
+          class="btn blue waves-effect waves-light"
+          @click="saveServiceOrder()"
+        >
           Save<i class="material-icons right">save</i>
         </button>
+        <div style="margin-top: 10px"></div>
         <router-link
+          style="width: 100%"
           to="/serviceorderlist"
           class="waves-effect waves-light btn grey"
         >
           Back<i class="material-icons right">arrow_back</i>
         </router-link>
-        </div>
 
         <div style="margin-bottom: 50px"></div>
       </div>

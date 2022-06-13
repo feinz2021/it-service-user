@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col m8 l8 push-m2 push-l2">
+      <div class="col s12 m8 l8 push-m2 push-l2">
         <!-- displaying the selected task -->
         <div class="card-panel white">
           <div id="printMe">
@@ -28,7 +28,7 @@
               <thead>
                 <tr>
                   <th>Item</th>
-                  <th>Price</th>
+                  <th>Cost</th>
                   <th
                     v-if="!isOrderCompleted && isOrderOngoing"
                     id="hide-from-print"
@@ -76,36 +76,49 @@
         >
 
         <div></div>
-        <div class="center-align">
-          <button
-            v-if="isOrderOngoing && !isOrderCompleted"
-            class="btn green waves-effect waves-light"
-            @click="saveServiceOrder()"
-          >
-            Save<i class="material-icons right">save</i>
-          </button>
-          <button
-            v-if="isOrderOngoing && !isOrderCompleted"
-            class="btn blue"
-            @click="completedOrder()"
-          >
-            Completed<i class="material-icons right">checkmark</i>
-          </button>
-          <button
-            v-if="isOrderOngoing && !isOrderCompleted"
-            class="btn red"
-            @click="discardServiceOrder()"
-          >
-            Discard<i class="material-icons right">drop</i>
-          </button>
-          <router-link
-            to="/serviceorderlist"
-            class="waves-effect waves-light btn grey"
-          >
-            Back<i class="material-icons right">arrow_back</i>
-          </router-link>
-          <button v-print="printObj">Print local range</button>
-        </div>
+        <button
+          style="width: 100%"
+          v-if="isOrderOngoing && !isOrderCompleted"
+          class="btn blue waves-effect waves-light"
+          @click="saveServiceOrder()"
+        >
+          Save<i class="material-icons right">save</i>
+        </button>
+
+        <div style="margin-top: 10px"></div>
+        <button
+          style="width: 100%"
+          v-if="isOrderOngoing && !isOrderCompleted"
+          class="btn green"
+          @click="completedOrder()"
+        >
+          Completed<i class="material-icons right">check</i>
+        </button>
+        <div style="margin-top: 10px"></div>
+        <button
+          style="width: 100%"
+          v-if="isOrderOngoing && !isOrderCompleted"
+          class="btn red"
+          @click="discardServiceOrder()"
+        >
+          Discard<i class="material-icons right">cancel</i>
+        </button>
+        <div style="margin-top: 10px"></div>
+        <button
+          style="width: 100%"
+          class="btn waves-effect waves-light cyan"
+          v-print="printObj"
+        >
+          Print<i class="material-icons right">print</i>
+        </button>
+        <div style="margin-top: 10px"></div>
+        <router-link
+          style="width: 100%"
+          to="/serviceorderlist"
+          class="waves-effect waves-light btn grey"
+        >
+          Back<i class="material-icons right">arrow_back</i>
+        </router-link>
 
         <div style="margin-bottom: 50px"></div>
       </div>
@@ -119,7 +132,7 @@ import {
   getDoc,
   updateDoc,
   getDocs,
-  collection,
+  collection
 } from "firebase/firestore";
 import firebase from "../../utilities/firebase";
 

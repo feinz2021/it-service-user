@@ -1,14 +1,13 @@
 <template>
   <div class="container">
-    <router-link
-      to="/addtask"
-      style="color: white"
-      class="waves-effect waves-light btn blue"
-    >
-      Add Task
-    </router-link>
-
-    task list:
+    <div style="margin-top: 30px"></div>
+      <router-link
+        to="/addtask"
+        style="color: white"
+        class="waves-effect waves-light btn orange"
+      >
+        Add New Task<i class="material-icons right">add</i>
+      </router-link>
 
     <table class="highlight">
       <thead>
@@ -29,7 +28,6 @@
         </tr>
       </tbody>
     </table>
-
   </div>
 </template>
 

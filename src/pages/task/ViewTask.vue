@@ -17,18 +17,18 @@
 
         <div></div>
         <div class="center-align">
-          <button class="waves-effect waves-light btn blue" @click="saveTask()">
+          <button class="left waves-effect waves-light btn blue" @click="saveTask()">
             Save<i class="material-icons right">save</i>
           </button>
 
           <button
-            class="waves-effect waves-light btn red"
+            class=" waves-effect waves-light btn red"
             @click="deleteTask()"
           >
             Delete<i class="material-icons right">delete</i>
           </button>
 
-          <router-link to="/tasklist" class="waves-effect waves-light btn grey">
+          <router-link to="/tasklist" class="right waves-effect waves-light btn grey">
             Back<i class="material-icons right">arrow_back</i>
           </router-link>
         </div>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, deleteDoc} from "firebase/firestore";
 import firebase from "../../utilities/firebase";
 
 export default {
