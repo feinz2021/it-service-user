@@ -24,7 +24,7 @@
             <div v-else>
               <!-- nothing displayed, for loading purpose as default is null -->
             </div>
-            <table>
+            <table class="highlight">
               <thead>
                 <tr>
                   <th>Item</th>
