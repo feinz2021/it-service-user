@@ -45,7 +45,7 @@
                   <thead>
                     <tr>
                       <th>Item</th>
-                      <th>Price</th>
+                      <th>Cost</th>
                     </tr>
                   </thead>
                   <tbody>
