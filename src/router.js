@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import PageNotFound from './pages/PageNotFound';
 import HomePage from './pages/HomePage';
 import ViewTask from './pages/task/ViewTask';
 import AddTask from './pages/task/AddTask';
@@ -8,6 +9,11 @@ import NewServiceOrder from './pages/service-order/NewServiceOrder';
 import ViewServiceOrder from './pages/service-order/ViewServiceOrder';
 
 const routes = [
+    {
+        path: '/:catchAll(.*)*',
+        name: "pagenotfound",
+        component: PageNotFound,
+      },
     { path: '/', redirect: '/homepage' },
     {
         path: '/homepage',
