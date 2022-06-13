@@ -1,6 +1,4 @@
 <template>
-  newserviceorder
-
   <div class="container">
     <div class="row">
       <div class="col m8 l8 push-m2 push-l2">
