@@ -1,44 +1,60 @@
 <template>
-  <div class="bg-canvas" @click="closeModal()"></div>
+  <div class="bg-canvas"></div>
   <div class="login-form-placement">
     <div class="card login-form">
-      <form style="width: 400px; margin-top: -15%" @submit.prevent="submit()">
-        <div class="input-field">
-          <label class="active" for="email" ref="emailRef">Email</label>
-          <input v-model="email" id="email" type="text" class="validate" />
+      <form style="width: 400px; margin-top: 0%" @submit.prevent="submit()">
+        <h5 class="center-align">Login</h5>
+        <div class="row">
+          <div class="input-field col s12 m12 l12">
+            <label class="active" for="email" ref="emailRef">Email</label>
+            <input v-model="email" id="email" type="text" class="validate" />
+          </div>
         </div>
-        <div class="input-field">
-          <label class="active" for="password">Password</label>
-          <input
-            v-model="password"
-            id="password"
-            type="password"
-            class="validate"
-          />
+        <div class="row">
+          <div class="input-field col s10 m10 l10">
+            <label class="active" for="password">Password</label>
+            <input
+              v-if="!showPassword"
+              v-model="password"
+              id="password"
+              type="password"
+              class="validate"
+            />
+            <input v-else v-model="password" id="password" class="validate" />
+          </div>
+          <div class="input-field col s1 m1 l1">
+            <a
+              @click="toggleShow"
+              class="btn green tooltipped"
+              data-position="top"
+              data-tooltip="Show/Hide Password"
+              tooltip="show"
+            >
+              <i
+                :class="
+                  showPassword === false
+                    ? 'material-icons-outlined'
+                    : 'material-icons'
+                "
+                >remove_red_eye</i
+              >
+            </a>
+          </div>
         </div>
-        <div class="center-item">
-          <button
-            style="width: 100%"
-            class="btn waves-effect waves-light blue"
-            type="submit"
-            name="login"
-          >
-            <span v-if="!isLoading">Login</span>
-            <span v-else>⏳</span>
-          </button>
+        <div class="row">
+          <div class="col s12 m12 l12">
+            <button
+              style="width: 100%"
+              class="btn waves-effect waves-light blue"
+              type="submit"
+              name="login"
+            >
+              <span v-if="!isLoading">Login</span>
+              <span v-else>⏳</span>
+            </button>
+          </div>
         </div>
       </form>
-      <!-- <div style="width: 400px; margin-top: -16%">
-				<div class="center-item">
-					<button
-						style="width: 100%"
-						class="btn waves-effect waves-light orange"
-						name="register"
-					>
-						Register
-					</button>
-				</div>
-			</div> -->
     </div>
   </div>
 </template>
@@ -52,6 +68,7 @@ export default {
       email: "a@a.com",
       password: "123abc",
       isLoading: false,
+      showPassword: false,
     };
   },
   methods: {
@@ -64,8 +81,6 @@ export default {
           console.log("login successful: ");
           console.log(res);
           this.isLoading = false;
-          this.closeModal();
-        //   window.location.reload();
         })
         .catch((e) => {
           console.log("error: ");
@@ -73,11 +88,12 @@ export default {
           this.isLoading = false;
         });
     },
-    closeModal() {
-      this.$emit("open-login-modal");
+    toggleShow() {
+      this.showPassword = !this.showPassword;
     },
   },
   mounted() {
+    window.M.AutoInit();
     this.$refs.emailRef.focus();
   },
   computed: {
