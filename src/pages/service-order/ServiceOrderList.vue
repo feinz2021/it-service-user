@@ -33,7 +33,7 @@
         </div>
         <div class="row">
           <div class="input-field col s6 m6 l6">
-            <select v-model="status">
+            <select v-model="status" @change="statusQuery">
               <option value="" disabled>Status</option>
               <option value="ongoing">Ongoing</option>
               <option value="completed">Completed</option>
@@ -75,8 +75,7 @@
                 Service Order Date: {{ currentDateTime(data1.data().date) }}
                 <div
                   v-if="
-                    !data1.data().isOrderOngoing &&
-                    !data1.data().isOrderCompleted
+                    data1.data().isOrderCancelled
                   "
                   class="red-text flow-text"
                 >
@@ -154,6 +153,9 @@ export default {
   computed: {},
   methods: {
     // displaylimit ---------------------------
+    async statusQuery(e){
+
+    },
     async displayLimitQuery(e) {
       let value = e.target.value;
       if (value === "all") {

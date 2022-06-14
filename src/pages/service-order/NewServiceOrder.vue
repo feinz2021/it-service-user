@@ -81,6 +81,7 @@ export default {
       date: {},
       isOrderOngoing: true,
       isOrderCompleted: false,
+      isOrderCancelled: false
     };
   },
   methods: {
@@ -127,6 +128,7 @@ export default {
               date: this.date,
               isOrderOngoing: this.isOrderOngoing,
               isOrderCompleted: this.isOrderCompleted,
+              isOrderCancelled: this.isOrderCancelled
             }
           );
           console.log("service order added with ID: ", docRef.id);

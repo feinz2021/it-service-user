@@ -12,7 +12,7 @@
             {{ date }}
             <div
               v-if="
-                this.isOrderOngoing == false && this.isOrderCompleted == false
+                this.isOrderCancelled == true
               "
               class="red-text flow-text"
             >
@@ -147,6 +147,7 @@ export default {
       date: {},
       isOrderOngoing: null,
       isOrderCompleted: null,
+      isOrderCancelled: null,
 
       // for printing
       printObj: {
@@ -178,6 +179,7 @@ export default {
       this.totalCost = docSnap.data().totalCost;
       this.isOrderOngoing = docSnap.data().isOrderOngoing;
       this.isOrderCompleted = docSnap.data().isOrderCompleted;
+      this.isOrderCancelled = docSnap.data().isOrderCancelled;
       this.date = this.dateTime(docSnap.data().date);
       console.log(this.date);
     } else {
@@ -243,6 +245,7 @@ export default {
         const docRef = doc(firebase.db, "service-order", this.serviceOrderId);
         await updateDoc(docRef, {
           isOrderOngoing: false,
+          isOrderCancelled: true
         });
         console.log("service order added with ID: ", docRef.id);
         this.$toast.open({
