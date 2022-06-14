@@ -7,6 +7,55 @@
     <div class="row">
       <div class="col s12 m12 l12">
         <h5 class="center">Service Order List</h5>
+
+        <!-- filter option -->
+        <div class="row">
+          <div class="input-field col s6 m6 l6">
+            <select v-model="sortBy">
+              <option value="" disabled>Sort By</option>
+              <option value="desc" selected>Descending</option>
+              <option value="asc">Ascending</option>
+            </select>
+            <label>Sort By</label>
+          </div>
+          <div class="input-field col s6 m6 l6">
+            <select v-model="dayRange">
+              <option value="" disabled>Sort By</option>
+              <option value="7days" selected>7 Days</option>
+              <option value="14days">14 Days</option>
+              <option value="1month">1 Month</option>
+              <option value="3months">3 Months</option>
+              <option value="6months">6 Months</option>
+              <option value="1year">1 Year</option>
+            </select>
+            <label>Day Range</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6 m6 l6">
+            <select v-model="status">
+              <option value="" disabled>Status</option>
+              <option value="ongoing">Ongoing</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+              <option value="all" selected>All</option>
+            </select>
+            <label>Status</label>
+          </div>
+          <div class="input-field col s6 m6 l6">
+            <select v-model="displayLimit" @change="displayLimitQuery">
+              <option value="" disabled>Sort By</option>
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100" selected>100</option>
+              <option value="all">All</option>
+            </select>
+            <label>Display Limit</label>
+          </div>
+        </div>
+        <!-- end of filter option -->
+
         <router-link
           to="/newserviceorder"
           style="color: white; width: 100%"
@@ -67,32 +116,74 @@
 </template>
 
 <script>
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  orderBy,
+  query,
+  limit,
+} from "firebase/firestore";
 import firebase from "../../utilities/firebase";
 
 export default {
   data() {
     return {
       serviceOrderList: [],
+      sortBy: "desc",
+      dayRange: "7days",
+      status: "all",
+      displayLimit: "100",
+      isOrderCompleted: null,
+      isOrderOngoing: null,
+      isOrderCancelled: null
     };
   },
   async mounted() {
     window.M.AutoInit();
     const querySnapshot = await getDocs(
-      query(collection(firebase.db, "service-order"), orderBy("date", "desc"))
+      query(
+        collection(firebase.db, "service-order"),
+        orderBy("date", this.sortBy),
+        limit(100),
+      )
     );
     querySnapshot.forEach((doc) => {
       this.serviceOrderList.push(doc);
     });
   },
+  computed: {},
   methods: {
+    // displaylimit ---------------------------
+    async displayLimitQuery(e) {
+      let value = e.target.value;
+      if (value === "all") {
+        const querySnapshot = await getDocs(
+          query(
+            collection(firebase.db, "service-order"),
+            orderBy("date", this.sortBy),
+          )
+        );
+        querySnapshot.forEach((doc) => {
+          this.serviceOrderList.push(doc);
+        });
+      } else if (value === "10") {
+        const querySnapshot = await getDocs(
+          query(
+            collection(firebase.db, "service-order"),
+            orderBy("date", this.sortBy),
+            limit(10),
+          )
+        );
+        querySnapshot.forEach((doc) => {
+          this.serviceOrderList.push(doc);
+        });
+      }
+    },
+    // end of displaylimit -----------------------
     gotoViewTask(data) {
       console.log(data);
       sessionStorage.setItem("serviceOrderId", data);
       this.$router.push("/viewserviceorder");
-    },
-    testButton(a) {
-      console.log(a);
     },
     // date time
     currentDateTime(serviceOrderDate) {

@@ -132,7 +132,7 @@ import {
   getDoc,
   updateDoc,
   getDocs,
-  collection
+  collection,
 } from "firebase/firestore";
 import firebase from "../../utilities/firebase";
 
@@ -151,7 +151,7 @@ export default {
       // for printing
       printObj: {
         id: "printMe",
-        popTitle: "printing title object",
+        popTitle: "Print",
       },
     };
   },
@@ -223,7 +223,6 @@ export default {
           await updateDoc(docRef, {
             serviceOrder: this.serviceOrder,
             totalCost: this.totalCost,
-            // date: this.date,
           });
           console.log("service order added with ID: ", docRef.id);
           this.$toast.open({
@@ -307,6 +306,14 @@ export default {
 @media print {
   #hide-from-print {
     display: none;
+  }
+  @page {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  body {
+    padding-top: 72px;
+    padding-bottom: 72px;
   }
 }
 </style>
