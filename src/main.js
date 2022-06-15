@@ -11,6 +11,7 @@ import SimpleTypeahead from 'vue3-simple-typeahead';
 import 'vue3-simple-typeahead/dist/vue3-simple-typeahead.css'; //Optional default CSS
 // vue print
 import print from 'vue3-print-nb'
+// to set title
 
 
 // createApp(App).mount('#app')

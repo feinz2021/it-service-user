@@ -4,16 +4,16 @@ import HomePage from './pages/HomePage';
 import ViewTask from './pages/task/ViewTask';
 import AddTask from './pages/task/AddTask';
 import TaskList from './pages/task/TaskList';
-import ServiceOrderList from './pages/service-order/ServiceOrderList';
-import NewServiceOrder from './pages/service-order/NewServiceOrder';
-import ViewServiceOrder from './pages/service-order/ViewServiceOrder';
+import OrderList from './pages/order/OrderList';
+import NewOrder from './pages/order/NewOrder';
+import ViewOrder from './pages/order/ViewOrder';
 
 const routes = [
     {
         path: '/:catchAll(.*)*',
         name: "pagenotfound",
         component: PageNotFound,
-      },
+    },
     { path: '/', redirect: '/homepage' },
     {
         path: '/homepage',
@@ -36,19 +36,19 @@ const routes = [
         name: "viewtask",
     },
     {
-        path: '/serviceorderlist',
-        component: ServiceOrderList,
-        name: "serviceorderlist",
+        path: '/orderlist',
+        component: OrderList,
+        name: "orderlist",
     },
     {
-        path: '/newserviceorder',
-        component: NewServiceOrder,
-        name: "newserviceorder",
+        path: '/neworder',
+        component: NewOrder,
+        name: "neworder",
     },
     {
-        path: '/viewserviceorder',
-        component: ViewServiceOrder,
-        name: "viewserviceorder",
+        path: '/vieworder',
+        component: ViewOrder,
+        name: "vieworder",
     },
 ];
 const router = createRouter({

@@ -60,7 +60,7 @@ export default {
       email: "",
       routerList: [
         { title: "🏠 Home", to: "/homepage" },
-        { title: "📝 Service Order List", to: "/serviceorderlist" },
+        { title: "📝 Order List", to: "/orderlist" },
         { title: "📃 Task List", to: "/tasklist" },
       ],
     };

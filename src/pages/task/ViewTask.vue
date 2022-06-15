@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col m8 l8 push-m2 push-l2">
-        <h5>Service Order</h5>
+        <h5>Task</h5>
         <div style="margin-bottom: 50px"></div>
 
         <div class="input-field">

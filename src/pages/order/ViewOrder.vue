@@ -5,20 +5,18 @@
         <!-- displaying the selected task -->
         <div class="card-panel white">
           <div id="printMe">
-            Service Order ID:
-            {{ serviceOrderId }}
+            Order ID:
+            {{ orderId }}
             <br />
-            Service Order Date:
+            Order Date:
             {{ date }}
-            <div
-              v-if="
-                this.isOrderCancelled == true
-              "
-              class="red-text flow-text"
-            >
+            <div v-if="status === 'cancelled'" class="red-text flow-text">
               Order Cancelled
             </div>
-            <div v-else-if="this.isOrderCompleted" class="green-text flow-text">
+            <div
+              v-else-if="status === 'completed'"
+              class="green-text flow-text"
+            >
               Order Completed
             </div>
             <div v-else>
@@ -30,7 +28,7 @@
                   <th>Item</th>
                   <th>Cost</th>
                   <th
-                    v-if="!isOrderCompleted && isOrderOngoing"
+                    v-if="status === 'completed' && status === 'cancelled'"
                     id="hide-from-print"
                   >
                     Action
@@ -38,16 +36,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  v-for="(order, index) in serviceOrder"
-                  :key="order.taskName"
-                >
+                <tr v-for="(order, index) in order" :key="order.taskName">
                   <td>{{ index + 1 }}. {{ order.taskName }}</td>
                   <td>RM {{ order.cost }}</td>
-                  <td
-                    v-if="isOrderOngoing && !isOrderCompleted"
-                    id="hide-from-print"
-                  >
+                  <td v-if="status === 'ongoing'" id="hide-from-print">
                     <button
                       style="width: 100%"
                       class="btn waves-effect waves-light red"
@@ -63,7 +55,7 @@
         </div>
 
         <vue3-simple-typeahead
-          v-if="isOrderOngoing && !isOrderCompleted"
+          v-if="status === 'ongoing'"
           id="typeahead_id"
           placeholder="Start writing..."
           :items="this.taskListName"
@@ -71,16 +63,16 @@
           @selectItem="selectItemEventHandler"
         >
         </vue3-simple-typeahead>
-        <label v-if="isOrderOngoing && !isOrderCompleted" for="typeahead_id"
+        <label v-if="status === 'ongoing'" for="typeahead_id"
           >type here⬆️</label
         >
 
         <div></div>
         <button
           style="width: 100%"
-          v-if="isOrderOngoing && !isOrderCompleted"
+          v-if="status === 'ongoing'"
           class="btn blue waves-effect waves-light"
-          @click="saveServiceOrder()"
+          @click="saveOrder()"
         >
           Save<i class="material-icons right">save</i>
         </button>
@@ -88,20 +80,20 @@
         <div style="margin-top: 10px"></div>
         <button
           style="width: 100%"
-          v-if="isOrderOngoing && !isOrderCompleted"
+          v-if="status === 'ongoing'"
           class="btn green"
           @click="completedOrder()"
         >
-          Completed<i class="material-icons right">check</i>
+          Complete<i class="material-icons right">check</i>
         </button>
         <div style="margin-top: 10px"></div>
         <button
           style="width: 100%"
-          v-if="isOrderOngoing && !isOrderCompleted"
+          v-if="status === 'ongoing'"
           class="btn red"
-          @click="discardServiceOrder()"
+          @click="discardOrder()"
         >
-          Discard<i class="material-icons right">cancel</i>
+          Cancel<i class="material-icons right">cancel</i>
         </button>
         <div style="margin-top: 10px"></div>
         <button
@@ -114,7 +106,7 @@
         <div style="margin-top: 10px"></div>
         <router-link
           style="width: 100%"
-          to="/serviceorderlist"
+          to="/orderlist"
           class="waves-effect waves-light btn grey"
         >
           Back<i class="material-icons right">arrow_back</i>
@@ -142,12 +134,10 @@ export default {
       taskList: [],
       taskListName: [],
       // --to save in database
-      serviceOrder: [],
+      order: [],
       totalCost: 0,
       date: {},
-      isOrderOngoing: null,
-      isOrderCompleted: null,
-      isOrderCancelled: null,
+      status: "",
 
       // for printing
       printObj: {
@@ -157,11 +147,12 @@ export default {
     };
   },
   computed: {
-    serviceOrderId() {
-      return sessionStorage.getItem("serviceOrderId");
+    orderId() {
+      return sessionStorage.getItem("orderId");
     },
   },
   async mounted() {
+    document.title = "View Order";
     window.M.AutoInit();
     // firebase query for taskList
     const querySnapshot = await getDocs(collection(firebase.db, "task"));
@@ -171,17 +162,14 @@ export default {
     });
 
     //read database for specific id
-    const docRef = doc(firebase.db, "service-order", this.serviceOrderId);
+    const docRef = doc(firebase.db, "order", this.orderId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      this.serviceOrder = docSnap.data().serviceOrder;
+      this.order = docSnap.data().order;
       this.totalCost = docSnap.data().totalCost;
-      this.isOrderOngoing = docSnap.data().isOrderOngoing;
-      this.isOrderCompleted = docSnap.data().isOrderCompleted;
-      this.isOrderCancelled = docSnap.data().isOrderCancelled;
       this.date = this.dateTime(docSnap.data().date);
-      console.log(this.date);
+      this.status = docSnap.data().status;
     } else {
       console.log("No such document!");
     }
@@ -198,7 +186,7 @@ export default {
         dismissible: true,
         position: "bottom",
       });
-      const addingToArray = this.serviceOrder.push({
+      const addingToArray = this.order.push({
         taskName: result.taskName,
         cost: result.cost,
       });
@@ -207,11 +195,11 @@ export default {
     },
     deleteTask(index, cost) {
       this.totalCost = this.totalCost - cost;
-      return this.serviceOrder.splice(index, 1);
+      return this.order.splice(index, 1);
     },
-    // save service order in firebase
-    async saveServiceOrder() {
-      if (this.serviceOrder.length === 0) {
+    // save order in firebase
+    async saveOrder() {
+      if (this.order.length === 0) {
         this.$toast.open({
           message: "Please Add Task",
           type: "error",
@@ -221,71 +209,69 @@ export default {
         });
       } else {
         try {
-          const docRef = doc(firebase.db, "service-order", this.serviceOrderId);
+          const docRef = doc(firebase.db, "order", this.orderId);
           await updateDoc(docRef, {
-            serviceOrder: this.serviceOrder,
+            order: this.order,
             totalCost: this.totalCost,
           });
-          console.log("service order added with ID: ", docRef.id);
+          console.log("order added with ID: ", docRef.id);
           this.$toast.open({
-            message: "Service Order Added Successfully",
+            message: "Order Added Successfully",
             type: "success",
             duration: 3000,
             dismissible: true,
             position: "bottom",
           });
-          this.$router.push("/serviceorderlist");
+          this.$router.push("/orderlist");
         } catch (e) {
           console.error("Error adding task: ", e);
         }
       }
     },
-    async discardServiceOrder() {
+    async discardOrder() {
       try {
-        const docRef = doc(firebase.db, "service-order", this.serviceOrderId);
+        const docRef = doc(firebase.db, "order", this.orderId);
         await updateDoc(docRef, {
-          isOrderOngoing: false,
-          isOrderCancelled: true
+          status: "cancelled",
         });
-        console.log("service order added with ID: ", docRef.id);
+        console.log("order added with ID: ", docRef.id);
         this.$toast.open({
-          message: "Service Order Cancelled Successfully",
+          message: "Order Cancelled Successfully",
           type: "success",
           duration: 3000,
           dismissible: true,
           position: "bottom",
         });
-        this.$router.push("/serviceorderlist");
+        this.$router.push("/orderlist");
       } catch (e) {
         console.error("Error adding task: ", e);
       }
     },
     async completedOrder() {
       try {
-        const docRef = doc(firebase.db, "service-order", this.serviceOrderId);
+        const docRef = doc(firebase.db, "order", this.orderId);
         await updateDoc(docRef, {
-          isOrderCompleted: true,
-          isOrderOngoing: false,
+          status: "completed",
         });
-        console.log("service order completed: ", docRef.id);
+        console.log("order completed: ", docRef.id);
         this.$toast.open({
-          message: "Service Order Completed",
+          message: "Order Completed",
           type: "success",
           duration: 3000,
           dismissible: true,
           position: "bottom",
         });
-        this.$router.push("/serviceorderlist");
+        this.$router.push("/orderlist");
       } catch (e) {
         console.error("Error adding task: ", e);
       }
     },
     cancel() {
-      window.location.replace("/serviceorderlist");
+      window.location.replace("/orderlist");
     },
     // date time
-    dateTime(serviceOrderDate) {
-      const current = serviceOrderDate.toDate();
+    dateTime(orderDate) {
+      const current = orderDate.toDate();
       const date =
         current.getDate() +
         "/" +

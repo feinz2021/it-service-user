@@ -6,7 +6,7 @@
 
     <div class="row">
       <div class="col s12 m12 l12">
-        <h5 class="center">Service Order List</h5>
+        <h5 class="center">Order List</h5>
 
         <!-- filter option -->
         <div class="row">
@@ -49,7 +49,7 @@
               <option value="25">25</option>
               <option value="50">50</option>
               <option value="100" selected>100</option>
-              <option value="all">All</option>
+              <option value="all" selected>All</option>
             </select>
             <label>Display Limit</label>
           </div>
@@ -57,37 +57,35 @@
         <!-- end of filter option -->
 
         <router-link
-          to="/newserviceorder"
+          to="/neworder"
           style="color: white; width: 100%"
           class="waves-effect waves-light btn blue"
         >
-          New Service Order<i class="material-icons right">add</i>
+          New Order<i class="material-icons right">add</i>
         </router-link>
 
-        <ul v-for="data1 in serviceOrderList" :key="data1.id">
+        <ul v-for="data1 in orderList" :key="data1.id">
           <div
             class="card-panel white fingerPointer"
             @click="gotoViewTask(data1.id)"
           >
             <li>
               <div style="margin-left: 15px">
-                Service Order ID: {{ data1.id }} <br />
-                Service Order Date: {{ currentDateTime(data1.data().date) }}
+                Order ID: {{ data1.id }} <br />
+                Order Date: {{ currentDateTime(data1.data().date) }}
                 <div
-                  v-if="
-                    data1.data().isOrderCancelled
-                  "
+                  v-if="data1.data().status === 'cancelled'"
                   class="red-text flow-text"
                 >
                   Order Cancelled
                 </div>
                 <div
-                  v-if="data1.data().isOrderCompleted"
+                  v-if="data1.data().status === 'completed'"
                   class="green-text flow-text"
                 >
                   Order Completed
                 </div>
-                <!-- sOrder for data(taskName, cost) in nested[array] inside the collection of serviceOrder -->
+                <!-- sOrder for data(taskName, cost) in nested[array] inside the collection of Order -->
                 <table>
                   <thead>
                     <tr>
@@ -97,7 +95,7 @@
                   </thead>
                   <tbody>
                     <tr
-                      v-for="(data2, index) in data1.data().serviceOrder"
+                      v-for="(data2, index) in data1.data().order"
                       :key="data2"
                     >
                       <td>{{ index + 1 }}. {{ data2.taskName }}</td>
@@ -121,75 +119,153 @@ import {
   orderBy,
   query,
   limit,
+  where,
 } from "firebase/firestore";
 import firebase from "../../utilities/firebase";
 
 export default {
   data() {
     return {
-      serviceOrderList: [],
+      orderList: [],
       sortBy: "desc",
       dayRange: "7days",
-      status: "all",
+      status: "ongoing",
       displayLimit: "100",
-      isOrderCompleted: null,
-      isOrderOngoing: null,
-      isOrderCancelled: null
     };
   },
   async mounted() {
+    document.title = "Order List";
     window.M.AutoInit();
     const querySnapshot = await getDocs(
       query(
-        collection(firebase.db, "service-order"),
+        collection(firebase.db, "order"),
         orderBy("date", this.sortBy),
         limit(100),
+        where("status", "==", "ongoing")
       )
     );
     querySnapshot.forEach((doc) => {
-      this.serviceOrderList.push(doc);
+      this.orderList.push(doc);
     });
   },
   computed: {},
   methods: {
     // displaylimit ---------------------------
-    async statusQuery(e){
-
+    async statusQuery(e) {
+      // reset array first
+      this.orderList = [];
+      const limAll = this.displayLimit;
+      const lim = parseInt(this.displayLimit);
+      const stat = e.target.value;
+      if (limAll === "all") {
+        if (stat === "all") {
+          const querySnapshot = await getDocs(
+            query(
+              collection(firebase.db, "order"),
+              orderBy("date", this.sortBy)
+            )
+          );
+          querySnapshot.forEach((doc) => {
+            this.orderList.push(doc);
+          });
+        } else {
+          const querySnapshot = await getDocs(
+            query(
+              collection(firebase.db, "order"),
+              orderBy("date", this.sortBy),
+              where("status", "==", stat)
+            )
+          );
+          querySnapshot.forEach((doc) => {
+            this.orderList.push(doc);
+          });
+        }
+      } else if (stat === "all") {
+        const querySnapshot = await getDocs(
+          query(
+            collection(firebase.db, "order"),
+            orderBy("date", this.sortBy),
+            limit(lim)
+          )
+        );
+        querySnapshot.forEach((doc) => {
+          this.orderList.push(doc);
+        });
+      } else {
+        const querySnapshot = await getDocs(
+          query(
+            collection(firebase.db, "order"),
+            orderBy("date", this.sortBy),
+            where("status", "==", stat),
+            limit(lim)
+          )
+        );
+        querySnapshot.forEach((doc) => {
+          this.orderList.push(doc);
+        });
+      }
     },
     async displayLimitQuery(e) {
-      let value = e.target.value;
-      if (value === "all") {
+      // reset array first
+      this.orderList = [];
+      const lim = parseInt(e.target.value);
+      if (e.target.value === "all") {
+        if (this.status === "all") {
+          const querySnapshot = await getDocs(
+            query(
+              collection(firebase.db, "order"),
+              orderBy("date", this.sortBy)
+            )
+          );
+          querySnapshot.forEach((doc) => {
+            this.orderList.push(doc);
+          });
+        } else {
+          const querySnapshot = await getDocs(
+            query(
+              collection(firebase.db, "order"),
+              orderBy("date", this.sortBy),
+              where("status", "==", this.status)
+            )
+          );
+          querySnapshot.forEach((doc) => {
+            this.orderList.push(doc);
+          });
+        }
+      } else if (this.status === "all") {
         const querySnapshot = await getDocs(
           query(
-            collection(firebase.db, "service-order"),
+            collection(firebase.db, "order"),
             orderBy("date", this.sortBy),
+            limit(lim)
           )
         );
         querySnapshot.forEach((doc) => {
-          this.serviceOrderList.push(doc);
+          this.orderList.push(doc);
         });
-      } else if (value === "10") {
+      } else {
         const querySnapshot = await getDocs(
           query(
-            collection(firebase.db, "service-order"),
+            collection(firebase.db, "order"),
             orderBy("date", this.sortBy),
-            limit(10),
+            limit(lim),
+            where("status", "==", this.status)
           )
         );
         querySnapshot.forEach((doc) => {
-          this.serviceOrderList.push(doc);
+          this.orderList.push(doc);
         });
       }
     },
     // end of displaylimit -----------------------
     gotoViewTask(data) {
       console.log(data);
-      sessionStorage.setItem("serviceOrderId", data);
-      this.$router.push("/viewserviceorder");
+      sessionStorage.setItem("orderId", data);
+      this.$router.push("/vieworder");
     },
     // date time
-    currentDateTime(serviceOrderDate) {
-      const current = serviceOrderDate.toDate();
+    currentDateTime(orderDate) {
+      const current = orderDate.toDate();
       const date =
         current.getDate() +
         "/" +

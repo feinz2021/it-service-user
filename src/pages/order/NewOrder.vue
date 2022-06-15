@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col s12 l8 push-m2 push-l2">
         <div style="margin-top: 30px"></div>
-        <h5>Service Order</h5>
+        <h5>Order</h5>
 
         <!-- displaying the selected task -->
         <table>
@@ -16,7 +16,7 @@
           </thead>
 
           <tbody>
-            <tr v-for="(order, index) in serviceOrder" :key="order.taskName">
+            <tr v-for="(order, index) in order" :key="order.taskName">
               <td>{{ index + 1 + "." }} {{ order.taskName }}</td>
               <td>RM {{ order.cost }}</td>
               <td>
@@ -32,7 +32,6 @@
           </tbody>
         </table>
 
-
         <vue3-simple-typeahead
           id="typeahead_id"
           placeholder="Start writing..."
@@ -47,14 +46,14 @@
         <button
           style="width: 100%"
           class="btn blue waves-effect waves-light"
-          @click="saveServiceOrder()"
+          @click="saveOrder()"
         >
           Save<i class="material-icons right">save</i>
         </button>
         <div style="margin-top: 10px"></div>
         <router-link
           style="width: 100%"
-          to="/serviceorderlist"
+          to="/orderlist"
           class="waves-effect waves-light btn grey"
         >
           Back<i class="material-icons right">arrow_back</i>
@@ -67,7 +66,14 @@
 </template>
 
 <script>
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  setDoc,
+  getDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import firebase from "../../utilities/firebase";
 
 export default {
@@ -76,12 +82,11 @@ export default {
       taskList: [],
       taskListName: [],
       // --to save in database
-      serviceOrder: [],
+      order: [],
       totalCost: 0,
       date: {},
-      isOrderOngoing: true,
-      isOrderCompleted: false,
-      isOrderCancelled: false
+      status: "ongoing",
+      orderId: null,
     };
   },
   methods: {
@@ -96,7 +101,7 @@ export default {
         dismissible: true,
         position: "bottom",
       });
-      const addingToArray = this.serviceOrder.push({
+      const addingToArray = this.order.push({
         taskName: result.taskName,
         cost: result.cost,
       });
@@ -105,11 +110,11 @@ export default {
     },
     deleteTask(index, cost) {
       this.totalCost = this.totalCost - cost;
-      return this.serviceOrder.splice(index, 1);
+      return this.order.splice(index, 1);
     },
-    // save service order in firebase
-    async saveServiceOrder() {
-      if (this.serviceOrder.length === 0) {
+    // register new order in firebase
+    async saveOrder() {
+      if (this.order.length === 0) {
         this.$toast.open({
           message: "Please Add Task",
           type: "error",
@@ -120,28 +125,29 @@ export default {
       } else {
         this.date = new Date();
         try {
-          const docRef = await addDoc(
-            collection(firebase.db, "service-order"),
+          await setDoc(
+            doc(firebase.db, "order", this.orderId.toString()),
             {
-              serviceOrder: this.serviceOrder,
+              order: this.order,
               totalCost: this.totalCost,
               date: this.date,
-              isOrderOngoing: this.isOrderOngoing,
-              isOrderCompleted: this.isOrderCompleted,
-              isOrderCancelled: this.isOrderCancelled
+              status: this.status,
             }
           );
-          console.log("service order added with ID: ", docRef.id);
+          // update the order counter
+          await updateDoc(doc(firebase.db, "record", "documentID"), {
+            orderID: this.orderId,
+          });
           this.$toast.open({
-            message: "Service Order Added Successfully",
+            message: "Order Added Successfully",
             type: "success",
             duration: 3000,
             dismissible: true,
             position: "bottom",
           });
-          this.$router.push("/serviceorderlist");
+          this.$router.push("/orderlist");
         } catch (e) {
-          console.error("Error adding new service order: ", e);
+          console.error("Error adding new order: ", e);
         }
       }
     },
@@ -153,6 +159,7 @@ export default {
     },
   },
   async mounted() {
+    document.title = "New Order";
     window.M.AutoInit();
     // firebase query
     const querySnapshot = await getDocs(collection(firebase.db, "task"));
@@ -160,6 +167,15 @@ export default {
       this.taskList.push(doc.data());
       this.taskListName.push(doc.data().taskName);
     });
+    // order number query
+    const docSnap = await getDoc(doc(firebase.db, "record", "documentID"));
+    if (docSnap.exists()) {
+      this.orderId = docSnap.data().orderID + 1;
+      // console.log("orderID " + docSnap.data().orderID);
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+    }
   },
 };
 </script>
