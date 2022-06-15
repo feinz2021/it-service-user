@@ -192,6 +192,10 @@ export default {
         id: "printMe",
         popTitle: "Print",
       },
+
+      // --to save in record
+      byMonthIncome: [],
+      yearIncome: 0,
     };
   },
   computed: {
@@ -220,6 +224,21 @@ export default {
       this.status = docSnap.data().status;
     } else {
       console.log("No such document!");
+    }
+
+    // read record document
+    const date = new Date();
+    const year = date.getFullYear();
+    let docYearName = "record" + year;
+
+    const recRef = doc(firebase.db, "record", docYearName);
+    const recSnap = await getDoc(recRef);
+
+    if (recSnap.exists()) {
+      this.byMonthIncome = recSnap.data().byMonthIncome;
+      this.yearIncome = recSnap.data().yearIncome;
+    } else {
+      console.log("No record document!");
     }
   },
   methods: {
@@ -297,10 +316,32 @@ export default {
     },
     async completeOrder() {
       try {
+        // update order document
         const docRef = doc(firebase.db, "order", this.orderId);
         await updateDoc(docRef, {
           status: "completed",
         });
+        // update record document
+        // update monthly total income
+        const dateM = new Date();
+        const month = dateM.getMonth();
+        this.byMonthIncome[month] = this.byMonthIncome[month] + this.totalCost;
+        console.log("byMonthIncome: " + this.byMonthIncome[month]);
+
+        // update yearly total income
+        this.yearIncome = this.yearIncome + this.totalCost;
+        console.log("yearIncome: " + this.yearIncome);
+
+        const dateY = new Date();
+        const year = dateY.getFullYear();
+        let docYearName = "record" + year;
+
+        const recRef = doc(firebase.db, "record", docYearName);
+        await updateDoc(recRef, {
+          byMonthIncome: this.byMonthIncome,
+          yearIncome: this.yearIncome,
+        });
+        /////
         console.log("order completed: ", docRef.id);
         this.$toast.open({
           message: "Order Completed",
