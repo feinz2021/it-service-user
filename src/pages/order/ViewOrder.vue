@@ -99,7 +99,7 @@
           class="btn red"
           @click="discardOrder()"
         >
-          Cancel<i class="material-icons right">cancel</i>
+          Cancel Order<i class="material-icons right">cancel</i>
         </button>
         <div style="margin-top: 10px"></div>
         <button
