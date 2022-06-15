@@ -11,7 +11,7 @@
         <!-- filter option -->
         <div class="row">
           <div class="input-field col s6 m6 l6">
-            <select v-model="sortBy">
+            <select v-model="sortBy" @change="sortByQuery">
               <option value="" disabled>Sort By</option>
               <option value="desc" selected>Descending</option>
               <option value="asc">Ascending</option>
@@ -55,7 +55,7 @@
           </div>
         </div>
         <!-- end of filter option -->
-
+        <input v-model="searchId" type="number" />
         <router-link
           to="/neworder"
           style="color: white; width: 100%"
@@ -137,6 +137,7 @@ export default {
       dayRange: "7days",
       status: "ongoing",
       displayLimit: "100",
+      searchId: "",
     };
   },
   async mounted() {
@@ -263,6 +264,63 @@ export default {
         });
       }
     },
+    async sortByQuery(e) {
+      // reset array first
+      this.orderList = [];
+      const limAll = this.displayLimit;
+      const lim = parseInt(this.displayLimit);
+      const stat = this.status;
+      const sortBy = e.target.value;
+      if (limAll === "all") {
+        if (stat === "all") {
+          const querySnapshot = await getDocs(
+            query(
+              collection(firebase.db, "order"),
+              orderBy("date", sortBy)
+            )
+          );
+          querySnapshot.forEach((doc) => {
+            this.orderList.push(doc);
+          });
+        } else {
+          const querySnapshot = await getDocs(
+            query(
+              collection(firebase.db, "order"),
+              orderBy("date", sortBy),
+              where("status", "==", stat)
+            )
+          );
+          querySnapshot.forEach((doc) => {
+            this.orderList.push(doc);
+          });
+        }
+      } else if (stat === "all") {
+        const querySnapshot = await getDocs(
+          query(
+            collection(firebase.db, "order"),
+            orderBy("date", sortBy),
+            limit(lim)
+          )
+        );
+        querySnapshot.forEach((doc) => {
+          this.orderList.push(doc);
+        });
+      } else {
+        const querySnapshot = await getDocs(
+          query(
+            collection(firebase.db, "order"),
+            orderBy("date", sortBy),
+            where("status", "==", stat),
+            limit(lim)
+          )
+        );
+        querySnapshot.forEach((doc) => {
+          this.orderList.push(doc);
+        });
+      }
+    },
+    async dayRangeQuery() {},
+    async searchIdQuery() {},
     // end of displaylimit -----------------------
     gotoViewTask(data) {
       console.log(data);
