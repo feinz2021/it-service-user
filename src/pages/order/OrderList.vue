@@ -102,6 +102,12 @@
                       <td>RM {{ data2.cost }}</td>
                     </tr>
                   </tbody>
+                  <tr>
+                    <td><b>Total</b></td>
+                    <td>
+                      <b>RM {{ data1.data().totalCost }}</b>
+                    </td>
+                  </tr>
                 </table>
               </div>
             </li>

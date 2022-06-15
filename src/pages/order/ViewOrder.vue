@@ -50,6 +50,12 @@
                   </td>
                 </tr>
               </tbody>
+              <tr>
+                <td><b>Total</b></td>
+                <td>
+                  <b>RM {{ totalCost }}</b>
+                </td>
+              </tr>
             </table>
           </div>
         </div>
