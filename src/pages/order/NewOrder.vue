@@ -45,7 +45,7 @@
         <div></div>
         <button
           style="width: 100%"
-          class="btn blue waves-effect waves-light"
+          class="btn-large blue waves-effect waves-light"
           @click="saveOrder()"
         >
           Save<i class="material-icons right">save</i>
@@ -54,7 +54,7 @@
         <router-link
           style="width: 100%"
           to="/orderlist"
-          class="waves-effect waves-light btn grey"
+          class="waves-effect waves-light btn-large grey"
         >
           Back<i class="material-icons right">arrow_back</i>
         </router-link>

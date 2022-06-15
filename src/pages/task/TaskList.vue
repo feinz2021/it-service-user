@@ -1,13 +1,13 @@
 <template>
   <div class="container">
     <div style="margin-top: 30px"></div>
-      <router-link
-        to="/addtask"
-        style="color: white"
-        class="waves-effect waves-light btn orange"
-      >
-        Add New Task<i class="material-icons right">add</i>
-      </router-link>
+    <router-link
+      to="/addtask"
+      style="color: white"
+      class="waves-effect waves-light btn-large orange"
+    >
+      Add New Task<i class="material-icons right">add</i>
+    </router-link>
 
     <table class="highlight">
       <thead>
@@ -18,12 +18,12 @@
       </thead>
       <tbody>
         <tr
-          v-for="task in taskList"
+          v-for="(task, index) in taskList"
           :key="task.id"
           class="fingerPointer"
           @click="gotoViewTask(task.id)"
         >
-          <td>{{ task.data().taskName }}</td>
+          <td>{{ index + 1 }}. {{ task.data().taskName }}</td>
           <td>RM {{ task.data().cost }}</td>
         </tr>
       </tbody>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import firebase from "../../utilities/firebase";
 
 export default {
@@ -54,7 +54,9 @@ export default {
   },
   async mounted() {
     window.M.AutoInit();
-    const querySnapshot = await getDocs(collection(firebase.db, "task"));
+    const querySnapshot = await getDocs(
+      query(collection(firebase.db, "task"), orderBy("taskName", "asc"))
+    );
     querySnapshot.forEach((doc) => {
       this.taskList.push(doc);
     });

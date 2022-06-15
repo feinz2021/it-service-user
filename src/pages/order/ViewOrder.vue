@@ -2,124 +2,166 @@
   <div class="container">
     <div class="row">
       <div class="col s12 m8 l8 push-m2 push-l2">
-        <!-- displaying the selected task -->
-        <div class="card-panel white">
-          <div id="printMe">
-            Order ID:
-            {{ orderId }}
-            <br />
-            Order Date:
-            {{ date }}
-            <div v-if="status === 'cancelled'" class="red-text flow-text">
-              Order Cancelled
-            </div>
-            <div
-              v-else-if="status === 'completed'"
-              class="green-text flow-text"
+        <!-- modal -->
+        <div id="modalComplete" class="modal">
+          <div class="modal-content">
+            <h4>Mark as Complete?</h4>
+            <div style="margin-top: 10px"></div>
+            <button
+              style="width: 100%"
+              v-if="status === 'ongoing'"
+              class="btn-large waves-effect waves-light green modal-close"
+              @click="completeOrder()"
             >
-              Order Completed
-            </div>
-            <div v-else>
-              <!-- nothing displayed, for loading purpose as default is null -->
-            </div>
-            <table class="highlight">
-              <thead>
-                <tr>
-                  <th>Item</th>
-                  <th>Cost</th>
-                  <th
-                    v-if="status === 'completed' && status === 'cancelled'"
-                    id="hide-from-print"
-                  >
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(order, index) in order" :key="order.taskName">
-                  <td>{{ index + 1 }}. {{ order.taskName }}</td>
-                  <td>RM {{ order.cost }}</td>
-                  <td v-if="status === 'ongoing'" id="hide-from-print">
-                    <button
-                      style="width: 100%"
-                      class="btn waves-effect waves-light red"
-                      @click="deleteTask(index, order.cost)"
-                    >
-                      Del<i class="material-icons right">delete</i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-              <tr>
-                <td><b>Total</b></td>
-                <td>
-                  <b>RM {{ totalCost }}</b>
-                </td>
-              </tr>
-            </table>
+              Complete<i class="material-icons right">check</i>
+            </button>
+            <div style="margin-top: 20px"></div>
+            <button
+              style="width: 100%"
+              v-if="status === 'ongoing'"
+              class="btn-large waves-effect waves-light grey modal-close"
+            >
+              Back<i class="material-icons right">arrow_back</i>
+            </button>
           </div>
         </div>
-
-        <vue3-simple-typeahead
-          v-if="status === 'ongoing'"
-          id="typeahead_id"
-          placeholder="Start writing..."
-          :items="this.taskListName"
-          :minInputLength="1"
-          @selectItem="selectItemEventHandler"
-        >
-        </vue3-simple-typeahead>
-        <label v-if="status === 'ongoing'" for="typeahead_id"
-          >type here⬆️</label
-        >
-
-        <div></div>
-        <button
-          style="width: 100%"
-          v-if="status === 'ongoing'"
-          class="btn blue waves-effect waves-light"
-          @click="saveOrder()"
-        >
-          Save<i class="material-icons right">save</i>
-        </button>
-
-        <div style="margin-top: 10px"></div>
-        <button
-          style="width: 100%"
-          v-if="status === 'ongoing'"
-          class="btn green"
-          @click="completedOrder()"
-        >
-          Complete<i class="material-icons right">check</i>
-        </button>
-        <div style="margin-top: 10px"></div>
-        <button
-          style="width: 100%"
-          v-if="status === 'ongoing'"
-          class="btn red"
-          @click="discardOrder()"
-        >
-          Cancel Order<i class="material-icons right">cancel</i>
-        </button>
-        <div style="margin-top: 10px"></div>
-        <button
-          style="width: 100%"
-          class="btn waves-effect waves-light cyan"
-          v-print="printObj"
-        >
-          Print<i class="material-icons right">print</i>
-        </button>
-        <div style="margin-top: 10px"></div>
-        <router-link
-          style="width: 100%"
-          to="/orderlist"
-          class="waves-effect waves-light btn grey"
-        >
-          Back<i class="material-icons right">arrow_back</i>
-        </router-link>
-
-        <div style="margin-bottom: 50px"></div>
+        <div id="modalCancel" class="modal">
+          <div class="modal-content">
+            <h4>Cancel Order?</h4>
+            <div style="margin-top: 10px"></div>
+            <button
+              style="width: 100%"
+              v-if="status === 'ongoing'"
+              class="btn-large waves-effect waves-light red modal-close"
+              @click="cancelOrder()"
+            >
+              Cancel Order<i class="material-icons right">cancel</i>
+            </button>
+            <div style="margin-top: 20px"></div>
+            <button
+              style="width: 100%"
+              v-if="status === 'ongoing'"
+              class="btn-large waves-effect waves-light grey modal-close"
+            >
+              Back<i class="material-icons right">arrow_back</i>
+            </button>
+          </div>
+        </div>
       </div>
+      <!-- end of modal -->
+
+      <!-- displaying the selected task -->
+      <div class="card-panel white">
+        <div id="printMe">
+          Order ID:
+          {{ orderId }}
+          <br />
+          Order Date:
+          {{ date }}
+          <div v-if="status === 'cancelled'" class="red-text flow-text">
+            Order Cancelled
+          </div>
+          <div v-else-if="status === 'completed'" class="green-text flow-text">
+            Order Completed
+          </div>
+          <div v-else>
+            <!-- nothing displayed, for loading purpose as default is null -->
+          </div>
+          <table class="highlight">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Cost</th>
+                <th
+                  v-if="status === 'completed' && status === 'cancelled'"
+                  id="hide-from-print"
+                >
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(order, index) in order" :key="order.taskName">
+                <td>{{ index + 1 }}. {{ order.taskName }}</td>
+                <td>RM {{ order.cost }}</td>
+                <td v-if="status === 'ongoing'" id="hide-from-print">
+                  <button
+                    style="width: 100%"
+                    class="btn-small waves-effect waves-light red"
+                    @click="deleteTask(index, order.cost)"
+                  >
+                    Del<i class="material-icons right">delete</i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+            <tr>
+              <td><b>Total</b></td>
+              <td>
+                <b>RM {{ totalCost }}</b>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <vue3-simple-typeahead
+        v-if="status === 'ongoing'"
+        id="typeahead_id"
+        placeholder="Start writing..."
+        :items="this.taskListName"
+        :minInputLength="1"
+        @selectItem="selectItemEventHandler"
+      >
+      </vue3-simple-typeahead>
+      <label v-if="status === 'ongoing'" for="typeahead_id">type here⬆️</label>
+
+      <div></div>
+      <button
+        style="width: 100%"
+        v-if="status === 'ongoing'"
+        class="btn-large blue waves-effect waves-light"
+        @click="saveOrder()"
+      >
+        Save<i class="material-icons right">save</i>
+      </button>
+
+      <div style="margin-top: 10px"></div>
+      <button
+        style="width: 100%"
+        v-if="status === 'ongoing'"
+        class="btn-large waves-effect waves-light green modal-trigger"
+        href="#modalComplete"
+      >
+        Complete<i class="material-icons right">check</i>
+      </button>
+      <div style="margin-top: 10px"></div>
+      <button
+        style="width: 100%"
+        v-if="status === 'ongoing'"
+        class="btn-large waves-effect waves-light red modal-trigger"
+        href="#modalCancel"
+      >
+        Cancel Order<i class="material-icons right">cancel</i>
+      </button>
+      <div style="margin-top: 10px"></div>
+      <button
+        style="width: 100%"
+        class="btn-large waves-effect waves-light cyan"
+        v-print="printObj"
+      >
+        Print<i class="material-icons right">print</i>
+      </button>
+      <div style="margin-top: 10px"></div>
+      <router-link
+        style="width: 100%"
+        to="/orderlist"
+        class="waves-effect waves-light btn-large grey"
+      >
+        Back<i class="material-icons right">arrow_back</i>
+      </router-link>
+
+      <div style="margin-bottom: 50px"></div>
     </div>
   </div>
 </template>
@@ -234,7 +276,7 @@ export default {
         }
       }
     },
-    async discardOrder() {
+    async cancelOrder() {
       try {
         const docRef = doc(firebase.db, "order", this.orderId);
         await updateDoc(docRef, {
@@ -253,7 +295,7 @@ export default {
         console.error("Error adding task: ", e);
       }
     },
-    async completedOrder() {
+    async completeOrder() {
       try {
         const docRef = doc(firebase.db, "order", this.orderId);
         await updateDoc(docRef, {

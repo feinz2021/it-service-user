@@ -59,7 +59,7 @@
         <router-link
           to="/neworder"
           style="color: white; width: 100%"
-          class="waves-effect waves-light btn blue"
+          class="waves-effect waves-light btn-large blue"
         >
           New Order<i class="material-icons right">add</i>
         </router-link>

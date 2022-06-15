@@ -18,7 +18,7 @@
         <div class="center-align">
           <button
             style="width: 100%"
-            class="waves-effect waves-light btn blue"
+            class="waves-effect waves-light btn-large blue"
             @click="saveTask()"
           >
             Save<i class="material-icons right">save</i>
@@ -27,7 +27,7 @@
           <router-link
             to="/tasklist"
             style="width: 100%"
-            class="waves-effect waves-light btn grey"
+            class="waves-effect waves-light btn-large grey"
           >
             Back<i class="material-icons right">arrow_back</i>
           </router-link>
