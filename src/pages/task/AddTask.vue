@@ -16,10 +16,19 @@
           <label class="active" for="cost">Cost</label>
         </div>
         <div class="center-align">
-          <button class="left waves-effect waves-light btn blue" @click="saveTask()">
+          <button
+            style="width: 100%"
+            class="waves-effect waves-light btn blue"
+            @click="saveTask()"
+          >
             Save<i class="material-icons right">save</i>
           </button>
-          <router-link to="/tasklist" class="right waves-effect waves-light btn grey">
+          <div style="margin-top: 10px"></div>
+          <router-link
+            to="/tasklist"
+            style="width: 100%"
+            class="waves-effect waves-light btn grey"
+          >
             Back<i class="material-icons right">arrow_back</i>
           </router-link>
         </div>
