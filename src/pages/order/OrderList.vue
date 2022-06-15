@@ -13,8 +13,8 @@
           <div class="input-field col s6 m6 l6">
             <select v-model="sortBy" @change="sortByQuery">
               <option value="" disabled>Sort By</option>
-              <option value="desc" selected>Descending</option>
-              <option value="asc">Ascending</option>
+              <option value="desc" selected>Newest First</option>
+              <option value="asc">Oldest First</option>
             </select>
             <label>Sort By</label>
           </div>
@@ -55,8 +55,13 @@
         </div>
         <!-- end of filter option -->
         <div class="input-field">
-        <label for="searchId">Enter Order ID Here 🔢</label>
-        <input id="searchId" v-model="searchId" type="number" />
+          <label for="searchId">Enter Order ID Here 🔢</label>
+          <input
+            v-model="searchIdV"
+            id="searchId"
+            type="number"
+            @input="searchIdQuery"
+          />
         </div>
         <router-link
           to="/neworder"
@@ -128,6 +133,8 @@ import {
   query,
   limit,
   where,
+  getDoc,
+  doc,
 } from "firebase/firestore";
 import firebase from "../../utilities/firebase";
 
@@ -139,7 +146,7 @@ export default {
       monthRange: "1",
       status: "ongoing",
       displayLimit: "100",
-      searchId: "",
+      searchIdV: "",
     };
   },
   async mounted() {
@@ -166,6 +173,12 @@ export default {
   methods: {
     // displaylimit ---------------------------
     async statusQuery(e) {
+      // clear searchId field
+      this.searchIdV = "";
+      // date range
+      const today = new Date();
+      const monthNumber = parseInt(this.monthRange);
+      const dateRange = new Date(this.createDate(0, -monthNumber, 0));
       // reset array first
       this.orderList = [];
       const limAll = this.displayLimit;
@@ -176,7 +189,9 @@ export default {
           const querySnapshot = await getDocs(
             query(
               collection(firebase.db, "order"),
-              orderBy("date", this.sortBy)
+              orderBy("date", this.sortBy),
+              where("date", ">=", dateRange),
+              where("date", "<=", today)
             )
           );
           querySnapshot.forEach((doc) => {
@@ -187,7 +202,9 @@ export default {
             query(
               collection(firebase.db, "order"),
               orderBy("date", this.sortBy),
-              where("status", "==", stat)
+              where("status", "==", stat),
+              where("date", ">=", dateRange),
+              where("date", "<=", today)
             )
           );
           querySnapshot.forEach((doc) => {
@@ -199,7 +216,9 @@ export default {
           query(
             collection(firebase.db, "order"),
             orderBy("date", this.sortBy),
-            limit(lim)
+            limit(lim),
+            where("date", ">=", dateRange),
+            where("date", "<=", today)
           )
         );
         querySnapshot.forEach((doc) => {
@@ -211,7 +230,9 @@ export default {
             collection(firebase.db, "order"),
             orderBy("date", this.sortBy),
             where("status", "==", stat),
-            limit(lim)
+            limit(lim),
+            where("date", ">=", dateRange),
+            where("date", "<=", today)
           )
         );
         querySnapshot.forEach((doc) => {
@@ -220,6 +241,12 @@ export default {
       }
     },
     async displayLimitQuery(e) {
+      // clear searchId field
+      this.searchIdV = "";
+      // date range
+      const today = new Date();
+      const monthNumber = parseInt(this.monthRange);
+      const dateRange = new Date(this.createDate(0, -monthNumber, 0));
       // reset array first
       this.orderList = [];
       const lim = parseInt(e.target.value);
@@ -228,7 +255,9 @@ export default {
           const querySnapshot = await getDocs(
             query(
               collection(firebase.db, "order"),
-              orderBy("date", this.sortBy)
+              orderBy("date", this.sortBy),
+              where("date", ">=", dateRange),
+              where("date", "<=", today)
             )
           );
           querySnapshot.forEach((doc) => {
@@ -239,7 +268,9 @@ export default {
             query(
               collection(firebase.db, "order"),
               orderBy("date", this.sortBy),
-              where("status", "==", this.status)
+              where("status", "==", this.status),
+              where("date", ">=", dateRange),
+              where("date", "<=", today)
             )
           );
           querySnapshot.forEach((doc) => {
@@ -251,7 +282,9 @@ export default {
           query(
             collection(firebase.db, "order"),
             orderBy("date", this.sortBy),
-            limit(lim)
+            limit(lim),
+            where("date", ">=", dateRange),
+            where("date", "<=", today)
           )
         );
         querySnapshot.forEach((doc) => {
@@ -263,7 +296,9 @@ export default {
             collection(firebase.db, "order"),
             orderBy("date", this.sortBy),
             limit(lim),
-            where("status", "==", this.status)
+            where("status", "==", this.status),
+            where("date", ">=", dateRange),
+            where("date", "<=", today)
           )
         );
         querySnapshot.forEach((doc) => {
@@ -272,6 +307,12 @@ export default {
       }
     },
     async sortByQuery(e) {
+      // clear searchId field
+      this.searchIdV = "";
+      //datetime
+      const today = new Date();
+      const monthNumber = parseInt(this.monthRange);
+      const dateRange = new Date(this.createDate(0, -monthNumber, 0));
       // reset array first
       this.orderList = [];
       const limAll = this.displayLimit;
@@ -281,7 +322,12 @@ export default {
       if (limAll === "all") {
         if (stat === "all") {
           const querySnapshot = await getDocs(
-            query(collection(firebase.db, "order"), orderBy("date", sortBy))
+            query(
+              collection(firebase.db, "order"),
+              orderBy("date", sortBy),
+              where("date", ">=", dateRange),
+              where("date", "<=", today)
+            )
           );
           querySnapshot.forEach((doc) => {
             this.orderList.push(doc);
@@ -291,7 +337,9 @@ export default {
             query(
               collection(firebase.db, "order"),
               orderBy("date", sortBy),
-              where("status", "==", stat)
+              where("status", "==", stat),
+              where("date", ">=", dateRange),
+              where("date", "<=", today)
             )
           );
           querySnapshot.forEach((doc) => {
@@ -303,7 +351,9 @@ export default {
           query(
             collection(firebase.db, "order"),
             orderBy("date", sortBy),
-            limit(lim)
+            limit(lim),
+            where("date", ">=", dateRange),
+            where("date", "<=", today)
           )
         );
         querySnapshot.forEach((doc) => {
@@ -315,7 +365,9 @@ export default {
             collection(firebase.db, "order"),
             orderBy("date", sortBy),
             where("status", "==", stat),
-            limit(lim)
+            limit(lim),
+            where("date", ">=", dateRange),
+            where("date", "<=", today)
           )
         );
         querySnapshot.forEach((doc) => {
@@ -324,6 +376,9 @@ export default {
       }
     },
     async monthRangeQuery(e) {
+      // clear searchId field
+      this.searchIdV = "";
+      // date range
       const today = new Date();
       const monthNumber = parseInt(e.target.value);
       const dateRange = new Date(this.createDate(0, -monthNumber, 0));
@@ -390,7 +445,87 @@ export default {
         });
       }
     },
-    async searchIdQuery() {},
+    async searchIdQuery(e) {
+      // specifically search for an id so no need filter
+      const searchId = e.target.value;
+      // reset array first
+      this.orderList = [];
+      if (searchId === "") {
+        // date range
+        const today = new Date();
+        const monthNumber = parseInt(this.monthRange);
+        const dateRange = new Date(this.createDate(0, -monthNumber, 0));
+        console.log("dateRange" + dateRange);
+
+        const limAll = this.displayLimit;
+        const lim = parseInt(this.displayLimit);
+        const stat = this.status;
+        const sortBy = this.sortBy;
+        if (limAll === "all") {
+          if (stat === "all") {
+            const querySnapshot = await getDocs(
+              query(
+                collection(firebase.db, "order"),
+                orderBy("date", sortBy),
+                where("date", ">=", dateRange),
+                where("date", "<=", today)
+              )
+            );
+            querySnapshot.forEach((doc) => {
+              this.orderList.push(doc);
+            });
+          } else {
+            const querySnapshot = await getDocs(
+              query(
+                collection(firebase.db, "order"),
+                orderBy("date", sortBy),
+                where("status", "==", stat),
+                where("date", ">=", dateRange),
+                where("date", "<=", today)
+              )
+            );
+            querySnapshot.forEach((doc) => {
+              this.orderList.push(doc);
+            });
+          }
+        } else if (stat === "all") {
+          const querySnapshot = await getDocs(
+            query(
+              collection(firebase.db, "order"),
+              orderBy("date", sortBy),
+              limit(lim),
+              where("date", ">=", dateRange),
+              where("date", "<=", today)
+            )
+          );
+          querySnapshot.forEach((doc) => {
+            this.orderList.push(doc);
+          });
+        } else {
+          const querySnapshot = await getDocs(
+            query(
+              collection(firebase.db, "order"),
+              orderBy("date", sortBy),
+              where("status", "==", stat),
+              limit(lim),
+              where("date", ">=", dateRange),
+              where("date", "<=", today)
+            )
+          );
+          querySnapshot.forEach((doc) => {
+            this.orderList.push(doc);
+          });
+        }
+      } else {
+        const docRef = doc(firebase.db, "order", searchId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          this.orderList.push(docSnap);
+        } else {
+          console.log("No such document!");
+        }
+      }
+    },
     // end of displaylimit -----------------------
     gotoViewTask(data) {
       console.log(data);
