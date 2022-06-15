@@ -19,7 +19,7 @@
             <label>Sort By</label>
           </div>
           <div class="input-field col s6 m6 l6">
-            <select v-model="dayRange" @change="dayRangeQuery">
+            <select v-model="monthRange" @change="monthRangeQuery">
               <option value="" disabled>Sort By</option>
               <option value="1">1 Month</option>
               <option value="3">3 Months</option>
@@ -54,7 +54,10 @@
           </div>
         </div>
         <!-- end of filter option -->
-        <input v-model="searchId" type="number" />
+        <div class="input-field">
+        <label for="searchId">Enter Order ID Here 🔢</label>
+        <input id="searchId" v-model="searchId" type="number" />
+        </div>
         <router-link
           to="/neworder"
           style="color: white; width: 100%"
@@ -133,7 +136,7 @@ export default {
     return {
       orderList: [],
       sortBy: "desc",
-      dayRange: "1",
+      monthRange: "1",
       status: "ongoing",
       displayLimit: "100",
       searchId: "",
@@ -320,7 +323,7 @@ export default {
         });
       }
     },
-    async dayRangeQuery(e) {
+    async monthRangeQuery(e) {
       const today = new Date();
       const monthNumber = parseInt(e.target.value);
       const dateRange = new Date(this.createDate(0, -monthNumber, 0));
