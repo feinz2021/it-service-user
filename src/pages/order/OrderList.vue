@@ -21,12 +21,12 @@
           <div class="input-field col s6 m6 l6">
             <select v-model="dayRange">
               <option value="" disabled>Sort By</option>
-              <option value="7days" selected>7 Days</option>
-              <option value="14days">14 Days</option>
-              <option value="1month">1 Month</option>
-              <option value="3months">3 Months</option>
-              <option value="6months">6 Months</option>
-              <option value="1year">1 Year</option>
+              <option value="7" selected>7 Days</option>
+              <option value="14">14 Days</option>
+              <option value="1">1 Month</option>
+              <option value="3">3 Months</option>
+              <option value="6">6 Months</option>
+              <option value="12">1 Year</option>
             </select>
             <label>Day Range</label>
           </div>
