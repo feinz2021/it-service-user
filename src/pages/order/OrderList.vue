@@ -19,13 +19,12 @@
             <label>Sort By</label>
           </div>
           <div class="input-field col s6 m6 l6">
-            <select v-model="dayRange">
+            <select v-model="dayRange" @change="dayRangeQuery">
               <option value="" disabled>Sort By</option>
-              <option value="7" selected>7 Days</option>
-              <option value="14">14 Days</option>
               <option value="1">1 Month</option>
               <option value="3">3 Months</option>
               <option value="6">6 Months</option>
+              <option value="9">9 Months</option>
               <option value="12">1 Year</option>
             </select>
             <label>Day Range</label>
@@ -134,7 +133,7 @@ export default {
     return {
       orderList: [],
       sortBy: "desc",
-      dayRange: "7days",
+      dayRange: "1",
       status: "ongoing",
       displayLimit: "100",
       searchId: "",
@@ -143,12 +142,17 @@ export default {
   async mounted() {
     document.title = "Order List";
     window.M.AutoInit();
+    const today = new Date();
+    // default 1 month range
+    const dateRange = new Date(this.createDate(0, -1, 0));
     const querySnapshot = await getDocs(
       query(
         collection(firebase.db, "order"),
         orderBy("date", this.sortBy),
         limit(100),
-        where("status", "==", "ongoing")
+        where("status", "==", "ongoing"),
+        where("date", ">=", dateRange),
+        where("date", "<=", today)
       )
     );
     querySnapshot.forEach((doc) => {
@@ -274,10 +278,7 @@ export default {
       if (limAll === "all") {
         if (stat === "all") {
           const querySnapshot = await getDocs(
-            query(
-              collection(firebase.db, "order"),
-              orderBy("date", sortBy)
-            )
+            query(collection(firebase.db, "order"), orderBy("date", sortBy))
           );
           querySnapshot.forEach((doc) => {
             this.orderList.push(doc);
@@ -319,7 +320,73 @@ export default {
         });
       }
     },
-    async dayRangeQuery() {},
+    async dayRangeQuery(e) {
+      const today = new Date();
+      const monthNumber = parseInt(e.target.value);
+      const dateRange = new Date(this.createDate(0, -monthNumber, 0));
+      console.log("dateRange" + dateRange);
+      // reset array first
+      this.orderList = [];
+      const limAll = this.displayLimit;
+      const lim = parseInt(this.displayLimit);
+      const stat = this.status;
+      const sortBy = this.sortBy;
+      if (limAll === "all") {
+        if (stat === "all") {
+          const querySnapshot = await getDocs(
+            query(
+              collection(firebase.db, "order"),
+              orderBy("date", sortBy),
+              where("date", ">=", dateRange),
+              where("date", "<=", today)
+            )
+          );
+          querySnapshot.forEach((doc) => {
+            this.orderList.push(doc);
+          });
+        } else {
+          const querySnapshot = await getDocs(
+            query(
+              collection(firebase.db, "order"),
+              orderBy("date", sortBy),
+              where("status", "==", stat),
+              where("date", ">=", dateRange),
+              where("date", "<=", today)
+            )
+          );
+          querySnapshot.forEach((doc) => {
+            this.orderList.push(doc);
+          });
+        }
+      } else if (stat === "all") {
+        const querySnapshot = await getDocs(
+          query(
+            collection(firebase.db, "order"),
+            orderBy("date", sortBy),
+            limit(lim),
+            where("date", ">=", dateRange),
+            where("date", "<=", today)
+          )
+        );
+        querySnapshot.forEach((doc) => {
+          this.orderList.push(doc);
+        });
+      } else {
+        const querySnapshot = await getDocs(
+          query(
+            collection(firebase.db, "order"),
+            orderBy("date", sortBy),
+            where("status", "==", stat),
+            limit(lim),
+            where("date", ">=", dateRange),
+            where("date", "<=", today)
+          )
+        );
+        querySnapshot.forEach((doc) => {
+          this.orderList.push(doc);
+        });
+      }
+    },
     async searchIdQuery() {},
     // end of displaylimit -----------------------
     gotoViewTask(data) {
@@ -344,6 +411,14 @@ export default {
         current.getSeconds();
       const dateTime = date + " " + time;
       return dateTime;
+    },
+    // create date function (-6, 0, 0) for 6 days ago
+    createDate(days, months, years) {
+      let date = new Date();
+      date.setDate(date.getDate() + days);
+      date.setMonth(date.getMonth() + months);
+      date.setFullYear(date.getFullYear() + years);
+      return date;
     },
   },
 };
