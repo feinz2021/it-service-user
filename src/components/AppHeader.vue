@@ -3,8 +3,12 @@
   <div id="modalChangeUsername" class="modal">
     <div class="modal-content">
       <h5>Change Username</h5>
-      <label for="usernamefield">Enter new username here ⬇️ </label>
-      <input id="usernamefield" v-model="username" @keydown.enter="updateUsername()"/>
+      <label for="usernamef">Enter new username here ⬇️ </label>
+      <input
+        id="usernamef"
+        v-model="usernameField"
+        @keydown.enter="updateUsername()"
+      />
       <div style="margin-top: 10px"></div>
       <button
         style="width: 100%"
@@ -42,9 +46,11 @@
                 href="#modalChangeUsername"
                 style="font-size: x-large; color: black"
                 id="usernameMenu"
-                >🧍 {{ username }}</a
+                >🧍 {{ usernameField }}</a
               >
-              <label style="margin-left: 22px" for="usernameMenu">Click to change username ⬆️⬆️⬆️</label>
+              <label style="margin-left: 22px" for="usernameMenu"
+                >Click to change username ⬆️⬆️⬆️</label
+              >
             </li>
             <li>
               <a
@@ -80,14 +86,13 @@
 
 <script>
 // import firebase from "./utilities/firebase";
-import { signOut, onAuthStateChanged, updateProfile } from "firebase/auth";
+import { signOut, updateProfile } from "firebase/auth";
 
 export default {
   data() {
     return {
       isLoading: false,
-      email: "",
-      username: "",
+      usernameField: "",
       routerList: [
         { title: "🏠 Home", to: "/homepage" },
         { title: "📝 Order List", to: "/orderlist" },
@@ -97,20 +102,16 @@ export default {
   },
   async mounted() {
     window.M.AutoInit();
-    onAuthStateChanged(await this.auth, async (user) => {
-      if (user) {
-        this.email = user.email;
-        this.username = user.displayName;
-      }
-    });
+    this.usernameField = this.username;
+    console.log("username" + this.usernameField);
   },
   computed: {
-    // isLoggedIn() {
-    //   return this.$store.state.isLoggedIn;
-    // },
-    // user() {
-    //   return this.$store.state.user;
-    // },
+    email() {
+      return this.$store.state.email;
+    },
+    username() {
+      return this.$store.state.username;
+    },
     auth() {
       return this.$store.state.auth;
     },
@@ -137,9 +138,10 @@ export default {
           // An error happened.
         });
     },
-    updateUsername() {
+    async updateUsername() {
+      await this.$store.commit("username", this.usernameField);
       updateProfile(this.auth.currentUser, {
-        displayName: this.username,
+        displayName: this.usernameField,
       })
         .then(() => {
           this.$toast.open({

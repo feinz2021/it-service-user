@@ -14,6 +14,7 @@
         <tr>
           <th>Task Name</th>
           <th>Cost</th>
+          <th>Added By</th>
         </tr>
       </thead>
       <tbody>
@@ -25,6 +26,9 @@
         >
           <td>{{ index + 1 }}. {{ task.data().taskName }}</td>
           <td>RM {{ task.data().cost }}</td>
+          <td>
+            <small>{{ username }}</small>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -60,6 +64,11 @@ export default {
     querySnapshot.forEach((doc) => {
       this.taskList.push(doc);
     });
+  },
+  computed: {
+    username() {
+      return this.$store.state.username;
+    },
   },
 };
 </script>

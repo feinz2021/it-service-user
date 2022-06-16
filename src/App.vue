@@ -9,7 +9,6 @@
 <script>
 import AppHeader from "./components/AppHeader.vue";
 import LoginPage from "./components/LoginPage.vue";
-import firebase from "./utilities/firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { ContentLoader } from "vue-content-loader";
 
@@ -22,18 +21,17 @@ export default {
     };
   },
   async mounted() {
-    // storing getAuth into state
     this.loading = true;
-    await this.$store.commit("auth", getAuth(firebase.app));
-    onAuthStateChanged(this.auth, async (user) => {
+    const auth = getAuth();
+    await this.$store.commit("auth", auth);
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
         // start loading animation
         this.loggedIn = true;
-        await this.$store.commit("isLoggedIn", true);
-        await this.$store.commit("user", user);
-        // this.chatUsername = user.displayName;
-        console.log("this.user.email: ");
-        console.log(this.user.email);
+        await this.$store.commit("username", user.displayName);
+        await this.$store.commit("email", user.email);
+        console.log("user.email: ");
+        console.log(user.email);
         this.$nextTick(() => {
           // end loading animation
           this.loading = false;
@@ -49,18 +47,7 @@ export default {
       }
       // this.loadingDataComplete = true;
     });
-  },
-  computed: {
-    isLoggedIn() {
-      return this.$store.state.isLoggedIn;
-    },
-    user() {
-      return this.$store.state.user;
-    },
-    auth() {
-      return this.$store.state.auth;
-    },
-  },
+  }
 };
 </script>
 

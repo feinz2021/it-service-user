@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default {
   data() {
@@ -74,7 +74,8 @@ export default {
   methods: {
     submit() {
       this.isLoading = true;
-      signInWithEmailAndPassword(this.auth, this.email, this.password)
+      const auth = getAuth();
+      signInWithEmailAndPassword(auth, this.email, this.password)
         .then((res) => {
           this.email = "";
           this.password = "";
@@ -95,12 +96,7 @@ export default {
   mounted() {
     window.M.AutoInit();
     this.$refs.emailRef.focus();
-  },
-  computed: {
-    auth() {
-      return this.$store.state.auth;
-    },
-  },
+  }
 };
 </script>
 

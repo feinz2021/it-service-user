@@ -4,21 +4,17 @@ import { createStore } from 'vuex'
 const store = createStore({
   state() {
     return {
-      isLoggedIn: false,
-      user: null,
-      auth: null,
+      username: null,
+      email: null,
     }
   },
   mutations: {
-    isLoggedIn(state, payload) {
-      state.isLoggedIn = payload;
+    username(state, payload) {
+      state.username = payload;
     },
-    user(state, payload) {
-      state.user = payload;
+    email(state, payload) {
+      state.email = payload;
     },
-    auth(state, payload) {
-      state.auth = payload;
-    }
   }
 })
 

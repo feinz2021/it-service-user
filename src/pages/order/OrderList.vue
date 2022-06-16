@@ -78,6 +78,7 @@
           >
             <li>
               <div style="margin-left: 15px">
+                <small><i>{{ username }}</i></small> <br />
                 Order ID: {{ data1.id }} <br />
                 Order Date: {{ currentDateTime(data1.data().date) }}
                 <div
@@ -169,7 +170,11 @@ export default {
       this.orderList.push(doc);
     });
   },
-  computed: {},
+  computed: {
+    username() {
+      return this.$store.state.username;
+    },
+  },
   methods: {
     // displaylimit ---------------------------
     async statusQuery(e) {

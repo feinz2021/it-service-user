@@ -7,12 +7,12 @@
         <div style="margin-bottom: 50px"></div>
 
         <div class="input-field">
-          <input v-model="taskName" id="task_name" type="text" />
+          <input @keydown.enter="saveTask()"  ref="inputRef" v-model="taskName" id="task_name" type="text" />
           <label class="active" for="task_name">Task Name</label>
         </div>
 
         <div class="input-field">
-          <input v-model="cost" id="cost" type="number" />
+          <input @keydown.enter="saveTask()" v-model="cost" id="cost" type="number" />
           <label class="active" for="cost">Cost</label>
         </div>
         <div class="center-align">
@@ -50,6 +50,7 @@ export default {
   },
   mounted() {
     window.M.AutoInit();
+    this.$refs.inputRef.focus();
   },
   methods: {
     async saveTask() {
@@ -66,6 +67,8 @@ export default {
           const docRef = await addDoc(collection(firebase.db, "task"), {
             taskName: this.taskName,
             cost: this.cost,
+            username: this.username,
+            email: this.email
           });
           console.log("task added with ID: ", docRef.id);
           this.$toast.open({
@@ -80,6 +83,14 @@ export default {
           console.error("Error adding task: ", e);
         }
       }
+    },
+  },
+  computed: {
+    username() {
+      return this.$store.state.username;
+    },
+    email() {
+      return this.$store.state.email;
     },
   },
 };

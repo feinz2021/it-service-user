@@ -2,8 +2,10 @@
   <div class="container">
     <div class="row">
       <div class="col m8 l8 push-m2 push-l2">
+        
         <h5>Task</h5>
-        <div style="margin-bottom: 50px"></div>
+        <div style="margin-bottom: 20px"></div>
+        <small><i>{{username}}</i></small>
 
         <div class="input-field">
           <input v-model="this.taskName" id="task_name" type="text" />
@@ -61,6 +63,9 @@ export default {
     taskId() {
       return sessionStorage.getItem("taskId");
     },
+    username() {
+      return this.$store.state.username;
+    }
   },
   async mounted() {
     window.M.AutoInit();

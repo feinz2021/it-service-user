@@ -22,6 +22,17 @@ export default {
         });
       }
     });
+
+    getDoc(doc(firebase.db, "record", "documentID")).then((docSnap) => {
+      if (docSnap.exists()) {
+        console.log("documentID counter Exists.");
+      } else {
+        console.log("documentID counter Doesn't Exists.");
+        setDoc(doc(firebase.db, "record", "documentID"), {
+          orderID: 0,
+        });
+      }
+    });
   },
 };
 </script>

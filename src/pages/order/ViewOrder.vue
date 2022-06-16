@@ -53,6 +53,7 @@
       <!-- displaying the selected task -->
       <div class="card-panel white">
         <div id="printMe">
+          <small><i>{{ username }}</i></small> <br />
           Order ID:
           {{ orderId }}
           <br />
@@ -202,6 +203,9 @@ export default {
     orderId() {
       return sessionStorage.getItem("orderId");
     },
+    username(){
+      return this.$store.state.username;
+    }
   },
   async mounted() {
     document.title = "View Order";

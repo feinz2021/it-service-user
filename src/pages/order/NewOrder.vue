@@ -86,7 +86,7 @@ export default {
       totalCost: 0,
       date: {},
       status: "ongoing",
-      orderId: null,
+      orderId: null
     };
   },
   methods: {
@@ -125,15 +125,14 @@ export default {
       } else {
         this.date = new Date();
         try {
-          await setDoc(
-            doc(firebase.db, "order", this.orderId.toString()),
-            {
-              order: this.order,
-              totalCost: this.totalCost,
-              date: this.date,
-              status: this.status,
-            }
-          );
+          await setDoc(doc(firebase.db, "order", this.orderId.toString()), {
+            order: this.order,
+            totalCost: this.totalCost,
+            date: this.date,
+            status: this.status,
+            email: this.email,
+            username: this.username
+          });
           // update the order counter
           await updateDoc(doc(firebase.db, "record", "documentID"), {
             orderID: this.orderId,
@@ -175,6 +174,14 @@ export default {
     } else {
       // doc.data() will be undefined in this case
       console.log("No such document!");
+    }
+  },
+  computed: {
+    email() {
+      return this.$store.state.email;
+    },
+    username() {
+      return this.$store.state.username;
     }
   },
 };
