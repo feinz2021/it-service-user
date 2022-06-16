@@ -31,20 +31,20 @@
     <div class="nav-wrapper light-blue">
       <ul class="left">
         <a
-          class="dropdown-trigger flexbox-center"
-          style="width: 300px; justify-content: left"
+          class="dropdown-trigger flexbox-center tooltipped"  data-position="bottom" data-tooltip="Click For Menu"
+          style="width: 250px; justify-content: left"
           href="#"
           data-target="menu-dropdown"
         >
           <span style="font-size: x-large">🧭 Navigation</span>
         </a>
-        <ul id="menu-dropdown" class="dropdown-content">
+        <ul id="menu-dropdown" class="dropdown-content" style="overflow: hidden">
           <div>
             <li>
               <a
                 class="flexbox-center modal-trigger"
                 href="#modalChangeUsername"
-                style="font-size: x-large; color: black"
+                style="font-size: x-large; color: black;"
                 id="usernameMenu"
                 >🧍 {{ usernameField }}</a
               >
@@ -79,7 +79,8 @@
       </ul>
 
       <!-- brand logo -->
-      <a href="#!" class="brand-logo right">Logo</a>
+      <router-link to="/homepage" class="brand-logo center hide-on-small-only tooltipped"  data-position="bottom" data-tooltip="Go to Home">🏡</router-link>
+      <router-link to="/homepage" class="brand-logo right hide-on-med-and-up tooltipped"  data-position="bottom" data-tooltip="Go to Home">🏡</router-link>
     </div>
   </nav>
 </template>
