@@ -287,7 +287,7 @@ export default {
           });
           console.log("order added with ID: ", docRef.id);
           this.$toast.open({
-            message: "Order Added Successfully",
+            message: "Order Updated Successfully",
             type: "success",
             duration: 3000,
             dismissible: true,

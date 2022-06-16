@@ -86,7 +86,7 @@ export default {
       totalCost: 0,
       date: {},
       status: "ongoing",
-      orderId: null
+      orderId: null,
     };
   },
   methods: {
@@ -131,7 +131,7 @@ export default {
             date: this.date,
             status: this.status,
             email: this.email,
-            username: this.username
+            username: this.username,
           });
           // update the order counter
           await updateDoc(doc(firebase.db, "record", "documentID"), {
@@ -182,7 +182,7 @@ export default {
     },
     username() {
       return this.$store.state.username;
-    }
+    },
   },
 };
 </script>
