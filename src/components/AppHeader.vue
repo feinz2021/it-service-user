@@ -1,4 +1,28 @@
 <template>
+  <!-- Modal Structure -->
+  <div id="modalChangeUsername" class="modal">
+    <div class="modal-content">
+      <h5>Change Username</h5>
+      <label for="usernamefield">Enter new username here ⬇️ </label>
+      <input id="usernamefield" v-model="username" @keydown.enter="updateUsername()"/>
+      <div style="margin-top: 10px"></div>
+      <button
+        style="width: 100%"
+        class="btn-large waves-effect waves-light blue modal-close"
+        @click="updateUsername()"
+      >
+        Save Username<i class="material-icons right">save</i>
+      </button>
+      <div style="margin-top: 20px"></div>
+      <button
+        style="width: 100%"
+        class="btn-large waves-effect waves-light grey modal-close"
+      >
+        Back<i class="material-icons right">arrow_back</i>
+      </button>
+    </div>
+  </div>
+
   <nav>
     <div class="nav-wrapper light-blue">
       <ul class="left">
@@ -13,9 +37,14 @@
         <ul id="menu-dropdown" class="dropdown-content">
           <div>
             <li>
-              <a class="flexbox-center" style="font-size: x-large; color: black"
-                >🧍 {{ email }}</a
+              <a
+                class="flexbox-center modal-trigger"
+                href="#modalChangeUsername"
+                style="font-size: x-large; color: black"
+                id="usernameMenu"
+                >🧍 {{ username }}</a
               >
+              <label style="margin-left: 22px" for="usernameMenu">Click to change username ⬆️⬆️⬆️</label>
             </li>
             <li>
               <a
@@ -51,13 +80,14 @@
 
 <script>
 // import firebase from "./utilities/firebase";
-import { signOut, onAuthStateChanged } from "firebase/auth";
+import { signOut, onAuthStateChanged, updateProfile } from "firebase/auth";
 
 export default {
   data() {
     return {
       isLoading: false,
       email: "",
+      username: "",
       routerList: [
         { title: "🏠 Home", to: "/homepage" },
         { title: "📝 Order List", to: "/orderlist" },
@@ -70,6 +100,7 @@ export default {
     onAuthStateChanged(await this.auth, async (user) => {
       if (user) {
         this.email = user.email;
+        this.username = user.displayName;
       }
     });
   },
@@ -104,6 +135,28 @@ export default {
         .catch((error) => {
           console.log("Error logging out: " + error);
           // An error happened.
+        });
+    },
+    updateUsername() {
+      updateProfile(this.auth.currentUser, {
+        displayName: this.username,
+      })
+        .then(() => {
+          this.$toast.open({
+            message: "Username updated.",
+            type: "success",
+            duration: 3000,
+            dismissible: true,
+            position: "bottom",
+          });
+          console.log("Username updated: " + this.auth.currentUser.displayName);
+          // Profile updated!
+          // ...
+        })
+        .catch((error) => {
+          // An error occurred
+          // ...
+          console.log(error);
         });
     },
   },
