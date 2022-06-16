@@ -1,132 +1,136 @@
 <template>
-  <div class="container">
-    <div style="margin-top: 20px"></div>
-    <div class="row">
-      <!-- ongoing -->
-      <div class="col s12 m4 l4">
-        <div class="card-panel white">
-          <div class="center"><b>Ongoing</b></div>
-          <ul v-for="data1 in orderListOngoing" :key="data1.id">
-            <li>
-              <div style="margin-left: 15px">
-                ID: {{ data1.id }} <br />
-                {{ currentDateTime(data1.data().date) }}
-                <div
-                  v-if="data1.data().status === 'cancelled'"
-                  class="red-text"
-                >
-                  Order Cancelled
+  <body style="background-color: powderblue; padding-bottom: 10px">
+    <div class="container">
+      <br />
+      <div class="row">
+        <!-- ongoing -->
+        <div class="col s12 m4 l4">
+          <div class="card-panel white">
+            <div class="center"><b>Ongoing</b></div>
+            <ul v-for="data1 in orderListOngoing" :key="data1.id">
+              <li>
+                <div style="margin-left: 15px">
+                  ID: {{ data1.id }} <br />
+                  {{ currentDateTime(data1.data().date) }}
+                  <div
+                    v-if="data1.data().status === 'cancelled'"
+                    class="red-text"
+                  >
+                    Order Cancelled
+                  </div>
+                  <div
+                    v-if="data1.data().status === 'completed'"
+                    class="green-text"
+                  >
+                    Order Completed
+                  </div>
+                  <!-- sOrder for data(taskName, cost) in nested[array] inside the collection of Order -->
+                  <table>
+                    <tbody>
+                      <tr
+                        v-for="(data2, index) in data1.data().order"
+                        :key="data2"
+                      >
+                        <td>{{ index + 1 }}. {{ data2.taskName }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-                <div
-                  v-if="data1.data().status === 'completed'"
-                  class="green-text"
-                >
-                  Order Completed
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- completed -->
+        <div class="col s12 m4 l4">
+          <div class="card-panel white">
+            <div class="center"><b>Completed</b></div>
+            <ul v-for="data1 in orderListCompleted" :key="data1.id">
+              <li>
+                <div style="margin-left: 15px">
+                  ID: {{ data1.id }} <br />
+                  {{ currentDateTime(data1.data().date) }}
+                  <div
+                    v-if="data1.data().status === 'cancelled'"
+                    class="red-text"
+                  >
+                    Order Cancelled
+                  </div>
+                  <div
+                    v-if="data1.data().status === 'completed'"
+                    class="green-text"
+                  >
+                    Order Completed
+                  </div>
+                  <!-- sOrder for data(taskName, cost) in nested[array] inside the collection of Order -->
+                  <table>
+                    <tbody>
+                      <tr
+                        v-for="(data2, index) in data1.data().order"
+                        :key="data2"
+                      >
+                        <td>{{ index + 1 }}. {{ data2.taskName }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-                <!-- sOrder for data(taskName, cost) in nested[array] inside the collection of Order -->
-                <table>
-                  <tbody>
-                    <tr
-                      v-for="(data2, index) in data1.data().order"
-                      :key="data2"
-                    >
-                      <td>{{ index + 1 }}. {{ data2.taskName }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </li>
-          </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- cancelled -->
+        <div class="col s12 m4 l4">
+          <div class="card-panel white">
+            <div class="center"><b>Cancelled</b></div>
+            <ul v-for="data1 in orderListCancelled" :key="data1.id">
+              <li>
+                <div style="margin-left: 15px">
+                  ID: {{ data1.id }} <br />
+                  {{ currentDateTime(data1.data().date) }}
+                  <div
+                    v-if="data1.data().status === 'cancelled'"
+                    class="red-text"
+                  >
+                    Order Cancelled
+                  </div>
+                  <div
+                    v-if="data1.data().status === 'completed'"
+                    class="green-text"
+                  >
+                    Order Completed
+                  </div>
+                  <!-- sOrder for data(taskName, cost) in nested[array] inside the collection of Order -->
+                  <table>
+                    <tbody>
+                      <tr
+                        v-for="(data2, index) in data1.data().order"
+                        :key="data2"
+                      >
+                        <td>{{ index + 1 }}. {{ data2.taskName }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
-      <!-- completed -->
-      <div class="col s12 m4 l4">
-        <div class="card-panel white">
-          <div class="center"><b>Completed</b></div>
-          <ul v-for="data1 in orderListCompleted" :key="data1.id">
-            <li>
-              <div style="margin-left: 15px">
-                ID: {{ data1.id }} <br />
-                {{ currentDateTime(data1.data().date) }}
-                <div
-                  v-if="data1.data().status === 'cancelled'"
-                  class="red-text"
-                >
-                  Order Cancelled
-                </div>
-                <div
-                  v-if="data1.data().status === 'completed'"
-                  class="green-text"
-                >
-                  Order Completed
-                </div>
-                <!-- sOrder for data(taskName, cost) in nested[array] inside the collection of Order -->
-                <table>
-                  <tbody>
-                    <tr
-                      v-for="(data2, index) in data1.data().order"
-                      :key="data2"
-                    >
-                      <td>{{ index + 1 }}. {{ data2.taskName }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </li>
-          </ul>
+      <div class="row">
+        <div class="col s12 m12 l12">
+          <Bar
+            :chart-options="incomePerMonthChartOptions"
+            :chart-data="incomePerMonthChartData"
+            :height="incomePerMonthChartHeight"
+          />
         </div>
       </div>
 
-      <!-- cancelled -->
-      <div class="col s12 m4 l4">
-        <div class="card-panel white">
-          <div class="center"><b>Cancelled</b></div>
-          <ul v-for="data1 in orderListCancelled" :key="data1.id">
-            <li>
-              <div style="margin-left: 15px">
-                ID: {{ data1.id }} <br />
-                {{ currentDateTime(data1.data().date) }}
-                <div
-                  v-if="data1.data().status === 'cancelled'"
-                  class="red-text"
-                >
-                  Order Cancelled
-                </div>
-                <div
-                  v-if="data1.data().status === 'completed'"
-                  class="green-text"
-                >
-                  Order Completed
-                </div>
-                <!-- sOrder for data(taskName, cost) in nested[array] inside the collection of Order -->
-                <table>
-                  <tbody>
-                    <tr
-                      v-for="(data2, index) in data1.data().order"
-                      :key="data2"
-                    >
-                      <td>{{ index + 1 }}. {{ data2.taskName }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+      
     </div>
-
-    <div class="row">
-      <div class="col s12 m12 l12">
-        <Bar
-          :chart-options="incomePerMonthChartOptions"
-          :chart-data="incomePerMonthChartData"
-          :height="incomePerMonthChartHeight"
-        />
-      </div>
-    </div>
-  </div>
+  </body>
 </template>
 
 <script>
@@ -274,7 +278,7 @@ export default {
     querySnapshotOngoing.forEach((doc) => {
       this.orderListOngoing.push(doc);
     });
-        // latest 3 ongoing completed
+    // latest 3 ongoing completed
     const querySnapshotCompleted = await getDocs(
       query(
         collection(firebase.db, "order"),
@@ -286,7 +290,7 @@ export default {
     querySnapshotCompleted.forEach((doc) => {
       this.orderListCompleted.push(doc);
     });
-        // latest 3 ongoing cancelled
+    // latest 3 ongoing cancelled
     const querySnapshotCancelled = await getDocs(
       query(
         collection(firebase.db, "order"),

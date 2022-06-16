@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-canvas"></div>
+<body style="background-color: powderblue; padding-bottom: 10px; height: 100vh;">
   <div class="login-form-placement">
     <div class="card login-form">
       <form style="width: 400px; margin-top: 0%" @submit.prevent="submit()">
@@ -45,7 +45,7 @@
           <div class="col s12 m12 l12">
             <button
               style="width: 100%"
-              class="btn waves-effect waves-light blue"
+              class="btn-large waves-effect waves-light blue"
               type="submit"
               name="login"
             >
@@ -57,6 +57,7 @@
       </form>
     </div>
   </div>
+</body>
 </template>
 
 <script>
@@ -94,14 +95,15 @@ export default {
     },
   },
   mounted() {
+    document.title = "Login 🔐";
     window.M.AutoInit();
     this.$refs.emailRef.focus();
-  }
+  },
 };
 </script>
 
 <style>
-.bg-canvas {
+/* .bg-canvas {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
@@ -109,7 +111,7 @@ export default {
   z-index: 20;
   position: fixed;
   top: 0px;
-}
+} */
 .login-form-placement {
   display: flex;
   flex-wrap: wrap;
