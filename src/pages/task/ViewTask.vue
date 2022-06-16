@@ -68,6 +68,7 @@ export default {
     }
   },
   async mounted() {
+    document.title = "View Task";
     window.M.AutoInit();
     //read database
     const docRef = doc(firebase.db, "task", this.taskId);

@@ -6,6 +6,8 @@ import firebase from "../utilities/firebase";
 
 export default {
   mounted() {
+    document.title = "Homepage";
+    window.M.AutoInit();
     const date = new Date();
     const year = date.getFullYear();
     let docYearName = "record" + year;

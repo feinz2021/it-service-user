@@ -57,6 +57,7 @@ export default {
     },
   },
   async mounted() {
+    document.title = "Task List";
     window.M.AutoInit();
     const querySnapshot = await getDocs(
       query(collection(firebase.db, "task"), orderBy("taskName", "asc"))

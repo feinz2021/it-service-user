@@ -49,6 +49,7 @@ export default {
     };
   },
   mounted() {
+    document.title = "Add Task";
     window.M.AutoInit();
     this.$refs.inputRef.focus();
   },
