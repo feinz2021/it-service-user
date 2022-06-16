@@ -57,6 +57,7 @@
         <div class="input-field">
           <label for="searchId">Enter Order ID Here 🔢</label>
           <input
+            ref="inputRef"
             v-model="searchIdV"
             id="searchId"
             type="number"
@@ -151,6 +152,7 @@ export default {
     };
   },
   async mounted() {
+    this.$refs.inputRef.focus();
     document.title = "Order List";
     window.M.AutoInit();
     const today = new Date();
