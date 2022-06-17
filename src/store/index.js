@@ -7,9 +7,13 @@ const store = createStore({
       username: null,
       email: null,
       auth: null,
+      uid: null,
     }
   },
   mutations: {
+    uid(state, payload) {
+      state.uid = payload;
+    },
     username(state, payload) {
       state.username = payload;
     },

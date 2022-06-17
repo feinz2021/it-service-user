@@ -59,14 +59,6 @@
                 >
               </li>
               <li>
-                <router-link
-                  to="/userlist"
-                  class="flexbox-center"
-                  style="font-size: x-large; color: black"
-                  >👥 User List</router-link
-                >
-              </li>
-              <li>
                 <a
                   class="flexbox-center"
                   style="font-size: x-large; color: black"

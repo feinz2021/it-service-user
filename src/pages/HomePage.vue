@@ -118,6 +118,20 @@
         </div>
       </div>
 
+      <!-- weekly chart -->
+      <div class="row">
+        <div class="col s12 m12 l12">
+          <div class="card-panel">
+            <Bar
+              :chart-options="incomePerWeekChartOptions"
+              :chart-data="incomePerWeekChartData"
+              :height="incomePerWeekChartHeight"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- monthly chart -->
       <div class="row">
         <div class="col s12 m12 l12">
           <div class="card-panel">
@@ -171,6 +185,7 @@ export default {
   components: { Bar },
   data() {
     return {
+      // income per month chart
       incomePerMonthChartHeight: 200,
       incomePerMonthChartOptions: {
         plugins: {
@@ -221,11 +236,53 @@ export default {
         ],
       },
 
+      // income per week chart
+      incomePerWeekChartHeight: 200,
+      incomePerWeekChartOptions: {
+        plugins: {
+          // legend is the dataset label
+          legend: {
+            display: false,
+          },
+          title: {
+            display: true,
+            text: "Total Income per Week",
+          },
+        },
+      },
+      incomePerWeekChartData: {
+        labels: [
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu",
+          "Fri",
+          "Sat",
+          "Sun",
+        ],
+        datasets: [
+          {
+            label: "",
+            backgroundColor: [
+              "#2196f3",
+              "#03a9f4",
+              "#00bcd4",
+              "#009688",
+              "#4caf50",
+              "#8bc34a",
+              "#cddc39",
+            ],
+            data: [0, 0, 0, 0, 0, 0, 0],
+          },
+        ],
+      },
+
       // data
       loadingOngoingData: false,
       orderListOngoing: [],
       orderListCompleted: [],
       orderListCancelled: [],
+      incomePerWeek: [],
     };
   },
   async mounted() {
