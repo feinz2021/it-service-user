@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <div style="margin-top: 10px"></div>
 
     <!-- data for data(date and totalcost) in collection -->
 

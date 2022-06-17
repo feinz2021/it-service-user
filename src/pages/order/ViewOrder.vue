@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <h5 class="center">View Order</h5>
     <div class="row">
       <div class="col s12 m8 l8 push-m2 push-l2">
         <!-- modal -->
