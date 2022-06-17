@@ -8,62 +8,65 @@
       <div class="col s12 m12 l12">
         <h5 class="center">Order List</h5>
 
-        <!-- filter option -->
-        <div class="row">
-          <div class="input-field col s6 m6 l6">
-            <select v-model="sortBy" @change="sortByQuery">
-              <option value="" disabled>Sort By</option>
-              <option value="desc" selected>Newest First</option>
-              <option value="asc">Oldest First</option>
-            </select>
-            <label>Sort By</label>
+        <div class="card-panel">
+          <!-- filter option -->
+          <div class="row">
+            <div class="input-field col s6 m6 l6">
+              <select v-model="sortBy" @change="sortByQuery">
+                <option value="" disabled>Sort By</option>
+                <option value="desc" selected>Newest First</option>
+                <option value="asc">Oldest First</option>
+              </select>
+              <label>Sort By</label>
+            </div>
+            <div class="input-field col s6 m6 l6">
+              <select v-model="monthRange" @change="monthRangeQuery">
+                <option value="" disabled>Sort By</option>
+                <option value="1">1 Month</option>
+                <option value="3">3 Months</option>
+                <option value="6">6 Months</option>
+                <option value="9">9 Months</option>
+                <option value="12">1 Year</option>
+              </select>
+              <label>Day Range</label>
+            </div>
           </div>
-          <div class="input-field col s6 m6 l6">
-            <select v-model="monthRange" @change="monthRangeQuery">
-              <option value="" disabled>Sort By</option>
-              <option value="1">1 Month</option>
-              <option value="3">3 Months</option>
-              <option value="6">6 Months</option>
-              <option value="9">9 Months</option>
-              <option value="12">1 Year</option>
-            </select>
-            <label>Day Range</label>
+          <div class="row">
+            <div class="input-field col s6 m6 l6">
+              <select v-model="status" @change="statusQuery">
+                <option value="" disabled>Status</option>
+                <option value="ongoing">Ongoing</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="all" selected>All</option>
+              </select>
+              <label>Status</label>
+            </div>
+            <div class="input-field col s6 m6 l6">
+              <select v-model="displayLimit" @change="displayLimitQuery">
+                <option value="" disabled>Sort By</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100" selected>100</option>
+                <option value="all" selected>All</option>
+              </select>
+              <label>Display Limit</label>
+            </div>
           </div>
+          <div class="input-field">
+            <label for="searchId">Enter Order ID Here 🔢</label>
+            <input
+              ref="inputRef"
+              v-model="searchIdV"
+              id="searchId"
+              type="number"
+              @input="searchIdQuery"
+            />
+          </div>
+          <!-- end of filter option -->
         </div>
-        <div class="row">
-          <div class="input-field col s6 m6 l6">
-            <select v-model="status" @change="statusQuery">
-              <option value="" disabled>Status</option>
-              <option value="ongoing">Ongoing</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
-              <option value="all" selected>All</option>
-            </select>
-            <label>Status</label>
-          </div>
-          <div class="input-field col s6 m6 l6">
-            <select v-model="displayLimit" @change="displayLimitQuery">
-              <option value="" disabled>Sort By</option>
-              <option value="10">10</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="100" selected>100</option>
-              <option value="all" selected>All</option>
-            </select>
-            <label>Display Limit</label>
-          </div>
-        </div>
-        <!-- end of filter option -->
-        <div class="input-field">
-          <label for="searchId">Enter Order ID Here 🔢</label>
-          <input
-            ref="inputRef"
-            v-model="searchIdV"
-            id="searchId"
-            type="number"
-            @input="searchIdQuery"
-          />
-        </div>
+
         <router-link
           to="/neworder"
           style="color: white; width: 100%"
@@ -79,7 +82,10 @@
           >
             <li>
               <div style="margin-left: 15px">
-                <small><i>{{ username }}</i></small> <br />
+                <small
+                  ><i>{{ username }}</i></small
+                >
+                <br />
                 Order ID: {{ data1.id }} <br />
                 Order Date: {{ currentDateTime(data1.data().date) }}
                 <div
@@ -122,7 +128,6 @@
             </li>
           </div>
         </ul>
-        
       </div>
     </div>
   </div>

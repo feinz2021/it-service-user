@@ -26,64 +26,86 @@
       </button>
     </div>
   </div>
-<div class="navbar-fixed">
-  <nav>
-    <div class="nav-wrapper light-blue z-depth-1">
-      <ul class="left">
-        <a
-          class="dropdown-trigger flexbox-center tooltipped"  data-position="bottom" data-tooltip="Click For Menu"
-          style="width: 250px; justify-content: left"
-          href="#"
-          data-target="menu-dropdown"
-        >
-          <span style="font-size: x-large">🧭 Navigation</span>
-        </a>
-        <ul id="menu-dropdown" class="dropdown-content" style="overflow: hidden">
-          <div>
-            <li>
-              <a
-                class="flexbox-center modal-trigger"
-                href="#modalChangeUsername"
-                style="font-size: x-large; color: black;"
-                id="usernameMenu"
-                >🧍 {{ usernameField }}</a
-              >
-              <label style="margin-left: 22px" for="usernameMenu"
-                >Click to change username ⬆️⬆️⬆️</label
-              >
-            </li>
-            <li>
-              <a
-                class="flexbox-center"
-                style="font-size: x-large; color: black"
-                @click="logout()"
-                >🔐 Logout</a
-              >
-            </li>
-            <li class="divider" tabindex="-1"></li>
-          </div>
-          <router-link v-for="item in routerList" :key="item.to" :to="item.to">
-            <li
-              style="
-                font-size: x-large;
-                width: 300px;
-                margin-left: -15px;
-                justify-content: left;
-              "
-              class="flexbox-center"
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper light-blue z-depth-1">
+        <ul class="left">
+          <a
+            class="dropdown-trigger flexbox-center tooltipped"
+            data-position="bottom"
+            data-tooltip="Click For Menu"
+            style="width: 250px; justify-content: left"
+            href="#"
+            data-target="menu-dropdown"
+          >
+            <span style="font-size: x-large">🧭 Navigation</span>
+          </a>
+          <ul
+            id="menu-dropdown"
+            class="dropdown-content"
+            style="overflow: hidden"
+          >
+            <div>
+              <li>
+                <a
+                  class="flexbox-center modal-trigger"
+                  href="#modalChangeUsername"
+                  style="font-size: x-large; color: black"
+                  id="usernameMenu"
+                  >🧍 {{ usernameField }}</a
+                >
+                <label style="margin-left: 22px" for="usernameMenu"
+                  >Click to change username ⬆️⬆️⬆️</label
+                >
+              </li>
+              <li>
+                <a
+                  class="flexbox-center"
+                  style="font-size: x-large; color: black"
+                  @click="logout()"
+                  >🔐 Logout</a
+                >
+              </li>
+              <li class="divider" tabindex="-1"></li>
+            </div>
+            <router-link
+              v-for="item in routerList"
+              :key="item.to"
+              :to="item.to"
             >
-              <div style="margin-left: 15px">{{ item.title }}</div>
-            </li>
-          </router-link>
+              <li
+                style="
+                  font-size: x-large;
+                  width: 300px;
+                  margin-left: -15px;
+                  justify-content: left;
+                "
+                class="flexbox-center"
+              >
+                <div style="margin-left: 15px">{{ item.title }}</div>
+              </li>
+            </router-link>
+          </ul>
         </ul>
-      </ul>
 
-      <!-- brand logo -->
-      <router-link to="/homepage" class="brand-logo center hide-on-small-only tooltipped"  data-position="bottom" data-tooltip="Go to Home">🏡</router-link>
-      <router-link to="/homepage" class="brand-logo right hide-on-med-and-up tooltipped"  data-position="bottom" data-tooltip="Go to Home">🏡</router-link>
-    </div>
-  </nav>
-</div>
+        <!-- brand logo -->
+        <router-link
+          to="/homepage"
+          class="brand-logo center hide-on-small-only tooltipped"
+          data-position="bottom"
+          data-tooltip="Go to Home"
+          >🏡</router-link
+        >
+        <router-link
+          to="/homepage"
+          class="brand-logo right hide-on-med-and-up tooltipped"
+          data-position="bottom"
+          data-tooltip="Go to Home"
+          >🏡</router-link
+        >
+      </div>
+    </nav>
+  </div>
 </template>
 
 <script>

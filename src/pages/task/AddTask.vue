@@ -2,18 +2,29 @@
   <div class="container">
     <div class="row">
       <div class="col s12 m8 l8 push-m2 push-l2">
-        <div style="margin-top: 30px"></div>
-        <h5>Enter New Task</h5>
-        <div style="margin-bottom: 50px"></div>
+        <h5 style="margin-top: 30px">Add New Task</h5>
+        <div style="margin-bottom: 20px"></div>
+        <div class="card-panel">
+          <div class="input-field">
+            <input
+              @keydown.enter="saveTask()"
+              ref="inputRef"
+              v-model="taskName"
+              id="task_name"
+              type="text"
+            />
+            <label class="active" for="task_name">Task Name</label>
+          </div>
 
-        <div class="input-field">
-          <input @keydown.enter="saveTask()"  ref="inputRef" v-model="taskName" id="task_name" type="text" />
-          <label class="active" for="task_name">Task Name</label>
-        </div>
-
-        <div class="input-field">
-          <input @keydown.enter="saveTask()" v-model="cost" id="cost" type="number" />
-          <label class="active" for="cost">Cost</label>
+          <div class="input-field">
+            <input
+              @keydown.enter="saveTask()"
+              v-model="cost"
+              id="cost"
+              type="number"
+            />
+            <label class="active" for="cost">Cost</label>
+          </div>
         </div>
         <div class="center-align">
           <button
@@ -69,7 +80,7 @@ export default {
             taskName: this.taskName,
             cost: this.cost,
             username: this.username,
-            email: this.email
+            email: this.email,
           });
           console.log("task added with ID: ", docRef.id);
           this.$toast.open({

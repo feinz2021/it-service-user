@@ -5,43 +5,44 @@
         <div style="margin-top: 30px"></div>
         <h5>Order</h5>
 
-        <!-- displaying the selected task -->
-        <table>
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th>Cost</th>
-              <th>Option</th>
-            </tr>
-          </thead>
+        <div class="card-panel">
+          <!-- displaying the selected task -->
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Cost</th>
+                <th>Option</th>
+              </tr>
+            </thead>
 
-          <tbody>
-            <tr v-for="(order, index) in order" :key="order.taskName">
-              <td>{{ index + 1 + "." }} {{ order.taskName }}</td>
-              <td>RM {{ order.cost }}</td>
-              <td>
-                <button
-                  style="width: 100%"
-                  class="btn waves-effect waves-light red"
-                  @click="deleteTask(index, order.cost)"
-                >
-                  Delete<i class="material-icons right">delete</i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+            <tbody>
+              <tr v-for="(order, index) in order" :key="order.taskName">
+                <td>{{ index + 1 + "." }} {{ order.taskName }}</td>
+                <td>RM {{ order.cost }}</td>
+                <td>
+                  <button
+                    style="width: 100%"
+                    class="btn waves-effect waves-light red"
+                    @click="deleteTask(index, order.cost)"
+                  >
+                    Delete<i class="material-icons right">delete</i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
-        <vue3-simple-typeahead
-          id="typeahead_id"
-          placeholder="Start writing..."
-          :items="this.taskListName"
-          :minInputLength="1"
-          @selectItem="selectItemEventHandler"
-        >
-        </vue3-simple-typeahead>
-        <label for="typeahead_id">type here⬆️</label>
-
+          <vue3-simple-typeahead
+            id="typeahead_id"
+            placeholder="Start writing..."
+            :items="this.taskListName"
+            :minInputLength="1"
+            @selectItem="selectItemEventHandler"
+          >
+          </vue3-simple-typeahead>
+          <label for="typeahead_id">type here⬆️</label>
+        </div>
         <div></div>
         <button
           style="width: 100%"

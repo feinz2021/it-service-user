@@ -2,19 +2,22 @@
   <div class="container">
     <div class="row">
       <div class="col m8 l8 push-m2 push-l2">
-        
-        <h5>Task</h5>
+        <h5 style="margin-top: 20px">View Task</h5>
         <div style="margin-bottom: 20px"></div>
-        <small><i>{{username}}</i></small>
+        <div class="card-panel">
+          <small
+            ><i>{{ username }}</i></small
+          >
 
-        <div class="input-field">
-          <input v-model="this.taskName" id="task_name" type="text" />
-          <label class="active" for="task_name">Task Name</label>
-        </div>
+          <div class="input-field">
+            <input v-model="this.taskName" id="task_name" type="text" />
+            <label class="active" for="task_name">Task Name</label>
+          </div>
 
-        <div class="input-field">
-          <input v-model="this.cost" id="cost" type="number" />
-          <label class="active" for="cost">Cost</label>
+          <div class="input-field">
+            <input v-model="this.cost" id="cost" type="number" />
+            <label class="active" for="cost">Cost</label>
+          </div>
         </div>
 
         <div></div>
@@ -65,7 +68,7 @@ export default {
     },
     username() {
       return this.$store.state.username;
-    }
+    },
   },
   async mounted() {
     document.title = "View Task";
