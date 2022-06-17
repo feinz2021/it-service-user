@@ -3,11 +3,12 @@
     <div style="margin-top: 30px"></div>
     <router-link
       to="/addtask"
-      style="color: white"
+      style="color: white; width: 100%"
       class="waves-effect waves-light btn-large orange"
     >
       Add New Task<i class="material-icons right">add</i>
     </router-link>
+    <div style="margin-top: 20px"></div>
     <div class="card-panel">
       <table class="highlight">
         <thead>
