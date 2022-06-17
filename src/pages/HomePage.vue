@@ -120,15 +120,15 @@
 
       <div class="row">
         <div class="col s12 m12 l12">
-          <Bar
-            :chart-options="incomePerMonthChartOptions"
-            :chart-data="incomePerMonthChartData"
-            :height="incomePerMonthChartHeight"
-          />
+          <div class="card-panel">
+            <Bar
+              :chart-options="incomePerMonthChartOptions"
+              :chart-data="incomePerMonthChartData"
+              :height="incomePerMonthChartHeight"
+            />
+          </div>
         </div>
       </div>
-
-      
     </div>
   </body>
 </template>

@@ -8,30 +8,31 @@
     >
       Add New Task<i class="material-icons right">add</i>
     </router-link>
-
-    <table class="highlight">
-      <thead>
-        <tr>
-          <th>Task Name</th>
-          <th>Cost</th>
-          <th>Added By</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(task, index) in taskList"
-          :key="task.id"
-          class="fingerPointer"
-          @click="gotoViewTask(task.id)"
-        >
-          <td>{{ index + 1 }}. {{ task.data().taskName }}</td>
-          <td>RM {{ task.data().cost }}</td>
-          <td>
-            <small>{{ username }}</small>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="card-panel">
+      <table class="highlight">
+        <thead>
+          <tr>
+            <th>Task Name</th>
+            <th>Cost</th>
+            <th>Added By</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(task, index) in taskList"
+            :key="task.id"
+            class="fingerPointer"
+            @click="gotoViewTask(task.id)"
+          >
+            <td>{{ index + 1 }}. {{ task.data().taskName }}</td>
+            <td>RM {{ task.data().cost }}</td>
+            <td>
+              <small>{{ username }}</small>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
