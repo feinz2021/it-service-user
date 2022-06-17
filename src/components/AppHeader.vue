@@ -59,6 +59,14 @@
                 >
               </li>
               <li>
+                <router-link
+                  to="/userlist"
+                  class="flexbox-center"
+                  style="font-size: x-large; color: black"
+                  >👥 User List</router-link
+                >
+              </li>
+              <li>
                 <a
                   class="flexbox-center"
                   style="font-size: x-large; color: black"
@@ -121,6 +129,7 @@ export default {
         { title: "🏠 Home", to: "/homepage" },
         { title: "📝 Order List", to: "/orderlist" },
         { title: "📃 Task List", to: "/tasklist" },
+        // { title: "👥 User List", to: "/userlist" },
       ],
     };
   },

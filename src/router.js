@@ -7,6 +7,9 @@ import TaskList from './pages/task/TaskList';
 import OrderList from './pages/order/OrderList';
 import NewOrder from './pages/order/NewOrder';
 import ViewOrder from './pages/order/ViewOrder';
+import ViewUser from './pages/admin/ViewUser';
+import RegisterUser from './pages/admin/RegisterUser';
+import UserList from './pages/admin/UserList';
 
 const routes = [
     {
@@ -49,6 +52,21 @@ const routes = [
         path: '/vieworder',
         component: ViewOrder,
         name: "vieworder",
+    },
+    {
+        path: '/viewuser',
+        component: ViewUser,
+        name: "viewuser",
+    },
+    {
+        path: '/registeruser',
+        component: RegisterUser,
+        name: "registeruser",
+    },
+    {
+        path: '/userlist',
+        component: UserList,
+        name: "userlist",
     },
 ];
 const router = createRouter({
