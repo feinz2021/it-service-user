@@ -26,9 +26,9 @@
       </button>
     </div>
   </div>
-
+<div class="navbar-fixed">
   <nav>
-    <div class="nav-wrapper light-blue">
+    <div class="nav-wrapper light-blue z-depth-1">
       <ul class="left">
         <a
           class="dropdown-trigger flexbox-center tooltipped"  data-position="bottom" data-tooltip="Click For Menu"
@@ -83,6 +83,7 @@
       <router-link to="/homepage" class="brand-logo right hide-on-med-and-up tooltipped"  data-position="bottom" data-tooltip="Go to Home">🏡</router-link>
     </div>
   </nav>
+</div>
 </template>
 
 <script>
