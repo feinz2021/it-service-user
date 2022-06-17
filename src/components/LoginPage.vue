@@ -11,34 +11,14 @@
           </div>
         </div>
         <div class="row">
-          <div class="input-field col s10 m10 l10">
+          <div class="input-field col s12 m12 l12">
             <label class="active" for="password">Password</label>
             <input
-              v-if="!showPassword"
               v-model="password"
               id="password"
               type="password"
               class="validate"
             />
-            <input v-else v-model="password" id="password" class="validate" />
-          </div>
-          <div class="input-field col s1 m1 l1">
-            <a
-              @click="toggleShow"
-              class="btn green tooltipped"
-              data-position="top"
-              data-tooltip="Show/Hide Password"
-              tooltip="show"
-            >
-              <i
-                :class="
-                  showPassword === false
-                    ? 'material-icons-outlined'
-                    : 'material-icons'
-                "
-                >remove_red_eye</i
-              >
-            </a>
           </div>
         </div>
         <div class="row">
@@ -68,8 +48,7 @@ export default {
     return {
       email: "a@a.com",
       password: "123abc",
-      isLoading: false,
-      showPassword: false,
+      isLoading: false
     };
   },
   methods: {
