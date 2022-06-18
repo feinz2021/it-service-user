@@ -118,14 +118,18 @@
         </div>
       </div>
 
-      <!-- weekly chart -->
+      <!-- daily chart -->
       <div class="row">
         <div class="col s12 m12 l12">
+          <div class="card-panel center">
+            {{ todayDate }} <br />
+            Today's Income: RM {{ totalIncomeToday }}
+          </div>
           <div class="card-panel">
             <Bar
-              :chart-options="incomePerWeekChartOptions"
-              :chart-data="incomePerWeekChartData"
-              :height="incomePerWeekChartHeight"
+              :chart-options="incomePerDayChartOptions"
+              :chart-data="incomePerDayChartData"
+              :height="incomePerDayChartHeight"
             />
           </div>
         </div>
@@ -236,9 +240,9 @@ export default {
         ],
       },
 
-      // income per week chart
-      incomePerWeekChartHeight: 200,
-      incomePerWeekChartOptions: {
+      // income per day chart
+      incomePerDayChartHeight: 200,
+      incomePerDayChartOptions: {
         plugins: {
           // legend is the dataset label
           legend: {
@@ -246,53 +250,38 @@ export default {
           },
           title: {
             display: true,
-            text: "Total Income per Week",
+            text: "Total Income per Day",
           },
         },
       },
-      incomePerWeekChartData: {
-        labels: [
-          "Mon",
-          "Tue",
-          "Wed",
-          "Thu",
-          "Fri",
-          "Sat",
-          "Sun",
-        ],
+      incomePerDayChartData: {
+        labels: [],
         datasets: [
           {
             label: "",
-            backgroundColor: [
-              "#2196f3",
-              "#03a9f4",
-              "#00bcd4",
-              "#009688",
-              "#4caf50",
-              "#8bc34a",
-              "#cddc39",
-            ],
-            data: [0, 0, 0, 0, 0, 0, 0],
+            backgroundColor: ["#2196f3"],
+            data: [],
           },
         ],
       },
 
       // data
-      loadingOngoingData: false,
       orderListOngoing: [],
       orderListCompleted: [],
       orderListCancelled: [],
-      incomePerWeek: [],
+      todayDate: "",
+      totalIncomeToday: 0,
     };
   },
   async mounted() {
     document.title = "Homepage";
     window.M.AutoInit();
     const date = new Date();
+    this.todayDate = date.toDateString();
     const year = date.getFullYear();
     let docYearName = "record" + year;
 
-    // check if record exists, importing sales record
+    // check if record exists, importing monthly sales record
     getDoc(doc(firebase.db, "record", docYearName)).then((docSnap) => {
       if (docSnap.exists()) {
         console.log("Record Exists.");
@@ -359,6 +348,53 @@ export default {
     querySnapshotCancelled.forEach((doc) => {
       this.orderListCancelled.push(doc);
     });
+
+    // importing daily sales record
+    const month = date.getMonth();
+    const maxDayInMonth = new Date(year, month + 1, 0);
+    const startingDayInMonth = new Date(year, month, 1);
+    const maxDay = maxDayInMonth.getDate();
+    const startingDay = startingDayInMonth.getDate();
+    console.log("number of day: " + maxDay + ", starting day: " + startingDay);
+
+    // assigning day array index for day chart
+    for (let i = 1; i <= maxDay; i++) {
+      this.incomePerDayChartData.labels.push(i);
+      this.incomePerDayChartData.datasets[0].data[i - 1] = 0;
+    }
+    // assigning total income in day of month
+    const querySnapshot = await getDocs(
+      query(
+        collection(firebase.db, "order"),
+        where("status", "==", "completed"),
+        where("date", ">=", startingDayInMonth),
+        where("date", "<=", maxDayInMonth)
+      )
+    );
+
+    querySnapshot.forEach((doc) => {
+      const dateNum = doc.data().dateNumber;
+      const todayDateNumber = date.getDate();
+      // saving totalcost each day in an array
+      for (
+        let dayIndex = 0;
+        dayIndex < this.incomePerDayChartData.labels.length;
+        dayIndex++
+      ) {
+        // dayIndex-1 because referring to index of array
+        if (dateNum === dayIndex + 1) {
+          console.log(this.incomePerDayChartData.labels.length);
+          // dateNum - 1 because referring to index of array
+          this.incomePerDayChartData.datasets[0].data[dateNum - 1] =
+            this.incomePerDayChartData.datasets[0].data[dateNum - 1] +
+            doc.data().totalCost;
+          if (todayDateNumber === dayIndex + 1) {
+            this.totalIncomeToday =
+              this.totalIncomeToday + doc.data().totalCost;
+          }
+        }
+      }
+    });
   },
   methods: {
     // date time
@@ -378,6 +414,13 @@ export default {
         current.getSeconds();
       const dateTime = date + " " + time;
       return dateTime;
+    },
+    createDate(days, months, years) {
+      let date = new Date();
+      date.setDate(date.getDate() + days);
+      date.setMonth(date.getMonth() + months);
+      date.setFullYear(date.getFullYear() + years);
+      return date;
     },
   },
   computed: {

@@ -54,7 +54,10 @@
       <!-- displaying the selected task -->
       <div class="card-panel white">
         <div id="printMe">
-          <small><i>{{ username }}</i></small> <br />
+          <small
+            ><i>{{ username }}</i></small
+          >
+          <br />
           Order ID:
           {{ orderId }}
           <br />
@@ -204,9 +207,9 @@ export default {
     orderId() {
       return sessionStorage.getItem("orderId");
     },
-    username(){
+    username() {
       return this.$store.state.username;
-    }
+    },
   },
   async mounted() {
     document.title = "View Order";
@@ -321,10 +324,16 @@ export default {
     },
     async completeOrder() {
       try {
+        // date completed and day
+        const dateCompleted = new Date();
+        const dateNumber = dateCompleted.getDate();
+
         // update order document
         const docRef = doc(firebase.db, "order", this.orderId);
         await updateDoc(docRef, {
           status: "completed",
+          dateCompleted: dateCompleted,
+          dateNumber: dateNumber
         });
         // update record document
         // update monthly total income
@@ -346,6 +355,7 @@ export default {
           byMonthIncome: this.byMonthIncome,
           yearIncome: this.yearIncome,
         });
+
         /////
         console.log("order completed: ", docRef.id);
         this.$toast.open({
