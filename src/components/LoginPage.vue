@@ -74,7 +74,7 @@ export default {
     },
   },
   mounted() {
-    document.title = "Login 🔐";
+    document.title = "⏳";
     window.M.AutoInit();
     this.$refs.emailRef.focus();
   },
