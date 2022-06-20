@@ -1,5 +1,4 @@
 <template>
-  <body style="background-color: powderblue; padding-bottom: 10px">
     <div class="container">
       <br />
       <div class="row">
@@ -148,7 +147,6 @@
         </div>
       </div>
     </div>
-  </body>
 </template>
 
 <script>
