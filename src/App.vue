@@ -2,7 +2,7 @@
   <AppHeader v-if="this.loggedIn === true" />
 
   <router-view v-if="this.loggedIn === true"></router-view>
-  <CodeLoader viewBox="0 0 300 200" v-else-if="this.loading" />
+  <CodeLoader viewBox="0 0 300 200" v-else-if="this.loading === true" />
   <LoginPage v-else-if="this.loggedIn === false" />
 </template>
 
