@@ -1,9 +1,9 @@
 <template>
-  <AppHeader v-if="this.loggedIn" />
-  
-  <router-view v-if="this.loggedIn" ></router-view>
-  <CodeLoader  viewBox="0 0 300 200" v-else-if="this.loading" />
-  <LoginPage v-else />
+  <AppHeader v-if="this.loggedIn === true" />
+
+  <router-view v-if="this.loggedIn === true"></router-view>
+  <CodeLoader viewBox="0 0 300 200" v-else-if="this.loading" />
+  <LoginPage v-else-if="this.loggedIn === false" />
 </template>
 
 <script>
@@ -34,19 +34,19 @@ export default {
         this.loggedIn = true;
         // this.$nextTick(() => {
         //   // end loading animation
-          this.loading = false;
+        this.loading = false;
         // });
         // ...
       } else {
         console.log("USER LOGGED OUT");
         //   this.$nextTick(() => {
         //   // end loading animation
-          this.loading = false;
+        this.loading = false;
         // });
       }
       // this.loadingDataComplete = true;
     });
-  }
+  },
 };
 </script>
 
