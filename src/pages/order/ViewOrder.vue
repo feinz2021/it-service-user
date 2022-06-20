@@ -107,19 +107,20 @@
               </td>
             </tr>
           </table>
+          <vue3-simple-typeahead
+            v-if="status === 'ongoing'"
+            id="typeahead_id"
+            placeholder="Start writing..."
+            :items="this.taskListName"
+            :minInputLength="1"
+            @selectItem="selectItemEventHandler"
+          >
+          </vue3-simple-typeahead>
+          <label v-if="status === 'ongoing'" for="typeahead_id"
+            >type here⬆️</label
+          >
         </div>
       </div>
-
-      <vue3-simple-typeahead
-        v-if="status === 'ongoing'"
-        id="typeahead_id"
-        placeholder="Start writing..."
-        :items="this.taskListName"
-        :minInputLength="1"
-        @selectItem="selectItemEventHandler"
-      >
-      </vue3-simple-typeahead>
-      <label v-if="status === 'ongoing'" for="typeahead_id">type here⬆️</label>
 
       <div></div>
       <button
@@ -333,7 +334,7 @@ export default {
         await updateDoc(docRef, {
           status: "completed",
           dateCompleted: dateCompleted,
-          dateNumber: dateNumber
+          dateNumber: dateNumber,
         });
         // update record document
         // update monthly total income
