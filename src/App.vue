@@ -1,19 +1,18 @@
 <template>
   <AppHeader v-if="this.loggedIn === true" />
-
   <router-view v-if="this.loggedIn === true"></router-view>
-  <CodeLoader viewBox="0 0 300 200" v-else-if="this.loading === true" />
+  <LoadingAnimation v-else-if="this.loading === true" />
   <LoginPage v-else-if="this.loggedIn === false" />
 </template>
 
 <script>
 import AppHeader from "./components/AppHeader.vue";
 import LoginPage from "./components/LoginPage.vue";
+import LoadingAnimation from "./components/LoadingAnimation.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { CodeLoader } from "vue-content-loader";
 
 export default {
-  components: { AppHeader, LoginPage, CodeLoader },
+  components: { AppHeader, LoginPage, LoadingAnimation },
   data() {
     return {
       loggedIn: false,

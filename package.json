@@ -16,7 +16,6 @@
     "material-icons": "^1.11.1",
     "vue": "^3.2.13",
     "vue-chartjs": "^4.1.1",
-    "vue-content-loader": "^2.0.1",
     "vue-loading-overlay": "5.0",
     "vue-router": "^4.0.15",
     "vue-toast-notification": "3.0",
