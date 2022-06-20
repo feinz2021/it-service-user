@@ -31,26 +31,18 @@ export default {
         console.log("user.email: ");
         console.log(user.email);
         this.loggedIn = true;
-        // this.$nextTick(() => {
-        //   // end loading animation
         this.loading = false;
-        // });
-        // ...
       } else {
         console.log("USER LOGGED OUT");
-        //   this.$nextTick(() => {
-        //   // end loading animation
         this.loading = false;
-        // });
       }
-      // this.loadingDataComplete = true;
     });
   },
 };
 </script>
 
 <style>
-body{
+body {
   background-color: #80deea;
 }
 </style>

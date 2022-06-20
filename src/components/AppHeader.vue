@@ -109,7 +109,6 @@
 </template>
 
 <script>
-// import firebase from "./utilities/firebase";
 import { signOut, updateProfile } from "firebase/auth";
 
 export default {
@@ -121,7 +120,6 @@ export default {
         { title: "🏠 Home", to: "/homepage" },
         { title: "📝 Order List", to: "/orderlist" },
         { title: "📃 Task List", to: "/tasklist" },
-        // { title: "👥 User List", to: "/userlist" },
       ],
     };
   },
@@ -154,7 +152,6 @@ export default {
             position: "bottom",
           });
           console.log("Sign out successful.");
-          // location.reload();
           window.location.replace("/");
           // Sign-out successful.
         })
@@ -193,7 +190,6 @@ export default {
 .flexbox-center {
   display: flex;
   flex-wrap: wrap;
-  /* justify-content: center; */
   align-items: center;
 }
 </style>

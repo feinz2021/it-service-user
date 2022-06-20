@@ -82,15 +82,6 @@ export default {
 </script>
 
 <style>
-/* .bg-canvas {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.5);
-  width: 100%;
-  height: 100%;
-  z-index: 20;
-  position: fixed;
-  top: 0px;
-} */
 .login-form-placement {
   display: flex;
   flex-wrap: wrap;
