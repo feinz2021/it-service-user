@@ -31,9 +31,7 @@
       <div class="nav-wrapper light-blue z-depth-1">
         <ul class="left">
           <a
-            class="dropdown-trigger flexbox-center tooltipped"
-            data-position="bottom"
-            data-tooltip="Click For Menu"
+            class="dropdown-trigger flexbox-center"
             style="width: 250px; justify-content: left"
             href="#"
             data-target="menu-dropdown"
