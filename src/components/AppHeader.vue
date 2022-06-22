@@ -164,6 +164,10 @@ export default {
         displayName: this.usernameField,
       })
         .then(() => {
+          let elem = document.getElementById("modalChangeUsername");
+          let instance = window.M.Modal.getInstance(elem);
+          instance.close();
+
           this.$toast.open({
             message: "Username updated.",
             type: "success",

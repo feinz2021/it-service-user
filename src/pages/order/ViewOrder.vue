@@ -114,6 +114,7 @@
             :items="this.taskListName"
             :minInputLength="1"
             @selectItem="selectItemEventHandler"
+            onfocus="this.value=''"
           >
           </vue3-simple-typeahead>
           <label v-if="status === 'ongoing'" for="typeahead_id"
