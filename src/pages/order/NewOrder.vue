@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col s12 l8 push-m2 push-l2">
         <div style="margin-top: 30px"></div>
-        <h5>Order</h5>
+        <h5 class="center">Order</h5>
 
         <div class="card-panel">
           <!-- displaying the selected task -->
