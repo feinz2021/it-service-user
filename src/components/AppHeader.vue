@@ -46,15 +46,29 @@
             <div>
               <li>
                 <a
-                  class="flexbox-center modal-trigger"
-                  href="#modalChangeUsername"
+                  class="flexbox-center"
                   style="font-size: x-large; color: black"
                   id="usernameMenu"
                   >🧍 {{ usernameField }}</a
                 >
-                <label style="margin-left: 22px" for="usernameMenu"
-                  >Click to change username ⬆️⬆️⬆️</label
+              </li>
+              <li>
+                <router-link
+                  style="font-size: x-large; color: black"
+                  to="/userprofile"
+                  class="flexbox-center"
                 >
+                  User Profile
+                </router-link>
+              </li>
+              <li>
+                <router-link
+                  style="font-size: x-large; color: black"
+                  to="/userlist"
+                  class="flexbox-center"
+                >
+                  (Admin) Manage User
+                </router-link>
               </li>
               <li>
                 <a
@@ -107,7 +121,7 @@
 </template>
 
 <script>
-import { signOut, updateProfile } from "firebase/auth";
+import { signOut } from "firebase/auth";
 
 export default {
   data() {
@@ -124,7 +138,6 @@ export default {
   async mounted() {
     window.M.AutoInit();
     this.usernameField = this.username;
-    console.log("username" + this.usernameField);
   },
   computed: {
     email() {
@@ -156,33 +169,6 @@ export default {
         .catch((error) => {
           console.log("Error logging out: " + error);
           // An error happened.
-        });
-    },
-    async updateUsername() {
-      await this.$store.commit("username", this.usernameField);
-      updateProfile(this.auth.currentUser, {
-        displayName: this.usernameField,
-      })
-        .then(() => {
-          let elem = document.getElementById("modalChangeUsername");
-          let instance = window.M.Modal.getInstance(elem);
-          instance.close();
-
-          this.$toast.open({
-            message: "Username updated.",
-            type: "success",
-            duration: 3000,
-            dismissible: true,
-            position: "bottom",
-          });
-          console.log("Username updated: " + this.auth.currentUser.displayName);
-          // Profile updated!
-          // ...
-        })
-        .catch((error) => {
-          // An error occurred
-          // ...
-          console.log(error);
         });
     },
   },

@@ -1,13 +1,12 @@
 <template>
   <div class="container">
-
     <!-- data for data(date and totalcost) in collection -->
 
     <div class="row">
       <div class="col s12 m12 l12">
-        <h5 class="center">Order List</h5>
-
         <div class="card-panel">
+          <h5 class="center">Order List</h5>
+          <div style="margin-top: 20px"></div>
           <!-- filter option -->
           <div class="row">
             <div class="input-field col s6 m6 l6">

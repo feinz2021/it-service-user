@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h5 class="center">View Order</h5>
+   
     <div class="row">
       <div class="col s12 m8 l8 push-m2 push-l2">
         <!-- modal -->
@@ -53,6 +53,7 @@
 
       <!-- displaying the selected task -->
       <div class="card-panel white">
+         <h5 class="center">View Order</h5><div style="margin-top: 20px;"></div>
         <div id="printMe">
           <small
             ><i>{{ username }}</i></small

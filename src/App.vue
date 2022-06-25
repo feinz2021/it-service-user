@@ -28,8 +28,8 @@ export default {
         await this.$store.commit("uid", user.uid);
         await this.$store.commit("username", user.displayName);
         await this.$store.commit("email", user.email);
-        console.log("user.email: ");
-        console.log(user.email);
+        // console.log("user.email: ");
+        // console.log(user.email);
         this.loggedIn = true;
         this.loading = false;
       } else {

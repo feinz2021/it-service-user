@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div style="margin-top: 30px"></div>
+    <div style="margin-top: 10px"></div>
     <router-link
       to="/addtask"
       style="color: white; width: 100%"
@@ -8,7 +8,7 @@
     >
       Add New Task<i class="material-icons right">add</i>
     </router-link>
-    <div style="margin-top: 20px"></div>
+    <div style="margin-top: 10px"></div>
     <div class="card-panel">
       <table class="highlight">
         <thead>

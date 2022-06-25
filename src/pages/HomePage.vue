@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <br />
+
       <div class="row">
         <!-- ongoing -->
         <div class="col s12 m4 l4">
@@ -282,7 +282,7 @@ export default {
     // check if record exists, importing monthly sales record
     getDoc(doc(firebase.db, "record", docYearName)).then((docSnap) => {
       if (docSnap.exists()) {
-        console.log("Record Exists.");
+        // console.log("Record Exists.");
         // assigning array for chartjs
         const chartjsbar = this.incomePerMonthChartData.datasets[0].data;
         for (let i = 0; i < chartjsbar.length; i++) {
@@ -290,7 +290,7 @@ export default {
             docSnap.data().byMonthIncome[i];
         }
       } else {
-        console.log("Record Doesn't Exists.");
+        // console.log("Record Doesn't Exists.");
         setDoc(doc(firebase.db, "record", docYearName), {
           year: year,
           yearIncome: 0,
@@ -301,9 +301,9 @@ export default {
     // check if documentID exists
     getDoc(doc(firebase.db, "record", "documentID")).then((docSnap) => {
       if (docSnap.exists()) {
-        console.log("documentID counter Exists.");
+        // console.log("documentID counter Exists.");
       } else {
-        console.log("documentID counter Doesn't Exists.");
+        // console.log("documentID counter Doesn't Exists.");
         setDoc(doc(firebase.db, "record", "documentID"), {
           orderID: 0,
         });
@@ -352,8 +352,8 @@ export default {
     const maxDayInMonth = new Date(year, month + 1, 0);
     const startingDayInMonth = new Date(year, month, 1);
     const maxDay = maxDayInMonth.getDate();
-    const startingDay = startingDayInMonth.getDate();
-    console.log("number of day: " + maxDay + ", starting day: " + startingDay);
+    // const startingDay = startingDayInMonth.getDate();
+    // console.log("number of day: " + maxDay + ", starting day: " + startingDay);
 
     // assigning day array index for day chart
     for (let i = 1; i <= maxDay; i++) {
@@ -381,7 +381,7 @@ export default {
       ) {
         // dayIndex-1 because referring to index of array
         if (dateNum === dayIndex + 1) {
-          console.log(this.incomePerDayChartData.labels.length);
+          // console.log(this.incomePerDayChartData.labels.length);
           // dateNum - 1 because referring to index of array
           this.incomePerDayChartData.datasets[0].data[dateNum - 1] =
             this.incomePerDayChartData.datasets[0].data[dateNum - 1] +

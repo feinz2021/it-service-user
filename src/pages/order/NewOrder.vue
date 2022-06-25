@@ -2,10 +2,10 @@
   <div class="container">
     <div class="row">
       <div class="col s12 l8 push-m2 push-l2">
-        <div style="margin-top: 30px"></div>
-        <h5 class="center">Order</h5>
 
         <div class="card-panel">
+          <h5 class="center">Order</h5>
+          <div style="margin-top: 20px"></div>
           <!-- displaying the selected task -->
           <table>
             <thead>

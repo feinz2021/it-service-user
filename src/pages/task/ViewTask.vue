@@ -2,9 +2,9 @@
   <div class="container">
     <div class="row">
       <div class="col s12 m8 l8 push-m2 push-l2">
-        <h5 style="margin-top: 20px">View Task</h5>
-        <div style="margin-bottom: 20px"></div>
         <div class="card-panel">
+          <h5>View Task</h5>
+          <div style="margin-top: 20px"></div>
           <small
             ><i>{{ username }}</i></small
           >
