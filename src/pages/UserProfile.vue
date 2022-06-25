@@ -1,5 +1,6 @@
 <template>
-  <div class="container">
+  <LoadingAnimation v-if="isLoading === true" />
+  <div class="container" v-show="isLoading === false">
     <div class="row">
       <div class="col s12 m12 l12">
         <div class="card-panel">
@@ -15,10 +16,15 @@
               />
               <label class="active" for="username">Username</label>
             </div>
+
             <div class="input-field col s12 m6 l6">
-              <button class="btn">Profile Photo</button>
-              <!-- <img class="margin-left: 20px;" src="pic_trulli.jpg" alt="Italian Trulli"> -->
-              <span class="material-icons">portrait</span>
+              <input
+                placeholder="Address"
+                id="address"
+                type="text"
+                v-model="address"
+              />
+              <label class="active" for="address">Address</label>
             </div>
           </div>
 
@@ -44,31 +50,56 @@
           </div>
           <div class="row">
             <div class="input-field col s12 m6 l6">
-              <input
-                placeholder="Address"
-                id="address"
-                type="text"
-                v-model="address"
-              />
-              <label class="active" for="address">Address</label>
+              <div class="file-field input-field">
+                <div class="btn">
+                  <span>Select Image</span>
+                  <input
+                    ref="profileImage"
+                    @change="profileImagePreview()"
+                    type="file"
+                    accept=".jpg, .JPG"
+                  />
+                </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path validate" type="text" />
+                </div>
+              </div>
             </div>
             <div class="input-field col s12 m6 l6">
-              <button
-                @click="saveButton()"
-                style="width: 48%"
-                class="btn waves-effect waves-light blue btn-large"
-                :disabled="!userName || !fullName || !phoneNumber || !address"
-              >
-                Save
-              </button>
-              <router-link
-                to="/"
-                style="width: 48%; margin-left: 4%"
-                class="btn waves-effect waves-light grey btn-large"
-                >Cancel</router-link
-              >
+              <div class="row">
+                <div class="col s6 m6 l6">
+                  <div class="center">
+                    <div>Current Image</div>
+                    <img id="profileImage" style="width: 100%" />
+                  </div>
+                </div>
+                <div class="col s6 m6 l6">
+                  <div id="preview" class="center">
+                    <div>New Image Preview</div>
+                    <img
+                      v-if="imagePreview"
+                      :src="imagePreview"
+                      style="width: 100%"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+          <button
+            @click="saveButton()"
+            style="width: 48%"
+            class="btn waves-effect waves-light blue btn-large"
+            :disabled="!userName || !fullName || !phoneNumber || !address"
+          >
+            Save
+          </button>
+          <router-link
+            to="/"
+            style="width: 48%; margin-left: 4%"
+            class="btn waves-effect waves-light grey btn-large"
+            >Cancel</router-link
+          >
         </div>
       </div>
     </div>
@@ -76,17 +107,26 @@
 </template>
 
 <script>
+import LoadingAnimation from "../components/LoadingAnimation.vue";
 import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
 import firebase from "../utilities/firebase";
 
 export default {
+  components: { LoadingAnimation },
   data() {
     return {
       userName: "",
       fullName: "",
       phoneNumber: "",
       address: "",
+
+      inputFile: null,
+      imagePreview: null,
+
+      // loading animation
+      isLoading: false,
     };
   },
   async mounted() {
@@ -99,6 +139,19 @@ export default {
       this.fullName = docSnap.data().fullName;
       this.phoneNumber = docSnap.data().phoneNumber;
       this.address = docSnap.data().address;
+
+      // getting image from firebase storage for preview
+      const storage = getStorage();
+      const storageRef = ref(storage, this.uid + ".jpg");
+      getDownloadURL(storageRef)
+        .then((url) => {
+          // inserted into an <img> element
+          const img = document.getElementById("profileImage");
+          img.setAttribute("src", url);
+        })
+        .catch(() => {
+          // Handle any errors
+        });
     } else {
       await setDoc(doc(firebase.db, "profile", this.uid), {
         fullName: this.fullName,
@@ -110,6 +163,14 @@ export default {
   },
   methods: {
     async saveButton() {
+      this.isLoading = true;
+      this.$toast.open({
+        message: "Is Updating...Please Wait",
+        type: "info",
+        duration: 3000,
+        dismissible: true,
+        position: "bottom",
+      });
       //update document
       const docRef = doc(firebase.db, "profile", this.uid);
       await updateDoc(docRef, {
@@ -123,7 +184,16 @@ export default {
             displayName: this.userName,
           });
         })
+        .then(async () => {
+          // getting file path
+          this.inputFile = this.$refs.profileImage.files[0];
+          const storage = getStorage();
+          const storageRef = ref(storage, this.uid + ".jpg");
+          // 'file' comes from the Blob or File API
+          await uploadBytes(storageRef, this.inputFile).catch(() => {});
+        })
         .then(() => {
+          this.isLoading = false;
           this.$toast.open({
             message: "Profile updated.",
             type: "success",
@@ -133,6 +203,12 @@ export default {
           });
           window.location.replace("/");
         });
+    },
+    async profileImagePreview() {
+      // getting file path
+      this.inputFile = this.$refs.profileImage.files[0];
+      // image preview
+      this.imagePreview = URL.createObjectURL(this.inputFile);
     },
   },
   computed: {
