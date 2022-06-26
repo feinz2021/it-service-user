@@ -19,9 +19,17 @@
         </div>
         <a
           style="width: 100%"
-          class="btn waves-effect waves-light blue"
+          class="btn btn-large waves-effect waves-light blue"
           @click="createUser()"
           >Save New User<i class="material-icons right">save</i></a
+        >
+        <router-link
+          to="/userlist"
+          style="width: 100%; margin-top: 10px"
+          class="btn waves-effect waves-light grey btn-large"
+          >Back<i class="material-icons right"
+            >keyboard_arrow_left</i
+          ></router-link
         >
       </div>
     </div>
