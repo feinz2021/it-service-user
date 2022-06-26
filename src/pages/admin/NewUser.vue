@@ -64,6 +64,8 @@ export default {
             phoneNumber: "",
             address: "",
             isAdmin: false,
+            isActive: true,
+            email: this.email
           });
         })
         .then(async () => {

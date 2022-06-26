@@ -51,8 +51,8 @@
           <div class="row">
             <div class="input-field col s12 m6 l6">
               <div class="file-field input-field">
-                <div class="btn">
-                  <span>Select Image</span>
+                <div class="btn waves-effect waves-light orange btn-large">
+                  <span>Select Image<i class="material-icons right">image</i></span>
                   <input
                     ref="profileImage"
                     @change="profileImagePreview()"
@@ -92,13 +92,13 @@
             class="btn waves-effect waves-light blue btn-large"
             :disabled="!userName || !fullName || !phoneNumber || !address"
           >
-            Save
+            Save<i class="material-icons right">save</i>
           </button>
           <router-link
             to="/"
             style="width: 48%; margin-left: 4%"
             class="btn waves-effect waves-light grey btn-large"
-            >Cancel</router-link
+            >Back<i class="material-icons right">keyboard_arrow_left</i></router-link
           >
 
           <!-- auth part -->
@@ -157,7 +157,7 @@
             class="btn waves-effect waves-light blue btn-large"
             :disabled="!currentPassword || !newEmail"
           >
-            Save
+            Update Email<i class="material-icons right">save</i>
           </button>
           <button
             @click="updatePassword()"
@@ -165,7 +165,7 @@
             class="btn waves-effect waves-light blue btn-large"
             :disabled="!currentPassword || !newPassword"
           >
-            Save
+            Update Password<i class="material-icons right">save</i>
           </button>
         </div>
       </div>
@@ -235,6 +235,8 @@ export default {
         phoneNumber: this.phoneNumber,
         address: this.address,
         isAdmin: true,
+        isActive: true,
+        email: this.email
       });
     }
   },

@@ -107,10 +107,10 @@ const router = createRouter({
     routes,
 });
 router.beforeEach((to, from, next) => {
-    if(localStorage.getItem("isLoggedIn") == null) {
-        next('/loginpage');
-    } else {
+    if(localStorage.getItem("isLoggedIn") == "true") {
         next();
+    } else {
+        next('/loginpage');
     }
   })
 

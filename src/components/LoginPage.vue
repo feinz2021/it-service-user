@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import firebase from "../utilities/firebase";
 
@@ -73,10 +73,27 @@ export default {
           const docRef = doc(firebase.db, "profile", uid);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
-            console.log("docsnap: " + docSnap.data().isAdmin);
-            localStorage.setItem("isAdmin", docSnap.data().isAdmin);
-            localStorage.setItem("isLoggedIn", "true")
-          }else{
+            if (docSnap.data().isActive === false) {
+              signOut(auth)
+                .then(() => {
+                  this.$toast.open({
+                    message: "Account Disabled. Logging Out...",
+                    type: "error",
+                    duration: 3000,
+                    dismissible: true,
+                    position: "bottom",
+                  });
+                  // Sign-out successful.
+                })
+                .catch((error) => {
+                  console.log("Error logging out: " + error);
+                  // An error happened.
+                });
+            } else {
+              localStorage.setItem("isAdmin", docSnap.data().isAdmin);
+              localStorage.setItem("isLoggedIn", "true");
+            }
+          } else {
             // the reason is only admin has privilege to register
             // without having profile
             localStorage.setItem("isLoggedIn", "true");
