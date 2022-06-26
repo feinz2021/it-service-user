@@ -2,20 +2,19 @@
   <AppHeader v-if="isLoggedIn === 'true'" />
   <router-view></router-view>
   <LoadingAnimation v-if="this.loading === true" />
-  <LoginPage v-else-if="this.loggedIn === false" />
+  <!-- <LoginPage v-else-if="localStorage.getItem('isLoggedIn') == null" /> -->
 </template>
 
 <script>
 import AppHeader from "./components/AppHeader.vue";
-import LoginPage from "./components/LoginPage.vue";
+// import LoginPage from "./components/LoginPage.vue";
 import LoadingAnimation from "./components/LoadingAnimation.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default {
-  components: { AppHeader, LoginPage, LoadingAnimation },
+  components: { AppHeader, LoadingAnimation },
   data() {
     return {
-      loggedIn: false,
       loading: false,
       isLoggedIn: localStorage.getItem("isLoggedIn"),
     };
@@ -30,7 +29,7 @@ export default {
         await this.$store.commit("username", user.displayName);
         await this.$store.commit("email", user.email);
 
-        this.loggedIn = true;
+    
         this.loading = false;
       } else {
         console.log("USER LOGGED OUT");

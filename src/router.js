@@ -9,7 +9,6 @@ import OrderList from './pages/order/OrderList';
 import NewOrder from './pages/order/NewOrder';
 import ViewOrder from './pages/order/ViewOrder';
 import UserProfile from './pages/UserProfile';
-import ViewUser from './pages/admin/ViewUser';
 import UserList from './pages/admin/UserList';
 import NewUser from './pages/admin/NewUser';
 
@@ -66,26 +65,12 @@ const routes = [
         name: "userprofile",
     },
     {
-        path: '/viewuser',
-        component: ViewUser,
-        name: "viewuser",
-        beforeEnter: (to, from, next) => {
-            if(localStorage.getItem("isAdmin") == "false") {
-                next('/homepage');
-            } else {
-                next();
-            }
-        }
-    },
-    {
         path: '/userlist',
         component: UserList,
         name: "userlist",
-        beforeEnter: (to, from, next) => {
-            if(localStorage.getItem("isAdmin") == "false") {
-                next('/homepage');
-            } else {
-                next();
+        beforeEnter: (to) => {
+            if (localStorage.getItem("isAdmin") != "true" && to.name === "userlist") {
+                return { name: 'homepage' }
             }
         }
     },
@@ -93,11 +78,9 @@ const routes = [
         path: '/newuser',
         component: NewUser,
         name: "newuser",
-        beforeEnter: (to, from, next) => {
-            if(localStorage.getItem("isAdmin") != "true") {
-                next('/homepage');
-            } else {
-                next();
+        beforeEnter: (to) => {
+            if (localStorage.getItem("isAdmin") != "true" && to.name === "newuser") {
+                return { name: 'homepage' }
             }
         }
     }
@@ -106,12 +89,22 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
 });
-router.beforeEach((to, from, next) => {
-    if(localStorage.getItem("isLoggedIn") == "true") {
-        next();
-    } else {
-        next('/loginpage');
+router.beforeEach(async (to) => {
+    if (
+        // make sure the user is authenticated
+        !localStorage.getItem("isLoggedIn") &&
+        // ❗️ Avoid an infinite redirect
+        to.name !== 'loginpage'
+    ) {
+        // redirect the user to the login page
+        return { name: 'loginpage' }
     }
-  })
+    else if (
+        localStorage.getItem("isLoggedIn") == "true" &&
+        to.name === 'loginpage'
+    ) {
+        return { name: 'homepage' }
+    }
+})
 
 export default router;
