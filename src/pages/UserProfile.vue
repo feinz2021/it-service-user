@@ -372,7 +372,7 @@ export default {
       return this.$store.state.auth;
     },
     uid() {
-      return this.$store.state.uid;
+      return localStorage.getItem("uid");
     },
   },
 };

@@ -58,16 +58,24 @@ export default {
   methods: {
     async submit() {
       localStorage.clear();
+      this.$toast.open({
+        message: "Is Logging In...",
+        type: "info",
+        duration: 3000,
+        dismissible: true,
+        position: "bottom",
+      });
       this.isLoading = true;
       const auth = getAuth();
       let uid = "";
       await signInWithEmailAndPassword(auth, this.email, this.password)
         .then((res) => {
-          this.email = "";
-          this.password = "";
           uid = res.user.uid;
           console.log("login successful. uid: " + uid);
           console.log(res);
+
+          // setting uid in localstorage for fast access
+          localStorage.setItem("uid", uid);
         })
         .then(async () => {
           const docRef = doc(firebase.db, "profile", uid);
