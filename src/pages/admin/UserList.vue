@@ -57,6 +57,7 @@ export default {
     };
   },
   async mounted() {
+    document.title = "User List";
     const querySnapshot = await getDocs(collection(firebase.db, "profile"));
     querySnapshot.forEach((doc) => {
       // doc is an object, save into taskList (object in array)

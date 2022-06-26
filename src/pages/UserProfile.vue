@@ -206,6 +206,7 @@ export default {
     };
   },
   async mounted() {
+    document.title = "User Profile";
     window.M.AutoInit();
     //read database
     this.userName = this.username;

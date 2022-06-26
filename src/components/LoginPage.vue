@@ -118,7 +118,7 @@ export default {
     },
   },
   mounted() {
-    document.title = "⏳";
+    document.title = "Login";
     window.M.AutoInit();
     this.$refs.emailRef.focus();
   },

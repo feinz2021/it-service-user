@@ -3,27 +3,27 @@
     <div class="card-panel">
       <h5 class="center">New User</h5>
       <div style="margin-top: 30px"></div>
-        <div class="row">
-          <div class="input-field col s6 m6 l6">
-            <input placeholder="Email" id="email" type="text" v-model="email" />
-            <label class="active" for="email">Email</label>
-          </div>
-          <div class="input-field col s6 m6 l6">
-            <input
-              placeholder="Password"
-              id="password"
-              type="password"
-              v-model="password"
-            />
-            <label class="active" for="password">Password</label>
-          </div>
-          <a
-            style="width: 100%"
-            class="btn waves-effect waves-light blue"
-            @click="createUser()"
-            >Save New User<i class="material-icons right">save</i></a
-          >
+      <div class="row">
+        <div class="input-field col s6 m6 l6">
+          <input placeholder="Email" id="email" type="text" v-model="email" />
+          <label class="active" for="email">Email</label>
         </div>
+        <div class="input-field col s6 m6 l6">
+          <input
+            placeholder="Password"
+            id="password"
+            type="password"
+            v-model="password"
+          />
+          <label class="active" for="password">Password</label>
+        </div>
+        <a
+          style="width: 100%"
+          class="btn waves-effect waves-light blue"
+          @click="createUser()"
+          >Save New User<i class="material-icons right">save</i></a
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -65,7 +65,7 @@ export default {
             address: "",
             isAdmin: false,
             isActive: true,
-            email: this.email
+            email: this.email,
           });
         })
         .then(async () => {
@@ -87,20 +87,9 @@ export default {
         });
     },
   },
-  // computed: {
-  //   email() {
-  //     return this.$store.state.email;
-  //   },
-  //   username() {
-  //     return this.$store.state.username;
-  //   },
-  //   auth() {
-  //     return this.$store.state.auth;
-  //   },
-  //   uid() {
-  //     return this.$store.state.uid;
-  //   },
-  // },
+  mounted() {
+    document.title = "New User";
+  },
 };
 </script>
 
