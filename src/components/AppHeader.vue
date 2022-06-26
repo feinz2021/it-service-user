@@ -1,31 +1,4 @@
 <template>
-  <!-- Modal Structure -->
-  <div id="modalChangeUsername" class="modal">
-    <div class="modal-content">
-      <h5>Change Username</h5>
-      <label for="usernamef">Enter new username here ⬇️ </label>
-      <input
-        id="usernamef"
-        v-model="usernameField"
-        @keydown.enter="updateUsername()"
-      />
-      <div style="margin-top: 10px"></div>
-      <button
-        style="width: 100%"
-        class="btn-large waves-effect waves-light blue modal-close"
-        @click="updateUsername()"
-      >
-        Save Username<i class="material-icons right">save</i>
-      </button>
-      <div style="margin-top: 20px"></div>
-      <button
-        style="width: 100%"
-        class="btn-large waves-effect waves-light grey modal-close"
-      >
-        Back<i class="material-icons right">arrow_back</i>
-      </button>
-    </div>
-  </div>
   <div class="navbar-fixed">
     <nav>
       <div class="nav-wrapper light-blue z-depth-1">
@@ -49,7 +22,7 @@
                   class="flexbox-center"
                   style="font-size: x-large; color: black"
                   id="usernameMenu"
-                  >🧍 {{ usernameField }}</a
+                  >🧍 {{ username }}</a
                 >
               </li>
               <li>
@@ -61,7 +34,7 @@
                   User Profile
                 </router-link>
               </li>
-              <li>
+              <li v-if="isAdmin === 'true'">
                 <router-link
                   style="font-size: x-large; color: black"
                   to="/userlist"
@@ -126,8 +99,8 @@ import { signOut } from "firebase/auth";
 export default {
   data() {
     return {
+      isAdmin: localStorage.getItem("isAdmin"),
       isLoading: false,
-      usernameField: "",
       routerList: [
         { title: "🏠 Home", to: "/homepage" },
         { title: "📝 Order List", to: "/orderlist" },
@@ -137,7 +110,6 @@ export default {
   },
   async mounted() {
     window.M.AutoInit();
-    this.usernameField = this.username;
   },
   computed: {
     email() {
@@ -152,9 +124,10 @@ export default {
   },
   methods: {
     logout() {
-      sessionStorage.clear();
+      localStorage.clear();
       signOut(this.auth)
         .then(() => {
+          localStorage.clear();
           this.$toast.open({
             message: "Logout Successful",
             type: "success",

@@ -80,7 +80,7 @@
             <li>
               <div style="margin-left: 15px">
                 <small
-                  ><i>{{ username }}</i></small
+                  ><i>{{ data1.data().username }}</i></small
                 >
                 <br />
                 Order ID: {{ data1.id }} <br />

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import PageNotFound from './pages/PageNotFound';
 import HomePage from './pages/HomePage';
+import LoginPage from './components/LoginPage';
 import ViewTask from './pages/task/ViewTask';
 import AddTask from './pages/task/AddTask';
 import TaskList from './pages/task/TaskList';
@@ -23,6 +24,11 @@ const routes = [
         path: '/homepage',
         component: HomePage,
         name: "homepage"
+    },
+    {
+        path: '/loginpage',
+        component: LoginPage,
+        name: "loginpage"
     },
     {
         path: '/tasklist',
@@ -63,21 +69,49 @@ const routes = [
         path: '/viewuser',
         component: ViewUser,
         name: "viewuser",
+        beforeEnter: (to, from, next) => {
+            if(localStorage.getItem("isAdmin") == "false") {
+                next('/homepage');
+            } else {
+                next();
+            }
+        }
     },
     {
         path: '/userlist',
         component: UserList,
         name: "userlist",
+        beforeEnter: (to, from, next) => {
+            if(localStorage.getItem("isAdmin") == "false") {
+                next('/homepage');
+            } else {
+                next();
+            }
+        }
     },
     {
         path: '/newuser',
         component: NewUser,
         name: "newuser",
+        beforeEnter: (to, from, next) => {
+            if(localStorage.getItem("isAdmin") != "true") {
+                next('/homepage');
+            } else {
+                next();
+            }
+        }
     }
 ];
 const router = createRouter({
     history: createWebHistory(),
     routes,
 });
+router.beforeEach((to, from, next) => {
+    if(localStorage.getItem("isLoggedIn") == null) {
+        next('/loginpage');
+    } else {
+        next();
+    }
+  })
 
 export default router;

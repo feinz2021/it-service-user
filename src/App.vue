@@ -1,7 +1,7 @@
 <template>
-  <AppHeader v-if="this.loggedIn === true" />
-  <router-view v-if="this.loggedIn === true"></router-view>
-  <LoadingAnimation v-else-if="this.loading === true" />
+  <AppHeader v-if="isLoggedIn === 'true'" />
+  <router-view></router-view>
+  <LoadingAnimation v-if="this.loading === true" />
   <LoginPage v-else-if="this.loggedIn === false" />
 </template>
 
@@ -17,6 +17,7 @@ export default {
     return {
       loggedIn: false,
       loading: false,
+      isLoggedIn: localStorage.getItem("isLoggedIn"),
     };
   },
   async mounted() {
@@ -28,8 +29,7 @@ export default {
         await this.$store.commit("uid", user.uid);
         await this.$store.commit("username", user.displayName);
         await this.$store.commit("email", user.email);
-        // console.log("user.email: ");
-        // console.log(user.email);
+
         this.loggedIn = true;
         this.loading = false;
       } else {

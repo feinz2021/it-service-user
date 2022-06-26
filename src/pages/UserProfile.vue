@@ -6,6 +6,7 @@
         <div class="card-panel">
           <h5 class="center">User Profile</h5>
           <div style="margin-top: 20px"></div>
+
           <div class="row">
             <div class="input-field col s12 m6 l6">
               <input
@@ -27,7 +28,6 @@
               <label class="active" for="address">Address</label>
             </div>
           </div>
-
           <div class="row">
             <div class="input-field col s12 m6 l6">
               <input
@@ -100,6 +100,73 @@
             class="btn waves-effect waves-light grey btn-large"
             >Cancel</router-link
           >
+
+          <!-- auth part -->
+          <div class="row" style="margin-top: 30px">
+            <h6 class="center" style="color: red; font-weight: bold">
+              Please enter current password to update email and password
+            </h6>
+            <div class="input-field col s12 m6 l6">
+              <input
+                :value="this.email"
+                placeholder="Current Email"
+                id="currentemail"
+                type="text"
+                disabled
+              />
+              <label class="active" for="currentemail">Current Email</label>
+            </div>
+
+            <div class="input-field col s12 m6 l6">
+              <input
+                placeholder="Current Password"
+                id="currentpassword"
+                type="password"
+                v-model="currentPassword"
+              />
+              <label class="active" for="currentpassword"
+                >Current Password</label
+              >
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12 m6 l6">
+              <input
+                v-model="newEmail"
+                placeholder="New Email"
+                id="newemail"
+                type="text"
+              />
+              <label class="active" for="newemail">New Email</label>
+            </div>
+
+            <div class="input-field col s12 m6 l6">
+              <input
+                placeholder="New Password"
+                id="password"
+                type="password"
+                v-model="newPassword"
+              />
+              <label class="active" for="password">New Password</label>
+            </div>
+          </div>
+
+          <button
+            @click="updateEmail()"
+            style="width: 48%"
+            class="btn waves-effect waves-light blue btn-large"
+            :disabled="!currentPassword || !newEmail"
+          >
+            Save
+          </button>
+          <button
+            @click="updatePassword()"
+            style="width: 48%; margin-left: 4%"
+            class="btn waves-effect waves-light blue btn-large"
+            :disabled="!currentPassword || !newPassword"
+          >
+            Save
+          </button>
         </div>
       </div>
     </div>
@@ -110,7 +177,13 @@
 import LoadingAnimation from "../components/LoadingAnimation.vue";
 import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { updateProfile } from "firebase/auth";
+import {
+  updateProfile,
+  updateEmail,
+  updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from "firebase/auth";
 import firebase from "../utilities/firebase";
 
 export default {
@@ -121,6 +194,9 @@ export default {
       fullName: "",
       phoneNumber: "",
       address: "",
+      newEmail: "",
+      newPassword: "",
+      currentPassword: "",
 
       inputFile: null,
       imagePreview: null,
@@ -149,8 +225,9 @@ export default {
           const img = document.getElementById("profileImage");
           img.setAttribute("src", url);
         })
-        .catch(() => {
+        .catch((error) => {
           // Handle any errors
+          console.log(error);
         });
     } else {
       await setDoc(doc(firebase.db, "profile", this.uid), {
@@ -185,12 +262,17 @@ export default {
           });
         })
         .then(async () => {
-          // getting file path
-          this.inputFile = this.$refs.profileImage.files[0];
-          const storage = getStorage();
-          const storageRef = ref(storage, this.uid + ".jpg");
-          // 'file' comes from the Blob or File API
-          await uploadBytes(storageRef, this.inputFile).catch(() => {});
+          if (this.inputFile) {
+            console.log("will replace new image");
+            // getting file path
+            this.inputFile = this.$refs.profileImage.files[0];
+            const storage = getStorage();
+            const storageRef = ref(storage, this.uid + ".jpg");
+            // 'file' comes from the Blob or File API
+            await uploadBytes(storageRef, this.inputFile).catch(() => {});
+          } else {
+            console.log("no new image");
+          }
         })
         .then(() => {
           this.isLoading = false;
@@ -201,7 +283,73 @@ export default {
             dismissible: true,
             position: "bottom",
           });
-          window.location.replace("/");
+          this.$router.push("/");
+        })
+        .catch((error) => {
+          console.log("save user error: " + error);
+          this.$toast.open({
+            message: "Error, Please Enter Correct Details",
+            type: "error",
+            duration: 3000,
+            dismissible: true,
+            position: "bottom",
+          });
+        });
+    },
+    async updateEmail() {
+      const credential = EmailAuthProvider.credential(
+        this.email,
+        this.currentPassword
+      );
+      await reauthenticateWithCredential(this.auth.currentUser, credential)
+        .then(async () => {
+          await updateEmail(this.auth.currentUser, this.newEmail);
+        })
+        .then(() => {
+          this.$toast.open({
+            message: "Email Updated.",
+            type: "success",
+            duration: 3000,
+            dismissible: true,
+            position: "bottom",
+          });
+        })
+        .catch(() => {
+          this.$toast.open({
+            message: "System Error.",
+            type: "error",
+            duration: 3000,
+            dismissible: true,
+            position: "bottom",
+          });
+        });
+    },
+    async updatePassword() {
+      const credential = EmailAuthProvider.credential(
+        this.email,
+        this.currentPassword
+      );
+      await reauthenticateWithCredential(this.auth.currentUser, credential)
+        .then(async () => {
+          await updatePassword(this.auth.currentUser, this.newPassword);
+        })
+        .then(() => {
+          this.$toast.open({
+            message: "Password Updated.",
+            type: "success",
+            duration: 3000,
+            dismissible: true,
+            position: "bottom",
+          });
+        })
+        .catch(() => {
+          this.$toast.open({
+            message: "System Error.",
+            type: "error",
+            duration: 3000,
+            dismissible: true,
+            position: "bottom",
+          });
         });
     },
     async profileImagePreview() {

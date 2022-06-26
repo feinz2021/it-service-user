@@ -56,7 +56,7 @@
          <h5 class="center">View Order</h5><div style="margin-top: 20px;"></div>
         <div id="printMe">
           <small
-            ><i>{{ username }}</i></small
+            ><i>{{ usernameOrder }}</i></small
           >
           <br />
           Order ID:
@@ -187,6 +187,7 @@ import firebase from "../../utilities/firebase";
 export default {
   data() {
     return {
+      usernameOrder: "",
       taskList: [],
       taskListName: [],
       // --to save in database
@@ -224,7 +225,7 @@ export default {
       this.taskListName.push(doc.data().taskName);
     });
 
-    //read database for specific id
+    //read database for specific id for order
     const docRef = doc(firebase.db, "order", this.orderId);
     const docSnap = await getDoc(docRef);
 
@@ -233,6 +234,7 @@ export default {
       this.totalCost = docSnap.data().totalCost;
       this.date = this.dateTime(docSnap.data().date);
       this.status = docSnap.data().status;
+      this.usernameOrder = docSnap.data().username;
     } else {
       console.log("No such document!");
     }
