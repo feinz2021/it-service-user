@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-   
     <div class="row">
       <div class="col s12 m8 l8 push-m2 push-l2">
         <!-- modal -->
@@ -53,7 +52,8 @@
 
       <!-- displaying the selected task -->
       <div class="card-panel white">
-         <h5 class="center">View Order</h5><div style="margin-top: 20px;"></div>
+        <h5 class="center">View Order</h5>
+        <div style="margin-top: 20px"></div>
         <div id="printMe">
           <small
             ><i>{{ usernameOrder }}</i></small
@@ -108,19 +108,22 @@
               </td>
             </tr>
           </table>
-          <vue3-simple-typeahead
-            v-if="status === 'ongoing'"
-            id="typeahead_id"
-            placeholder="Start writing..."
-            :items="this.taskListName"
-            :minInputLength="1"
-            @selectItem="selectItemEventHandler"
-            onfocus="this.value=''"
-          >
-          </vue3-simple-typeahead>
-          <label v-if="status === 'ongoing'" for="typeahead_id"
-            >type here⬆️</label
-          >
+          <div id="hide-from-print">
+            <vue3-simple-typeahead
+              v-if="status === 'ongoing'"
+              id="typeahead_id"
+              placeholder="Start writing..."
+              :items="this.taskListName"
+              :minInputLength="1"
+              @selectItem="selectItemEventHandler"
+              onfocus="this.value=''"
+            >
+            </vue3-simple-typeahead>
+
+            <label v-if="status === 'ongoing'" for="typeahead_id"
+              >type here⬆️</label
+            >
+          </div>
         </div>
       </div>
 
