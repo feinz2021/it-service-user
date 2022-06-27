@@ -50,7 +50,7 @@ import firebase from "../utilities/firebase";
 export default {
   data() {
     return {
-      email: "feinzunofficial@gmail.com",
+      email: "aaaa63351@gmail.com",
       password: "aaaaaa",
       isLoading: false,
     };
