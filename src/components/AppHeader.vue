@@ -5,7 +5,7 @@
         <ul class="left">
           <a
             class="dropdown-trigger flexbox-center"
-            style="width: 250px; justify-content: left"
+            style="width: 200px; justify-content: left"
             href="#"
             data-target="menu-dropdown"
           >

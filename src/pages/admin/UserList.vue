@@ -8,7 +8,7 @@
     >
 
     <div class="card-panel">
-      <table>
+      <table class="responsive-table">
         <thead>
           <tr>
             <th class="center">#</th>

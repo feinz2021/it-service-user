@@ -11,9 +11,10 @@
             <div class="input-field col s12 m6 l6">
               <input
                 v-model="userName"
-                placeholder="Username"
+                placeholder="Max 10 Characters"
                 id="username"
                 type="text"
+                maxlength="10"
               />
               <label class="active" for="username">Username</label>
             </div>
@@ -52,7 +53,9 @@
             <div class="input-field col s12 m6 l6">
               <div class="file-field input-field">
                 <div class="btn waves-effect waves-light orange btn-large">
-                  <span>Select Image<i class="material-icons right">image</i></span>
+                  <span
+                    >Select Image<i class="material-icons right">image</i></span
+                  >
                   <input
                     ref="profileImage"
                     @change="profileImagePreview()"
@@ -98,7 +101,9 @@
             to="/"
             style="width: 48%; margin-left: 4%"
             class="btn waves-effect waves-light grey btn-large"
-            >Back<i class="material-icons right">keyboard_arrow_left</i></router-link
+            >Back<i class="material-icons right"
+              >keyboard_arrow_left</i
+            ></router-link
           >
 
           <!-- auth part -->
@@ -237,7 +242,7 @@ export default {
         address: this.address,
         isAdmin: true,
         isActive: true,
-        email: this.email
+        email: this.email,
       });
     }
   },
