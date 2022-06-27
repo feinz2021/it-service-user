@@ -1,24 +1,5 @@
 # it-service-user
 
-## Project setup
-```
-npm install
-```
+Made with Vue 3 and Firebase Firestore
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+demo: https://itserviceuser2022.netlify.app/
