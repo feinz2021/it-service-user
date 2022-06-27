@@ -43,7 +43,7 @@
             style="width: 100%"
             class="aves-effect waves-light btn-large grey"
           >
-            Back<i class="material-icons right">arrow_back</i>
+            Back<i class="material-icons right">keyboard_arrow_left</i>
           </router-link>
         </div>
       </div>

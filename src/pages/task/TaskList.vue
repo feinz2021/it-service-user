@@ -3,10 +3,17 @@
     <div style="margin-top: 10px"></div>
     <router-link
       to="/addtask"
-      style="color: white; width: 100%"
+      style="color: white; width: 59%"
       class="waves-effect waves-light btn-large orange"
     >
       Add New Task<i class="material-icons right">add</i>
+    </router-link>
+    <router-link
+      to="/homepage"
+      style="color: white; width: 40%; margin-left: 1%"
+      class="waves-effect waves-light btn-large grey"
+    >
+      Back<i class="material-icons right">keyboard_arrow_left</i>
     </router-link>
     <div style="margin-top: 10px"></div>
     <div class="card-panel">

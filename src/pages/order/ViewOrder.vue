@@ -22,7 +22,7 @@
               v-if="status === 'ongoing'"
               class="btn-large waves-effect waves-light grey modal-close"
             >
-              Back<i class="material-icons right">arrow_back</i>
+              Back<i class="material-icons right">keyboard_arrow_left</i>
             </button>
           </div>
         </div>
@@ -44,7 +44,7 @@
               v-if="status === 'ongoing'"
               class="btn-large waves-effect waves-light grey modal-close"
             >
-              Back<i class="material-icons right">arrow_back</i>
+              Back<i class="material-icons right">keyboard_arrow_left</i>
             </button>
           </div>
         </div>
@@ -166,7 +166,7 @@
         to="/orderlist"
         class="waves-effect waves-light btn-large grey"
       >
-        Back<i class="material-icons right">arrow_back</i>
+        Back<i class="material-icons right">keyboard_arrow_left</i>
       </router-link>
 
       <div style="margin-bottom: 50px"></div>

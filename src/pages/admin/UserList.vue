@@ -2,10 +2,17 @@
   <div class="container">
     <router-link
       class="btn waves-effect waves-light orange btn-large"
-      style="width: 100%; margin-top: 10px"
+      style="width: 59%; margin-top: 10px"
       to="/newuser"
       >Create New User<i class="material-icons right">add</i></router-link
     >
+    <router-link
+      to="/homepage"
+      style="color: white; width: 40%; margin-left: 1%; margin-top: 10px"
+      class="waves-effect waves-light btn-large grey"
+    >
+      Back<i class="material-icons right">keyboard_arrow_left</i>
+    </router-link>
 
     <div class="card-panel">
       <table class="responsive-table">
@@ -35,7 +42,8 @@
                 @click="changeStatus(user.data().isActive, user.id)"
                 class="btn waves-effect waves-light blue btn-small"
                 style="width: 100%"
-              > Edit
+              >
+                Edit
                 <i class="material-icons right">edit</i>
               </button>
             </td>

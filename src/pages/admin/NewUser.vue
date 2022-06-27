@@ -17,20 +17,22 @@
           />
           <label class="active" for="password">Password</label>
         </div>
-        <a
-          style="width: 100%"
+        <button
+          style="width: 59%"
           class="btn btn-large waves-effect waves-light blue"
           @click="createUser()"
-          >Save New User<i class="material-icons right">save</i></a
+          :disabled="!email || !password"
         >
-        <router-link
+          Save New User<i class="material-icons right">save</i>
+        </button>
+             <router-link
           to="/userlist"
-          style="width: 100%; margin-top: 10px"
-          class="btn waves-effect waves-light grey btn-large"
-          >Back<i class="material-icons right"
-            >keyboard_arrow_left</i
-          ></router-link
+          style="color: white; width: 40%; margin-left: 1%"
+          class="waves-effect waves-light btn-large grey"
         >
+          Back<i class="material-icons right">keyboard_arrow_left</i>
+        </router-link>
+        
       </div>
     </div>
   </div>
@@ -91,7 +93,13 @@ export default {
         })
         .catch((e) => {
           console.log("error" + e);
-          // ..
+          this.$toast.open({
+            message: "Error: Please Enter Correct Details.",
+            type: "error",
+            duration: 3000,
+            dismissible: true,
+            position: "bottom",
+          });
         });
     },
   },

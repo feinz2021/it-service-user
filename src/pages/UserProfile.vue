@@ -91,7 +91,7 @@
           </div>
           <button
             @click="saveButton()"
-            style="width: 48%"
+            style="width: 59%"
             class="btn waves-effect waves-light blue btn-large"
             :disabled="!userName || !fullName || !phoneNumber || !address"
           >
@@ -99,7 +99,7 @@
           </button>
           <router-link
             to="/"
-            style="width: 48%; margin-left: 4%"
+            style="width: 40%; margin-left: 1%"
             class="btn waves-effect waves-light grey btn-large"
             >Back<i class="material-icons right"
               >keyboard_arrow_left</i
