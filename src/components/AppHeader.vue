@@ -31,7 +31,7 @@
                   to="/userprofile"
                   class="flexbox-center"
                 >
-                  User Profile
+                  👤 User Profile
                 </router-link>
               </li>
               <li v-if="isAdmin === 'true'">
@@ -40,7 +40,7 @@
                   to="/userlist"
                   class="flexbox-center"
                 >
-                  (Admin) Manage User
+                  👥 (Admin) Manage User
                 </router-link>
               </li>
               <li>
