@@ -14,8 +14,6 @@ const firebaseConfig = {
     appId: process.env.VUE_APP_APP_ID
 };
 
-console.log(process.env.VUE_APP_API_KEY)
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
