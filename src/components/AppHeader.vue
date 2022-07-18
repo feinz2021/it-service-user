@@ -8,7 +8,6 @@
             style="width: 200px; justify-content: left"
             href="#"
             data-target="menu-dropdown"
-            @mouseover="clickNav()"
             id="navButton"
           >
             <span style="font-size: x-large">🧭 Navigation</span>
